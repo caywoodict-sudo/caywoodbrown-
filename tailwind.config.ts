@@ -20,8 +20,9 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
-        serif: ["var(--font-serif)", "Georgia", "serif"],
+        sans: ['"sofia-pro"', "ui-sans-serif", "system-ui", "sans-serif"],
+        serif: ['"new-spirit"', "Georgia", "serif"],
+        condensed: ['"new-spirit-condensed"', '"new-spirit"', "serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -82,7 +83,7 @@ const config = {
           flame: "#F47E28",
           flameHover: "#dc6d1c",
           paleStone: "#F2EBD9",
-          stoneBg: "#FAF7F0",
+          stoneBg: "#FBF8F2",
           sky: "#4CB9D1",
           night: "#142118",
         },

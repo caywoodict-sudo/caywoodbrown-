@@ -1,0 +1,42 @@
+/* Authentic Farm Africa Typekit Fonts (Self-Hosted) */
+
+@font-face {
+  font-family: "sofia-pro";
+  src: url("/fonts/sofia-pro-500-normal-0.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "sofia-pro";
+  src: url("/fonts/sofia-pro-400-normal-1.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "sofia-pro";
+  src: url("/fonts/sofia-pro-700-normal-2.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "new-spirit";
+  src: url("/fonts/new-spirit-400-normal-3.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "new-spirit";
+  src: url("/fonts/new-spirit-500-normal-4.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+

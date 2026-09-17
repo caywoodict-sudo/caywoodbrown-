@@ -1,1248 +1,489 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { format, parseISO, isAfter, isBefore, isToday, addMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, getDay } from "date-fns"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog"
-import { Clock, MapPin, Search, Filter, CalendarIcon, List, ChevronLeft, ChevronRight, User, Mail, Phone, CheckCircle } from "lucide-react"
-import { motion } from "framer-motion"
+import { Calendar, MapPin, ArrowRight, Heart, Users, ShieldCheck, Filter, Sparkles, CheckCircle2, Phone } from "lucide-react"
+import HeroFoliage from "@/components/hero-foliage"
 
-// Define event type
-interface Event {
-  id: string;
-  title: string;
-  description: string;
-  date: string;
-  time: string;
-  location: string;
-  category: string;
-  image?: string;
+interface FoundationEvent {
+  id: string
+  title: string
+  subtitle?: string
+  category: "Health & Immunization" | "Humanitarian Relief" | "Community Outreaches"
+  date: string
+  location: string
+  lead: string
+  image: string
+  secondaryImage?: string
+  badgeText: string
+  collaborators?: string[]
+  keyActivities: string[]
+  isHeroSpotlight?: boolean
 }
 
-// Define form state type
-interface RegistrationForm {
-  name: string;
-  email: string;
-  phone: string;
-  attendees: string;
-  specialRequests: string;
-}
+const verifiedEvents: FoundationEvent[] = [
+  {
+    id: "world-immunization-day-impa",
+    title: "World Immunization Day 2025: Integrated Vaccination Campaign & Road Show",
+    subtitle: "IMPA: Immunization Made Possible for All • \"Immunization For All Is Humanly Possible\"",
+    category: "Health & Immunization",
+    date: "10th November 2025",
+    location: "Primary Health Centres, Road Shows & Community Hubs, Rivers State",
+    lead: "In collaboration with the Senate Committee on Health and leading international global health allies, the Caywood Brown Foundation conducts comprehensive immunization outreaches to ensure every child receives life-saving vaccines.",
+    image: "/images/hero/impa-banner.jpg",
+    secondaryImage: "/images/programs/impa-volunteers.jpg",
+    badgeText: "Flagship Health Campaign",
+    collaborators: [
+      "Nigerian Senate Committee on Health",
+      "Vaccine Network for Disease Control (VNDC)",
+      "Gavi, The Vaccine Alliance",
+      "NPHCDA (National Primary Health Care)",
+      "Sydani Group",
+    ],
+    keyActivities: [
+      "Oral polio vaccine administration personally administered by Founder Senator Dr. Ipalibo Harry Banigo",
+      "Infant & child vaccination badging (\"I AM VACCINATED\") and immunization card verification",
+      "High-energy community road show sensitizing mothers and families on preventative healthcare",
+      "Youth volunteer mobilization and on-site public health counseling across local council wards",
+    ],
+    isHeroSpotlight: true,
+  },
+  {
+    id: "christmas-with-her-excellency",
+    title: "Annual \"Christmas With Her Excellency\" Community Outreach",
+    subtitle: "Holiday Welfare, Food Security & Community Praise Gathering",
+    category: "Community Outreaches",
+    date: "25th December 2025 (Annual)",
+    location: "Port Harcourt & Obio/Akpor Communities, Rivers State",
+    lead: "Hosted by Her Excellency Senator Dr. Mrs. Ipalibo Harry Banigo, this annual holiday outreach brings festive relief, community meals, nutritional food baskets, and joyful gospel praise to hundreds of vulnerable households.",
+    image: "/images/gallery/event-2.jpg",
+    secondaryImage: "/images/gallery/event-4.jpg",
+    badgeText: "Annual Festive Outreach",
+    collaborators: [
+      "Caywood Brown Foundation Leadership Council",
+      "Rivers Community Women Associations",
+      "Local Volunteer Corps",
+    ],
+    keyActivities: [
+      "Festive food hamper distributions containing rice, cooking essentials, and protein provisions",
+      "Live community praise, musical performances, and spiritual encouragement",
+      "Empowerment address and personal interactions with Senator Dr. Ipalibo Harry Banigo",
+      "Clothing and holiday gifts presented to orphans and elderly community members",
+    ],
+  },
+  {
+    id: "buni-yadi-idp-relief",
+    title: "Buni Yadi Humanitarian Relief & IDP Support Mission",
+    subtitle: "Emergency Family Care, Nutrition & Maternal Psychosocial Support",
+    category: "Humanitarian Relief",
+    date: "Humanitarian Field Mission",
+    location: "Buni Yadi Settlements & Host Communities",
+    lead: "Deploying rapid field relief to internally displaced persons and vulnerable families enduring hardship, providing essential food rations, medical triage, and dignified relief under outdoor community field canopies.",
+    image: "/images/gallery/event-1.jpg",
+    secondaryImage: "/images/gallery/event-3.jpg",
+    badgeText: "Crisis Relief Mission",
+    collaborators: [
+      "Buni Yadi Community Leaders",
+      "Field Relief Volunteer Teams",
+      "Emergency Health Volunteers",
+    ],
+    keyActivities: [
+      "Nutritional food distribution for displaced mothers, children, and village elders",
+      "Safe shelter support, blankets, clean water containers, and hygiene care kits",
+      "Maternal psychosocial support circles and trauma-informed counselling",
+      "First-aid and immediate primary health checks conducted in field tents",
+    ],
+  },
+  {
+    id: "world-malaria-day-outreach",
+    title: "World Malaria Day & Adolescent Health Road Show",
+    subtitle: "#ZeroMalariaStartsWithMe • Invest in Prevention, Invest in Treatment",
+    category: "Health & Immunization",
+    date: "Annual Public Health Drive",
+    location: "Port Harcourt Waterfronts & Rural Primary Schools, Rivers State",
+    lead: "Combining high-visibility awareness walks with door-to-door preventative supplies to curb malaria morbidity among pregnant mothers and school-age adolescents.",
+    image: "/images/gallery/workshop-1.jpg",
+    secondaryImage: "/images/gallery/workshop-2.jpg",
+    badgeText: "Preventative Health Drive",
+    collaborators: [
+      "MedWHOLE Health Network",
+      "Adolescent School Health Ambassadors",
+      "Primary Healthcare Centers",
+    ],
+    keyActivities: [
+      "Distribution of long-lasting insecticide-treated mosquito bed nets (LLINs)",
+      "Free rapid malaria diagnostic testing (RDT) and preventative medication",
+      "Menstrual hygiene kit distribution and sanitation education for schoolgirls",
+      "Community clean-up and gutter-desilting demonstrations to eliminate mosquito breeding grounds",
+    ],
+  },
+]
+
+const categories = ["All Events", "Health & Immunization", "Humanitarian Relief", "Community Outreaches"]
 
 export default function EventsPage() {
-  const [activeFilter, setActiveFilter] = useState("all")
-  const [searchQuery, setSearchQuery] = useState("")
-  const [currentMonth, setCurrentMonth] = useState(new Date())
-  const [isVisible, setIsVisible] = useState<Record<string, boolean>>({})
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
-  const [registrationOpen, setRegistrationOpen] = useState(false)
-  const [registrationForm, setRegistrationForm] = useState<RegistrationForm>({
-    name: "",
-    email: "",
-    phone: "",
-    attendees: "1",
-    specialRequests: "",
-  })
-  const [registrationComplete, setRegistrationComplete] = useState(false)
-  
-  const sectionRefs = {
-    featured: useRef<HTMLDivElement>(null),
-    upcoming: useRef<HTMLDivElement>(null),
-    calendar: useRef<HTMLDivElement>(null),
-    past: useRef<HTMLDivElement>(null),
-  }
-
-  // Generate days for the calendar view
-  const monthStart = startOfMonth(currentMonth)
-  const monthEnd = endOfMonth(currentMonth)
-  const monthDays = eachDayOfInterval({ start: monthStart, end: monthEnd })
-  
-  // Calculate calendar grid (including days from previous/next months)
-  const startDay = getDay(monthStart)
-  
-  // Fill the start with days from previous month
-  const daysInGrid = [...Array(startDay).fill(null), ...monthDays]
-  
-  // Ensure we have complete weeks (7 days each)
-  while (daysInGrid.length % 7 !== 0) {
-    daysInGrid.push(null)
-  }
+  const [selectedCategory, setSelectedCategory] = useState("All Events")
+  const [eventsList, setEventsList] = useState<FoundationEvent[]>(verifiedEvents)
+  const [isFromDb, setIsFromDb] = useState(false)
 
   useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.1,
-    }
-
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setIsVisible((prev) => ({ ...prev, [entry.target.id]: true }))
+    let active = true
+    async function loadDbEvents() {
+      try {
+        const res = await fetch('/api/events')
+        if (res.ok) {
+          const data = await res.json()
+          if (active && data.docs && data.docs.length > 0) {
+            setEventsList(data.docs)
+            setIsFromDb(true)
+          }
         }
-      })
-    }
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions)
-
-    Object.entries(sectionRefs).forEach(([key, ref]) => {
-      if (ref.current) {
-        observer.observe(ref.current)
+      } catch (e) {
+        console.warn('Events fallback used:', e)
       }
-    })
-
-    return () => {
-      Object.values(sectionRefs).forEach((ref) => {
-        if (ref.current) {
-          observer.unobserve(ref.current)
-        }
-      })
     }
+    loadDbEvents()
+    return () => { active = false }
   }, [])
 
-  const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  }
-
-  const staggerChildren = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  }
-
-  const itemFade = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  }
-
-  // Filter events based on active filter and search query
-  const filteredEvents = allEvents.filter((event) => {
-    const matchesFilter = activeFilter === "all" || event.category === activeFilter
-    const matchesSearch =
-      event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.description.toLowerCase().includes(searchQuery.toLowerCase())
-    return matchesFilter && matchesSearch
-  })
-
-  // Separate events into upcoming and past
-  const today = new Date()
-  const upcomingEvents = filteredEvents
-    .filter((event) => {
-      const eventDate = parseISO(event.date)
-      return isAfter(eventDate, today) || isToday(eventDate)
-    })
-    .sort((a, b) => parseISO(a.date).getTime() - parseISO(b.date).getTime())
-
-  const pastEvents = filteredEvents
-    .filter((event) => {
-      const eventDate = parseISO(event.date)
-      return isBefore(eventDate, today) && !isToday(eventDate)
-    })
-    .sort((a, b) => parseISO(b.date).getTime() - parseISO(a.date).getTime())
-
-  // Featured events (first 3 upcoming events)
-  const featuredEvents = upcomingEvents.slice(0, 3)
-
-  // Calendar view events for current month
-  const calendarEvents = filteredEvents.filter((event) => {
-    const eventDate = parseISO(event.date)
-    return eventDate.getMonth() === currentMonth.getMonth() && eventDate.getFullYear() === currentMonth.getFullYear()
-  })
-
-  const nextMonth = () => {
-    setCurrentMonth(addMonths(currentMonth, 1))
-  }
-
-  const prevMonth = () => {
-    setCurrentMonth(addMonths(currentMonth, -1))
-  }
-
-  // Handle form changes
-  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
-    setRegistrationForm(prev => ({
-      ...prev,
-      [name]: value
-    }))
-  }
-
-  // Handle registration submission
-  const handleRegistration = (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    // Simulate submission process
-    setTimeout(() => {
-      setRegistrationComplete(true)
-    }, 1000)
-  }
-  
-  // Reset registration form when dialog closes
-  const handleDialogChange = (open: boolean) => {
-    if (!open) {
-      setRegistrationComplete(false)
-      setRegistrationForm({
-        name: "",
-        email: "",
-        phone: "",
-        attendees: "1",
-        specialRequests: "",
-      })
-    }
-  }
+  const spotlight = eventsList.find((e) => e.isHeroSpotlight) || eventsList[0]
+  const filteredEvents = selectedCategory === "All Events"
+    ? eventsList
+    : eventsList.filter((e) => e.category === selectedCategory)
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <section className="relative w-full h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/placeholder.svg?height=1080&width=1920&text=Events"
-            alt="Foundation events"
-            fill
-            priority
-            className="object-cover brightness-[0.6]"
-            sizes="100vw"
-          />
-        </div>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="container relative z-10 px-4 md:px-6 text-center text-white"
-        >
-          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl mb-6">Events & Programs</h1>
-          <p className="mx-auto max-w-[700px] text-lg md:text-xl text-gray-100 mb-8">
-            Join us for workshops, fundraisers, community gatherings, and more. Discover how you can get involved with
-            the Caywood Brown Foundation.
+    <div className="home-page min-h-screen">
+      {/* ─── 1. HERO SECTION (Botanical Canopy) ─── */}
+      <section className="relative overflow-hidden bg-[#12291b] px-6 pb-24 pt-36 text-[#f7f2e7] sm:px-8 sm:pb-32">
+        <HeroFoliage />
+        <div className="relative z-10 mx-auto max-w-5xl">
+          <p className="home-label text-[#c7ed9f] mb-4">Official Campaigns & Outreaches</p>
+          <h1 className="max-w-4xl font-serif text-[clamp(2.6rem,5vw,4.8rem)] font-medium leading-[1.1] tracking-tight">
+            Life-saving campaigns, <br />
+            <span className="text-[#f6ce40]">standing with communities.</span>
+          </h1>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#f7f2e7]/85 font-normal">
+            Explore our signature field operations — from statewide polio and childhood immunization drives under the IMPA campaign, to crisis relief for displaced families and annual holiday community celebrations.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                size="lg"
-                className="bg-amber-500 hover:bg-amber-600 text-white font-medium px-8 py-6 text-lg h-auto"
-                asChild
-              >
-                <a href="#upcoming">View Upcoming Events</a>
-              </Button>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white text-white hover:bg-white/10 font-medium px-8 py-6 text-lg h-auto"
-                asChild
-              >
-                <a href="#calendar">Calendar View</a>
-              </Button>
-            </motion.div>
-          </div>
-        </motion.div>
-      </section>
 
-      {/* Search and Filter Section */}
-      <section className="sticky top-16 z-30 w-full py-4 bg-white border-b shadow-sm">
-        <div className="container px-4 md:px-6">
-          <div className="flex flex-col md:flex-row gap-4 items-center">
-            <div className="relative w-full md:w-auto md:min-w-[300px] flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search events..."
-                className="pl-10 pr-4 py-2 w-full border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-            <div className="flex items-center gap-2 w-full md:w-auto">
-              <Filter className="h-4 w-4 text-gray-500" />
-              <span className="text-sm font-medium text-gray-500">Filter:</span>
-              <div className="flex flex-wrap gap-2 w-full md:w-auto">
-                <Badge
-                  variant={activeFilter === "all" ? "default" : "outline"}
-                  className="cursor-pointer"
-                  onClick={() => setActiveFilter("all")}
-                >
-                  All
-                </Badge>
-                <Badge
-                  variant={activeFilter === "workshop" ? "default" : "outline"}
-                  className="cursor-pointer"
-                  onClick={() => setActiveFilter("workshop")}
-                >
-                  Workshops
-                </Badge>
-                <Badge
-                  variant={activeFilter === "fundraiser" ? "default" : "outline"}
-                  className="cursor-pointer"
-                  onClick={() => setActiveFilter("fundraiser")}
-                >
-                  Fundraisers
-                </Badge>
-                <Badge
-                  variant={activeFilter === "community" ? "default" : "outline"}
-                  className="cursor-pointer"
-                  onClick={() => setActiveFilter("community")}
-                >
-                  Community
-                </Badge>
-                <Badge
-                  variant={activeFilter === "training" ? "default" : "outline"}
-                  className="cursor-pointer"
-                  onClick={() => setActiveFilter("training")}
-                >
-                  Training
-                </Badge>
-              </div>
-            </div>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <Link
+              href="#impa-spotlight"
+              className="home-button inline-flex items-center gap-2 bg-[#f6ce40] text-[#142118] hover:bg-[#e5bf32] border-[#f6ce40]"
+            >
+              <span>Explore IMPA Campaign</span>
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              href="/volunteer"
+              className="home-button-outline inline-flex items-center gap-2 text-[#faf7f0] border-white/40 hover:bg-white/10"
+            >
+              <Users className="h-4 w-4 text-[#c7ed9f]" />
+              <span>Sign Up as Event Volunteer</span>
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Featured Events Section */}
-      {featuredEvents.length > 0 && (
-        <section
-          id="featured"
-          ref={sectionRefs.featured}
-          className="w-full py-12 md:py-16 bg-gradient-to-b from-white to-amber-50"
-        >
-          <div className="container px-4 md:px-6">
-            <motion.div
-              variants={fadeIn}
-              initial="hidden"
-              animate={isVisible.featured ? "visible" : "hidden"}
-              className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
-            >
-              <div className="inline-block rounded-full bg-amber-100 px-4 py-1.5 text-sm font-medium text-amber-800">
-                Featured Events
-              </div>
-              <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Don't Miss These Opportunities</h2>
-              <p className="mx-auto max-w-[700px] text-gray-600 text-lg">
-                Join us for these upcoming special events and make a difference in your community.
-              </p>
-            </motion.div>
-
-            <motion.div
-              variants={staggerChildren}
-              initial="hidden"
-              animate={isVisible.featured ? "visible" : "hidden"}
-              className="grid gap-8 md:grid-cols-3"
-            >
-              {featuredEvents.map((event, index) => (
-                <motion.div key={index} variants={itemFade} whileHover={{ y: -10 }} transition={{ duration: 0.3 }}>
-                  <Card className="overflow-hidden border-0 shadow-lg rounded-xl h-full">
-                    <div className="relative h-48 w-full overflow-hidden">
-                      <div className="absolute top-4 left-4 z-10">
-                        <Badge className="bg-amber-500 hover:bg-amber-600">Featured</Badge>
-                      </div>
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-[1]" />
-                      <Image
-                        src={event.image || "/placeholder.svg"}
-                        alt={event.title}
-                        fill
-                        className="object-cover transition-transform duration-500 hover:scale-105"
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                      />
-                    </div>
-                    <CardContent className="p-6">
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="flex h-16 w-16 flex-col items-center justify-center rounded-lg bg-amber-100 p-3 text-amber-700">
-                          <span className="text-lg font-bold">{format(parseISO(event.date), "dd")}</span>
-                          <span className="text-xs uppercase">{format(parseISO(event.date), "MMM")}</span>
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-bold">{event.title}</h3>
-                          <Badge variant="outline" className="mt-1">
-                            {event.category}
-                          </Badge>
-                        </div>
-                      </div>
-                      <p className="text-gray-600 mb-4">{event.description}</p>
-                      <div className="space-y-2 mb-4">
-                        <div className="flex items-center text-sm text-gray-500">
-                          <Clock className="h-4 w-4 mr-2" />
-                          <span>{event.time}</span>
-                        </div>
-                        <div className="flex items-center text-sm text-gray-500">
-                          <MapPin className="h-4 w-4 mr-2" />
-                          <span>{event.location}</span>
-                        </div>
-                      </div>
-                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                        <Button className="w-full bg-amber-500 hover:bg-amber-600" asChild>
-                          <Link href={`/events/${event.id}`}>Register Now</Link>
-                        </Button>
-                      </motion.div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-      )}
-
-      {/* Tabs for List/Calendar View */}
-      <section className="w-full py-8 bg-white">
-        <div className="container px-4 md:px-6">
-          <Tabs defaultValue="list" className="w-full">
-            <div className="flex justify-center mb-8">
-              <TabsList>
-                <TabsTrigger value="list" className="flex items-center gap-2">
-                  <List className="h-4 w-4" />
-                  List View
-                </TabsTrigger>
-                <TabsTrigger value="calendar" className="flex items-center gap-2">
-                  <CalendarIcon className="h-4 w-4" />
-                  Calendar View
-                </TabsTrigger>
-              </TabsList>
-            </div>
-
-            {/* List View */}
-            <TabsContent value="list" className="mt-0">
-              {/* Upcoming Events Section */}
-              <section id="upcoming" ref={sectionRefs.upcoming} className="w-full py-8">
-                <motion.div
-                  variants={fadeIn}
-                  initial="hidden"
-                  animate={isVisible.upcoming ? "visible" : "hidden"}
-                  className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8"
-                >
-                  <div>
-                    <div className="inline-block rounded-full bg-amber-100 px-4 py-1.5 text-sm font-medium text-amber-800 mb-4">
-                      Coming Up
-                    </div>
-                    <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Upcoming Events</h2>
+      {/* ─── 2. SPOTLIGHT: WORLD IMMUNIZATION DAY / IMPA ─── */}
+      <section id="impa-spotlight" className="py-20 lg:py-24 bg-[#0d2318] text-[#faf7f0] border-b border-[#00521a]/40">
+        <div className="home-shell">
+          <div className="rounded-3xl border border-[#c7ed9f]/30 bg-[#122b1c] p-6 sm:p-10 lg:p-12 shadow-2xl overflow-hidden relative">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+              
+              {/* Left Column: Official Poster & Field Action */}
+              <div className="lg:col-span-6 space-y-4">
+                <div className="relative aspect-[16/10] sm:aspect-[16/11] rounded-2xl overflow-hidden shadow-xl border border-white/10 bg-black/30">
+                  <Image
+                    src={spotlight.image}
+                    alt={spotlight.title}
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                  <div className="absolute top-3 left-3 bg-[#00521a] text-[#c7ed9f] text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-md border border-[#c7ed9f]/30">
+                    {spotlight.badgeText}
                   </div>
-                </motion.div>
+                </div>
 
-                {upcomingEvents.length > 0 ? (
-                  <motion.div
-                    variants={staggerChildren}
-                    initial="hidden"
-                    animate={isVisible.upcoming ? "visible" : "hidden"}
-                    className="grid gap-6"
-                  >
-                    {upcomingEvents.map((event, index) => (
-                      <motion.div key={index} variants={itemFade} whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
-                        <Card className="overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                          <div className="grid md:grid-cols-4 gap-4">
-                            <div className="md:col-span-1 relative h-40 md:h-full min-h-[160px]">
-                              <Image
-                                src={event.image || "/placeholder.svg"}
-                                alt={event.title}
-                                fill
-                                className="object-cover"
-                                sizes="(max-width: 768px) 100vw, 25vw"
-                              />
-                            </div>
-                            <div className="md:col-span-3 p-6">
-                              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-                                <div>
-                                  <h3 className="text-xl font-bold mb-2">{event.title}</h3>
-                                  <div className="flex flex-wrap gap-2 mb-2">
-                                    <Badge variant="outline">{event.category}</Badge>
-                                    {event.featured && <Badge className="bg-amber-500">Featured</Badge>}
-                                  </div>
-                                </div>
-                                <div className="flex h-16 w-16 flex-col items-center justify-center rounded-lg bg-amber-100 p-3 text-amber-700">
-                                  <span className="text-lg font-bold">{format(parseISO(event.date), "dd")}</span>
-                                  <span className="text-xs uppercase">{format(parseISO(event.date), "MMM")}</span>
-                                </div>
-                              </div>
-                              <p className="text-gray-600 mb-4">{event.description}</p>
-                              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                <div className="flex flex-col sm:flex-row gap-4">
-                                  <div className="flex items-center text-sm text-gray-500">
-                                    <Clock className="h-4 w-4 mr-2" />
-                                    <span>{event.time}</span>
-                                  </div>
-                                  <div className="flex items-center text-sm text-gray-500">
-                                    <MapPin className="h-4 w-4 mr-2" />
-                                    <span>{event.location}</span>
-                                  </div>
-                                </div>
-                                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                                  <Button className="bg-amber-500 hover:bg-amber-600" asChild>
-                                    <Link href={`/events/${event.id}`}>Register</Link>
-                                  </Button>
-                                </motion.div>
-                              </div>
-                            </div>
-                          </div>
-                        </Card>
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                ) : (
-                  <div className="text-center py-12">
-                    <p className="text-gray-500">No upcoming events match your search criteria.</p>
+                {/* Secondary verification photo */}
+                {spotlight.secondaryImage && (
+                  <div className="relative aspect-[16/9] rounded-2xl overflow-hidden shadow-md border border-white/10 hidden sm:block">
+                    <Image
+                      src={spotlight.secondaryImage}
+                      alt="IMPA Volunteers in action"
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-xs text-[#faf7f0]/90">
+                      Caywood Brown Foundation volunteer mobilization for IMPA campaign
+                    </div>
                   </div>
                 )}
-              </section>
+              </div>
 
-              {/* Past Events Section */}
-              {pastEvents.length > 0 && (
-                <section id="past" ref={sectionRefs.past} className="w-full py-8 border-t border-gray-100">
-                  <motion.div
-                    variants={fadeIn}
-                    initial="hidden"
-                    animate={isVisible.past ? "visible" : "hidden"}
-                    className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8"
-                  >
-                    <div>
-                      <div className="inline-block rounded-full bg-gray-100 px-4 py-1.5 text-sm font-medium text-gray-800 mb-4">
-                        Previous
-                      </div>
-                      <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Past Events</h2>
-                    </div>
-                  </motion.div>
+              {/* Right Column: Campaign Details & Verified Partners */}
+              <div className="lg:col-span-6 space-y-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#c7ed9f]/15 text-[#c7ed9f] text-xs font-bold uppercase tracking-wider border border-[#c7ed9f]/30">
+                  <Sparkles className="w-3.5 h-3.5 text-[#f6ce40]" />
+                  <span>National Health Initiative</span>
+                </div>
 
-                  <motion.div
-                    variants={staggerChildren}
-                    initial="hidden"
-                    animate={isVisible.past ? "visible" : "hidden"}
-                    className="grid gap-6"
-                  >
-                    {pastEvents.slice(0, 3).map((event, index) => (
-                      <motion.div key={index} variants={itemFade}>
-                        <Card className="overflow-hidden border border-gray-100 opacity-75 hover:opacity-100 transition-opacity">
-                          <div className="grid md:grid-cols-4 gap-4">
-                            <div className="md:col-span-1 relative h-40 md:h-full min-h-[160px] grayscale">
-                              <Image
-                                src={event.image || "/placeholder.svg"}
-                                alt={event.title}
-                                fill
-                                className="object-cover"
-                                sizes="(max-width: 768px) 100vw, 25vw"
-                              />
-                            </div>
-                            <div className="md:col-span-3 p-6">
-                              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-                                <div>
-                                  <h3 className="text-xl font-bold mb-2">{event.title}</h3>
-                                  <div className="flex flex-wrap gap-2 mb-2">
-                                    <Badge variant="outline">{event.category}</Badge>
-                                    <Badge variant="outline" className="bg-gray-100">
-                                      Past
-                                    </Badge>
-                                  </div>
-                                </div>
-                                <div className="flex h-16 w-16 flex-col items-center justify-center rounded-lg bg-gray-100 p-3 text-gray-700 shrink-0">
-                                  <span className="text-lg font-bold">{format(parseISO(event.date), "dd")}</span>
-                                  <span className="text-xs uppercase">{format(parseISO(event.date), "MMM")}</span>
-                                </div>
-                              </div>
-                              <p className="text-gray-600 mb-4">{event.description}</p>
-                              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                <div className="flex flex-col sm:flex-row gap-4">
-                                  <div className="flex items-center text-sm text-gray-500">
-                                    <Clock className="h-4 w-4 mr-2" />
-                                    <span>{event.time}</span>
-                                  </div>
-                                  <div className="flex items-center text-sm text-gray-500">
-                                    <MapPin className="h-4 w-4 mr-2" />
-                                    <span>{event.location}</span>
-                                  </div>
-                                </div>
-                                <Button variant="outline" asChild>
-                                  <Link href={`/events/${event.id}`}>View Details</Link>
-                                </Button>
-                              </div>
-                            </div>
-                          </div>
-                        </Card>
-                      </motion.div>
-                    ))}
-                  </motion.div>
+                <h2 className="font-serif text-3xl sm:text-4xl text-[#faf7f0] font-medium leading-[1.18]">
+                  {spotlight.title}
+                </h2>
 
-                  {pastEvents.length > 3 && (
-                    <div className="flex justify-center mt-8">
-                      <Button variant="outline" asChild>
-                        <Link href="/events/archive">View All Past Events</Link>
-                      </Button>
-                    </div>
-                  )}
-                </section>
-              )}
-            </TabsContent>
+                {spotlight.subtitle && (
+                  <p className="text-[#f6ce40] text-sm sm:text-base font-semibold italic">
+                    {spotlight.subtitle}
+                  </p>
+                )}
 
-            {/* Calendar View */}
-            <TabsContent value="calendar" className="mt-0">
-              <section id="calendar" ref={sectionRefs.calendar} className="w-full py-16 md:py-24 bg-white border-t">
-                <div className="container px-4 md:px-6">
-                  <motion.div
-                    variants={fadeIn}
-                    initial="hidden"
-                    animate={isVisible.calendar ? "visible" : "hidden"}
-                    className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
-                  >
-                    <div className="inline-block rounded-full bg-amber-100 px-4 py-1.5 text-sm font-medium text-amber-800">
-                      Calendar View
-                    </div>
-                    <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Events Calendar</h2>
-                    <p className="mx-auto max-w-[700px] text-gray-600 text-lg">
-                      Browse our events by date to find opportunities that fit your schedule.
-                    </p>
-                  </motion.div>
+                <div className="flex flex-wrap items-center gap-y-2 gap-x-6 text-sm text-[#faf7f0]/80 border-y border-white/10 py-3.5">
+                  <span className="flex items-center gap-2 text-[#c7ed9f] font-semibold">
+                    <Calendar className="w-4 h-4 text-[#f6ce40]" />
+                    <span>{spotlight.date}</span>
+                  </span>
+                  <span className="flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-[#f6ce40]" />
+                    <span>{spotlight.location}</span>
+                  </span>
+                </div>
 
-                  <div className="mb-8 flex justify-between items-center">
-                    <div className="text-2xl font-bold">
-                      {format(currentMonth, "MMMM yyyy")}
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={prevMonth}
-                        aria-label="Previous month"
-                      >
-                        <ChevronLeft className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={nextMonth}
-                        aria-label="Next month"
-                      >
-                        <ChevronRight className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
+                <p className="text-[#faf7f0]/85 text-base leading-relaxed">
+                  {spotlight.lead}
+                </p>
 
-                  <div className="rounded-lg border shadow overflow-hidden">
-                    <div className="grid grid-cols-7 gap-px bg-gray-200">
-                      {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-                        <div key={day} className="bg-gray-50 text-center py-2 font-medium text-gray-500">
-                          {day}
-                        </div>
+                {/* Collaborators List */}
+                {spotlight.collaborators && (
+                  <div className="space-y-2">
+                    <p className="home-label text-[#c7ed9f]">In Strategic Collaboration With:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {spotlight.collaborators.map((c) => (
+                        <span
+                          key={c}
+                          className="text-xs bg-white/10 hover:bg-white/15 text-[#faf7f0] px-3 py-1 rounded-full border border-white/15 font-medium transition-colors"
+                        >
+                          {c}
+                        </span>
                       ))}
                     </div>
-                    <div className="grid grid-cols-7 gap-px bg-gray-200">
-                      {daysInGrid.map((day, i) => {
-                        // For days in the current month
-                        if (day) {
-                          const isCurrentMonth = isSameMonth(day, currentMonth)
-                          const isToday = isSameDay(day, new Date())
-                          
-                          // Find events for this day
-                          const eventsOnDay = calendarEvents.filter(event => {
-                            const eventDate = parseISO(event.date)
-                            return isSameDay(eventDate, day)
-                          })
-                          
-                          return (
-                            <div
-                              key={i}
-                              className={`min-h-24 p-2 bg-white ${
-                                isToday ? "bg-amber-50" : ""
-                              } ${!isCurrentMonth ? "text-gray-400" : ""}`}
-                            >
-                              <div className="font-medium mb-1">{format(day, "d")}</div>
-                              <div className="space-y-1">
-                                {eventsOnDay.slice(0, 3).map((event, idx) => (
-                                  <div
-                                    key={idx}
-                                    className="text-xs p-1 rounded truncate cursor-pointer hover:bg-amber-100 transition-colors"
-                                    onClick={() => {
-                                      setSelectedEvent(event)
-                                      setRegistrationOpen(true)
-                                    }}
-                                  >
-                                    <div className="flex items-center gap-1">
-                                      <div className={`w-2 h-2 rounded-full bg-amber-500`}></div>
-                                      <span>{event.title}</span>
-                                    </div>
-                                  </div>
-                                ))}
-                                {eventsOnDay.length > 3 && (
-                                  <div className="text-xs text-gray-500">+{eventsOnDay.length - 3} more</div>
-                                )}
-                              </div>
-                            </div>
-                          )
-                        }
-                        
-                        // Empty cell for days outside current month
-                        return <div key={i} className="min-h-24 p-2 bg-gray-50"></div>
-                      })}
-                    </div>
                   </div>
+                )}
+
+                {/* Key Activities */}
+                <div className="space-y-2.5 pt-2">
+                  <p className="home-label text-[#c7ed9f]">Core Field Activities:</p>
+                  <ul className="space-y-2 text-xs sm:text-sm text-[#faf7f0]/90">
+                    {spotlight.keyActivities.map((act) => (
+                      <li key={act} className="flex items-start gap-2.5">
+                        <CheckCircle2 className="w-4 h-4 text-[#f6ce40] shrink-0 mt-0.5" />
+                        <span>{act}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </section>
-            </TabsContent>
-          </Tabs>
-        </div>
-      </section>
 
-      {/* Newsletter Section */}
-      <section className="w-full py-12 md:py-16 bg-amber-50">
-        <div className="container px-4 md:px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center"
-          >
-            <h2 className="text-3xl font-bold tracking-tight md:text-4xl mb-4">Stay Updated on Events</h2>
-            <p className="text-gray-600 text-lg mb-8">
-              Subscribe to our newsletter to receive notifications about upcoming events, workshops, and community
-              gatherings.
-            </p>
-            <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Your email address"
-                className="flex h-12 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2"
-                required
-              />
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button type="submit" className="h-12 bg-amber-500 hover:bg-amber-600 text-white">
-                  Subscribe
-                </Button>
-              </motion.div>
-            </form>
-          </motion.div>
-        </div>
-      </section>
+                {/* Actions */}
+                <div className="flex flex-wrap gap-3 pt-3">
+                  <Link
+                    href="/volunteer"
+                    className="home-button inline-flex items-center gap-2 bg-[#f6ce40] text-[#142118] hover:bg-[#e5bf32] border-[#f6ce40]"
+                  >
+                    <Users className="w-4 h-4" />
+                    <span>Volunteer for IMPA</span>
+                  </Link>
+                  <Link
+                    href="/donate"
+                    className="home-button-outline inline-flex items-center gap-2 text-[#faf7f0] border-white/30 hover:bg-white/10"
+                  >
+                    <Heart className="w-4 h-4 text-[#f6ce40]" />
+                    <span>Sponsor Vaccines</span>
+                  </Link>
+                </div>
 
-      {/* Host Your Own Event Section */}
-      <section className="w-full py-12 md:py-16 bg-white">
-        <div className="container px-4 md:px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="grid gap-12 lg:grid-cols-2 items-center"
-          >
-            <div className="relative aspect-video overflow-hidden rounded-2xl">
-              <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/20 to-transparent z-10 rounded-2xl" />
-              <Image
-                src="/placeholder.svg?height=720&width=1280&text=Host+An+Event"
-                alt="People organizing a community event"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            </div>
-            <div className="space-y-6">
-              <div className="inline-block rounded-full bg-amber-100 px-4 py-1.5 text-sm font-medium text-amber-800">
-                Get Involved
               </div>
-              <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Host Your Own Event</h2>
-              <p className="text-gray-600 text-lg leading-relaxed">
-                Want to organize a fundraiser, workshop, or community gathering to support the Caywood Brown Foundation?
-                We provide resources, guidance, and support to help make your event a success.
-              </p>
-              <ul className="space-y-2">
-                {[
-                  "Fundraising events to support our programs",
-                  "Awareness workshops about community issues",
-                  "Volunteer recruitment gatherings",
-                  "Educational sessions about our mission",
-                ].map((item, index) => (
-                  <li key={index} className="flex items-start">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="h-5 w-5 text-amber-500 mr-2 shrink-0 mt-0.5"
-                    >
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                    <span className="text-gray-600">{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button className="mt-4 bg-amber-500 hover:bg-amber-600" asChild>
-                  <Link href="/events/host">Learn How to Host an Event</Link>
-                </Button>
-              </motion.div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Calendar View Section */}
-      <section id="calendar" ref={sectionRefs.calendar} className="w-full py-16 md:py-24 bg-white border-t">
-        <div className="container px-4 md:px-6">
-          <motion.div
-            variants={fadeIn}
-            initial="hidden"
-            animate={isVisible.calendar ? "visible" : "hidden"}
-            className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
-          >
-            <div className="inline-block rounded-full bg-amber-100 px-4 py-1.5 text-sm font-medium text-amber-800">
-              Calendar View
-            </div>
-            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Events Calendar</h2>
-            <p className="mx-auto max-w-[700px] text-gray-600 text-lg">
-              Browse our events by date to find opportunities that fit your schedule.
-            </p>
-          </motion.div>
-
-          <div className="mb-8 flex justify-between items-center">
-            <div className="text-2xl font-bold">
-              {format(currentMonth, "MMMM yyyy")}
-            </div>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={prevMonth}
-                aria-label="Previous month"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={nextMonth}
-                aria-label="Next month"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="rounded-lg border shadow overflow-hidden">
-            <div className="grid grid-cols-7 gap-px bg-gray-200">
-              {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-                <div key={day} className="bg-gray-50 text-center py-2 font-medium text-gray-500">
-                  {day}
-                </div>
-              ))}
+      {/* ─── 3. ALL VERIFIED EVENTS & CAMPAIGNS ─── */}
+      <section className="py-20 lg:py-28 bg-[#faf7f0] relative">
+        <div className="home-shell">
+          
+          <div className="section-heading-row">
+            <div>
+              <p className="home-label text-[#00521a] mb-2">Campaign Directory</p>
+              <h2 className="home-heading">All Major Events & Field Outreaches</h2>
             </div>
-            <div className="grid grid-cols-7 gap-px bg-gray-200">
-              {daysInGrid.map((day, i) => {
-                // For days in the current month
-                if (day) {
-                  const isCurrentMonth = isSameMonth(day, currentMonth)
-                  const isToday = isSameDay(day, new Date())
-                  
-                  // Find events for this day
-                  const eventsOnDay = calendarEvents.filter(event => {
-                    const eventDate = parseISO(event.date)
-                    return isSameDay(eventDate, day)
-                  })
-                  
-                  return (
-                    <div
-                      key={i}
-                      className={`min-h-24 p-2 bg-white ${
-                        isToday ? "bg-amber-50" : ""
-                      } ${!isCurrentMonth ? "text-gray-400" : ""}`}
-                    >
-                      <div className="font-medium mb-1">{format(day, "d")}</div>
-                      <div className="space-y-1">
-                        {eventsOnDay.slice(0, 3).map((event, idx) => (
-                          <div
-                            key={idx}
-                            className="text-xs p-1 rounded truncate cursor-pointer hover:bg-amber-100 transition-colors"
-                            onClick={() => {
-                              setSelectedEvent(event)
-                              setRegistrationOpen(true)
-                            }}
-                          >
-                            <div className="flex items-center gap-1">
-                              <div className={`w-2 h-2 rounded-full bg-amber-500`}></div>
-                              <span>{event.title}</span>
-                            </div>
-                          </div>
-                        ))}
-                        {eventsOnDay.length > 3 && (
-                          <div className="text-xs text-gray-500">+{eventsOnDay.length - 3} more</div>
-                        )}
-                      </div>
-                    </div>
-                  )
-                }
-                
-                // Empty cell for days outside current month
-                return <div key={i} className="min-h-24 p-2 bg-gray-50"></div>
+
+            {/* Filter Buttons */}
+            <div className="flex flex-wrap items-center gap-2 pt-4 sm:pt-0">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#173421]/60 mr-2 flex items-center gap-1.5">
+                <Filter className="w-3.5 h-3.5" />
+                <span>Filter:</span>
+              </span>
+              {categories.map((cat) => {
+                const active = selectedCategory === cat
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`text-xs font-bold px-4 py-2 rounded-full transition-all ${
+                      active
+                        ? "bg-[#00521a] text-white shadow-sm"
+                        : "bg-white text-[#173421] border border-[#00521a]/20 hover:border-[#00521a]"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                )
               })}
             </div>
           </div>
+
+          {/* Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 mt-10">
+            {filteredEvents.map((evt) => (
+              <article
+                key={evt.id}
+                id={evt.id}
+                className="group flex flex-col justify-between bg-white rounded-3xl overflow-hidden border border-[#00521a]/15 shadow-sm hover:shadow-xl hover:border-[#00521a]/30 transition-all duration-300"
+              >
+                <div>
+                  {/* Event Imagery */}
+                  <div className="relative aspect-[16/10] overflow-hidden bg-[#173421]">
+                    <Image
+                      src={evt.image}
+                      alt={evt.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute top-4 left-4 bg-[#00521a] text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-md">
+                      {evt.badgeText}
+                    </div>
+                  </div>
+
+                  {/* Content Body */}
+                  <div className="p-6 sm:p-8 space-y-4">
+                    <div className="flex flex-wrap items-center gap-3 text-xs text-[#00521a] font-bold uppercase tracking-wider">
+                      <span className="bg-[#c7ed9f]/50 px-2.5 py-1 rounded-md">{evt.category}</span>
+                      <span className="flex items-center gap-1 text-[#173421]/70">
+                        <Calendar className="w-3.5 h-3.5 text-[#00521a]" />
+                        <span>{evt.date}</span>
+                      </span>
+                    </div>
+
+                    <h3 className="font-serif text-2xl sm:text-[26px] font-medium text-[#173421] leading-snug group-hover:text-[#00521a] transition-colors">
+                      {evt.title}
+                    </h3>
+
+                    {evt.subtitle && (
+                      <p className="text-xs text-[#d97706] font-semibold">
+                        {evt.subtitle}
+                      </p>
+                    )}
+
+                    <div className="flex items-start gap-1.5 text-xs text-[#173421]/70 font-medium">
+                      <MapPin className="w-3.5 h-3.5 text-[#00521a] shrink-0 mt-0.5" />
+                      <span>{evt.location}</span>
+                    </div>
+
+                    <p className="text-sm text-[#173421]/80 leading-relaxed pt-1">
+                      {evt.lead}
+                    </p>
+
+                    {/* Key Activities bulleted */}
+                    <div className="pt-2 border-t border-[#00521a]/10 space-y-1.5">
+                      <p className="text-[11px] font-bold uppercase tracking-wider text-[#00521a]">Outreach Highlights:</p>
+                      <ul className="space-y-1 text-xs text-[#173421]/85">
+                        {evt.keyActivities.slice(0, 3).map((act) => (
+                          <li key={act} className="flex items-start gap-2">
+                            <span className="text-[#00521a] font-bold">&bull;</span>
+                            <span>{act}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Footer Actions */}
+                <div className="p-6 sm:p-8 pt-0 border-t border-transparent flex items-center justify-between gap-4">
+                  <Link
+                    href="/volunteer"
+                    className="text-xs font-bold uppercase tracking-wider text-[#00521a] hover:text-[#173421] inline-flex items-center gap-1.5 transition-colors"
+                  >
+                    <span>Volunteer for this outreach</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                  <Link
+                    href="/donate"
+                    className="p-2.5 rounded-full bg-[#faf7f0] hover:bg-[#c7ed9f] text-[#00521a] transition-colors"
+                    aria-label={`Support ${evt.title}`}
+                  >
+                    <Heart className="w-4 h-4" />
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+
         </div>
       </section>
 
-      {/* Event Registration Dialog */}
-      <Dialog open={registrationOpen} onOpenChange={handleDialogChange}>
-        <DialogContent className="sm:max-w-[500px]">
-          {!registrationComplete ? (
-            <>
-              <DialogHeader>
-                <DialogTitle className="text-xl">{selectedEvent?.title}</DialogTitle>
-                <DialogDescription>
-                  {selectedEvent?.date && format(parseISO(selectedEvent.date), "EEEE, MMMM d, yyyy")} at {selectedEvent?.time}
-                </DialogDescription>
-              </DialogHeader>
-              <form onSubmit={handleRegistration} className="space-y-4 pt-4">
-                <div className="space-y-2">
-                  <label htmlFor="name" className="text-sm font-medium">
-                    Full Name
-                  </label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                    <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      placeholder="John Smith"
-                      className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md"
-                      value={registrationForm.name}
-                      onChange={handleFormChange}
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium">
-                    Email Address
-                  </label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="you@example.com"
-                      className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md"
-                      value={registrationForm.email}
-                      onChange={handleFormChange}
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <label htmlFor="phone" className="text-sm font-medium">
-                    Phone Number
-                  </label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                    <input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      placeholder="(123) 456-7890"
-                      className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md"
-                      value={registrationForm.phone}
-                      onChange={handleFormChange}
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <label htmlFor="attendees" className="text-sm font-medium">
-                    Number of Attendees
-                  </label>
-                  <select
-                    id="attendees"
-                    name="attendees"
-                    className="py-2 px-3 w-full border border-gray-300 rounded-md"
-                    value={registrationForm.attendees}
-                    onChange={handleFormChange}
-                  >
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-                      <option key={num} value={num}>{num}</option>
-                    ))}
-                    <option value="more">More than 10</option>
-                  </select>
-                </div>
-                
-                <div className="space-y-2">
-                  <label htmlFor="specialRequests" className="text-sm font-medium">
-                    Special Requests (Optional)
-                  </label>
-                  <textarea
-                    id="specialRequests"
-                    name="specialRequests"
-                    rows={3}
-                    placeholder="Any accessibility requirements, dietary restrictions, etc."
-                    className="px-3 py-2 w-full border border-gray-300 rounded-md"
-                    value={registrationForm.specialRequests}
-                    onChange={handleFormChange}
-                  ></textarea>
-                </div>
-                
-                <DialogFooter>
-                  <Button type="submit" className="w-full bg-amber-500 hover:bg-amber-600">
-                    Register Now
-                  </Button>
-                </DialogFooter>
-              </form>
-            </>
-          ) : (
-            <div className="p-4 text-center">
-              <div className="flex justify-center mb-4">
-                <div className="rounded-full bg-green-100 p-3">
-                  <CheckCircle className="h-8 w-8 text-green-600" />
-                </div>
-              </div>
-              <h3 className="text-xl font-bold mb-2">Registration Complete!</h3>
-              <p className="text-gray-600 mb-6">
-                Thank you for registering for {selectedEvent?.title}. We've sent a confirmation to your email with all the details.
-              </p>
-              <Button className="bg-amber-500 hover:bg-amber-600" onClick={() => setRegistrationOpen(false)}>
-                Close
-              </Button>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+      {/* ─── 4. IMPACT / PARTNERSHIP BANNER ─── */}
+      <section className="py-16 bg-[#173421] text-[#faf7f0] border-t border-white/10">
+        <div className="home-shell text-center max-w-3xl space-y-5">
+          <p className="home-label text-[#c7ed9f]">Official Health & Relief Allies</p>
+          <h2 className="font-serif text-3xl sm:text-4xl text-[#faf7f0] font-medium leading-tight">
+            Partnering with global health and national leaders to protect families.
+          </h2>
+          <p className="text-sm sm:text-base text-[#faf7f0]/80 leading-relaxed">
+            Our outreaches are carried out in full compliance with National Primary Health Care Development Agency guidelines, in close alignment with the Senate Committee on Health, Gavi, and local community leadership.
+          </p>
+          <div className="pt-4 flex flex-wrap justify-center gap-4">
+            <Link
+              href="/partner"
+              className="home-button inline-flex items-center gap-2 bg-[#f6ce40] text-[#142118] hover:bg-[#e5bf32] border-[#f6ce40]"
+            >
+              <span>Partner On Our Next Outreach</span>
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <a
+              href="tel:+2348038817059"
+              className="home-button-outline inline-flex items-center gap-2 text-[#faf7f0] border-white/40 hover:bg-white/10"
+            >
+              <Phone className="h-4 w-4 text-[#c7ed9f]" />
+              <span>Inquiries: +234 803 881 7059</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 5. CLOSING SECTION ─── */}
+      <section className="home-section closing-section" aria-labelledby="closing-title">
+        <div className="home-shell">
+          <div className="closing-heading">
+            <h2 id="closing-title" className="home-heading">Be there when<br />it matters most.</h2>
+            <p className="home-copy">Support our field vaccines, sponsor health workers, or volunteer directly in upcoming community outreaches across Rivers State.</p>
+          </div>
+          <div className="closing-links">
+            {[
+              { title: "Sponsor field vaccines & kits", detail: "Support life-saving outreaches", href: "/donate" },
+              { title: "Join our health & relief corps", detail: "Volunteer with us", href: "/volunteer" },
+              { title: "Host an outreach in your community", detail: "Get in touch", href: "/contact" },
+            ].map((item) => (
+              <Link href={item.href} key={item.href}>
+                <span className="home-label">{item.detail}</span>
+                <span className="closing-link-title">{item.title}<ArrowRight size={24} /></span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   )
 }
-
-// Helper function to generate calendar days for a month
-function generateCalendarDays(month: Date) {
-  const year = month.getFullYear()
-  const monthIndex = month.getMonth()
-  const today = new Date()
-
-  // First day of the month
-  const firstDay = new Date(year, monthIndex, 1)
-  // Last day of the month
-  const lastDay = new Date(year, monthIndex + 1, 0)
-
-  // Day of the week for the first day (0 = Sunday, 6 = Saturday)
-  const firstDayOfWeek = firstDay.getDay()
-
-  // Total days in the month
-  const daysInMonth = lastDay.getDate()
-
-  // Days from previous month to show
-  const daysFromPrevMonth = firstDayOfWeek
-
-  // Days from next month to show (to complete the grid)
-  const daysFromNextMonth = 42 - (daysFromPrevMonth + daysInMonth) // 42 = 6 rows * 7 days
-
-  const days = []
-
-  // Add days from previous month
-  const prevMonth = new Date(year, monthIndex - 1, 1)
-  const daysInPrevMonth = new Date(year, monthIndex, 0).getDate()
-
-  for (let i = daysInPrevMonth - daysFromPrevMonth + 1; i <= daysInPrevMonth; i++) {
-    days.push({
-      date: i,
-      month: prevMonth.getMonth(),
-      year: prevMonth.getFullYear(),
-      isCurrentMonth: false,
-      isToday: false,
-    })
-  }
-
-  // Add days from current month
-  for (let i = 1; i <= daysInMonth; i++) {
-    const isToday = i === today.getDate() && monthIndex === today.getMonth() && year === today.getFullYear()
-
-    days.push({
-      date: i,
-      month: monthIndex,
-      year: year,
-      isCurrentMonth: true,
-      isToday: isToday,
-    })
-  }
-
-  // Add days from next month
-  const nextMonth = new Date(year, monthIndex + 1, 1)
-
-  for (let i = 1; i <= daysFromNextMonth; i++) {
-    days.push({
-      date: i,
-      month: nextMonth.getMonth(),
-      year: nextMonth.getFullYear(),
-      isCurrentMonth: false,
-      isToday: false,
-    })
-  }
-
-  return days
-}
-
-// Helper function to get color based on category
-function getCategoryColor(category: string) {
-  switch (category) {
-    case "fundraiser":
-      return "bg-amber-500"
-    case "workshop":
-      return "bg-blue-500"
-    case "community":
-      return "bg-green-500"
-    case "training":
-      return "bg-purple-500"
-    default:
-      return "bg-gray-500"
-  }
-}
-
-// Sample event data
-const allEvents = [
-  {
-    id: "annual-gala-2025",
-    title: "Annual Fundraising Gala",
-    description: "Join us for an evening of celebration and support for our educational initiatives.",
-    date: "2025-06-15",
-    time: "6:00 PM",
-    location: "Grand Hotel Ballroom",
-    category: "fundraiser",
-    image: "/placeholder.svg?height=400&width=600&text=Fundraising+Gala",
-    featured: true,
-  },
-  {
-    id: "google-workshop-jun",
-    title: "Google Digital Skills Workshop",
-    description: "Learn essential digital marketing skills from Google-certified trainers in this hands-on workshop.",
-    date: "2025-06-10",
-    time: "10:00 AM - 3:00 PM",
-    location: "Tech Hub Center",
-    category: "workshop",
-    image: "/placeholder.svg?height=400&width=600&text=Google+Workshop",
-    featured: true,
-  },
-  {
-    id: "health-fair-2025",
-    title: "Community Health Fair",
-    description: "Free health screenings and wellness information for the whole family.",
-    date: "2025-07-22",
-    time: "10:00 AM - 2:00 PM",
-    location: "City Park",
-    category: "community",
-    image: "/placeholder.svg?height=400&width=600&text=Health+Fair",
-    featured: true,
-  },
-  {
-    id: "back-to-school-2025",
-    title: "Back to School Drive",
-    description: "Help us provide school supplies to children in need for the upcoming school year.",
-    date: "2025-08-05",
-    time: "9:00 AM - 12:00 PM",
-    location: "Community Center",
-    category: "community",
-    image: "/placeholder.svg?height=400&width=600&text=School+Drive",
-  },
-  {
-    id: "coding-bootcamp-jun",
-    title: "Youth Coding Bootcamp",
-    description: "A week-long intensive coding program for high school students interested in technology careers.",
-    date: "2025-06-20",
-    time: "9:00 AM - 3:00 PM",
-    location: "Tech Education Center",
-    category: "training",
-    image: "/placeholder.svg?height=400&width=600&text=Coding+Bootcamp",
-  },
-  {
-    id: "volunteer-orientation-jul",
-    title: "Volunteer Orientation",
-    description: "Learn about volunteer opportunities and how you can contribute to our mission.",
-    date: "2025-07-08",
-    time: "6:30 PM - 8:00 PM",
-    location: "Foundation Headquarters",
-    category: "community",
-    image: "/placeholder.svg?height=400&width=600&text=Volunteer+Orientation",
-  },
-  {
-    id: "leadership-workshop-jul",
-    title: "Community Leadership Workshop",
-    description: "Develop leadership skills to make a positive impact in your community.",
-    date: "2025-07-15",
-    time: "1:00 PM - 5:00 PM",
-    location: "Civic Center",
-    category: "workshop",
-    image: "/placeholder.svg?height=400&width=600&text=Leadership+Workshop",
-  },
-  {
-    id: "digital-marketing-aug",
-    title: "Digital Marketing Certification Course",
-    description: "A comprehensive 3-day course covering SEO, social media marketing, and analytics.",
-    date: "2025-08-12",
-    time: "9:00 AM - 4:00 PM",
-    location: "Business Innovation Center",
-    category: "training",
-    image: "/placeholder.svg?height=400&width=600&text=Digital+Marketing",
-  },
-  {
-    id: "community-cleanup-jun",
-    title: "Neighborhood Cleanup Day",
-    description: "Join us in beautifying local neighborhoods and parks through community service.",
-    date: "2025-06-28",
-    time: "8:00 AM - 12:00 PM",
-    location: "Various Locations",
-    category: "community",
-    image: "/placeholder.svg?height=400&width=600&text=Cleanup+Day",
-  },
-  {
-    id: "donor-appreciation-sep",
-    title: "Donor Appreciation Reception",
-    description: "A special evening to thank our generous donors and share the impact of their support.",
-    date: "2025-09-18",
-    time: "7:00 PM - 9:00 PM",
-    location: "Art Museum Atrium",
-    category: "fundraiser",
-    image: "/placeholder.svg?height=400&width=600&text=Donor+Reception",
-  },
-  // Past events
-  {
-    id: "spring-fundraiser-2025",
-    title: "Spring Fundraising Dinner",
-    description: "A delightful evening of fine dining and fundraising for our educational programs.",
-    date: "2025-04-10",
-    time: "6:30 PM - 10:00 PM",
-    location: "Riverside Restaurant",
-    category: "fundraiser",
-    image: "/placeholder.svg?height=400&width=600&text=Spring+Fundraiser",
-  },
-  {
-    id: "tech-workshop-may",
-    title: "Technology Skills Workshop",
-    description: "Basic computer skills training for adults seeking to improve their employability.",
-    date: "2025-05-05",
-    time: "10:00 AM - 2:00 PM",
-    location: "Public Library",
-    category: "workshop",
-    image: "/placeholder.svg?height=400&width=600&text=Tech+Workshop",
-  },
-  {
-    id: "youth-mentoring-apr",
-    title: "Youth Mentoring Program Kickoff",
-    description: "Launch event for our new youth mentoring initiative connecting students with professionals.",
-    date: "2025-04-22",
-    time: "4:00 PM - 6:00 PM",
-    location: "Community College",
-    category: "community",
-    image: "/placeholder.svg?height=400&width=600&text=Youth+Mentoring",
-  },
-  {
-    id: "health-seminar-mar",
-    title: "Community Health Seminar",
-    description: "Educational seminar on preventive healthcare and wellness strategies.",
-    date: "2025-03-15",
-    time: "11:00 AM - 1:00 PM",
-    location: "Health Center",
-    category: "community",
-    image: "/placeholder.svg?height=400&width=600&text=Health+Seminar",
-  },
-]

@@ -211,8 +211,8 @@ export default function GoogleTrainingPage() {
             <div className="lg:col-span-5 relative">
               <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/5] border-4 border-white">
                 <Image
-                  src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80"
-                  alt="Students collaborating during Google Digital Skills training in Port Harcourt"
+                  src="/images/programs/google-training.png"
+                  alt="Participants at a Google digital skills programme"
                   fill
                   className="object-cover"
                 />
@@ -340,16 +340,7 @@ export default function GoogleTrainingPage() {
               className="top-0 right-0 w-96 h-96"
             />
 
-            <div className="md:col-span-4 relative aspect-square rounded-2xl overflow-hidden border-2 border-[#F6CE40]/40">
-              <Image
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80"
-                alt="Blessing Okon, Google Digital Skills graduate"
-                fill
-                className="object-cover"
-              />
-            </div>
-
-            <div className="md:col-span-8 space-y-4 relative z-10">
+            <div className="md:col-span-12 space-y-4 relative z-10">
               <Quote className="w-10 h-10 text-[#F6CE40] opacity-60" />
               <p className="font-serif text-lg sm:text-2xl leading-relaxed text-[#F2EBD9]">
                 "Before joining the Google Digital Skills cohort at Caywood Brown, I had never written a single line of code. Today, I work as an accredited frontend developer and earn an independent income supporting my family."

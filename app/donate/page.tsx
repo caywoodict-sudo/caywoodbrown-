@@ -1,484 +1,179 @@
-"use client"
-
-import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { CheckCircle, Heart, Lock, CreditCard, Wallet, AlertCircle, ShieldCheck, DollarSign } from "lucide-react"
-import { GraduationCap, Users } from "lucide-react"
-import BotanicalGraphic from "@/components/botanical-graphic"
-import OrganicDivider from "@/components/organic-divider"
+import { ArrowRight, Mail, Building2, ShieldCheck, CheckCircle2 } from "lucide-react"
+import HeroFoliage from "@/components/hero-foliage"
+import CopyAccountButton from "@/components/copy-account-button"
+
+const programmes = [
+  {
+    title: "Digital skills",
+    description: "Learning spaces and practical computer training for young people.",
+    image: "/images/programs/computer-lab.jpg",
+  },
+  {
+    title: "Creative learning",
+    description: "Music and creative opportunities that help young people develop their talents.",
+    image: "/images/programs/women-empowerment.png",
+  },
+  {
+    title: "Community support",
+    description: "Mentorship and outreach shaped around the needs of local families.",
+    image: "/images/community/field-visit.jpg",
+  },
+]
 
 export default function DonatePage() {
-  const [donationAmount, setDonationAmount] = useState("")
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [paymentComplete, setPaymentComplete] = useState(false)
-  const [paymentMethod, setPaymentMethod] = useState("credit-card")
-  const [donorInfo, setDonorInfo] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-  })
-
-  const handleDonationSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsProcessing(true)
-    
-    setTimeout(() => {
-      setIsProcessing(false)
-      setPaymentComplete(true)
-    }, 1800)
-  }
-
-  const handleAmountSelect = (amount: number) => {
-    setDonationAmount(amount.toString())
-  }
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setDonorInfo(prev => ({
-      ...prev,
-      [name]: value
-    }))
-  }
-
   return (
-    <div className="flex flex-col min-h-screen bg-[#FAF7F0] text-[#142118]">
-      {/* 1. Farm Africa Hero Section (Deep Forest Green #00521A) */}
-      <section className="relative w-full py-24 md:py-32 bg-[#00521A] text-white overflow-hidden">
-        <BotanicalGraphic
-          variant="leaves"
-          color="#C7ED9F"
-          opacity={0.08}
-          className="top-0 right-0 w-[550px] h-[550px]"
-        />
-        <BotanicalGraphic
-          variant="sprouts"
-          color="#F6CE40"
-          opacity={0.06}
-          className="bottom-0 left-0 w-80 h-80"
-        />
-
-        <div className="container relative z-10 px-4 md:px-6 text-center max-w-4xl mx-auto space-y-6">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-[#C7ED9F]/20 border border-[#C7ED9F]/30 text-xs font-bold text-[#C7ED9F] uppercase tracking-widest">
-            Invest in African Youth
-          </span>
-          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-[#F2EBD9] leading-tight">
-            Empower Futures, <br />
-            <span className="text-[#F6CE40]">Transform Generations</span>
+    <div className="bg-[#faf7f0] text-[#142118]">
+      <section className="relative overflow-hidden bg-[#12291b] px-6 pb-24 pt-36 text-[#f7f2e7] sm:px-8 sm:pb-32">
+        <HeroFoliage />
+        <div className="relative z-10 mx-auto max-w-5xl">
+          <p className="mb-5 text-xs font-bold uppercase tracking-[0.2em] text-[#c7ed9f]">Support our work</p>
+          <h1 className="max-w-3xl font-serif text-[clamp(3rem,6vw,5.5rem)] font-medium leading-[1.08] tracking-tight">
+            Help young people build brighter futures.
           </h1>
-          <p className="mx-auto max-w-2xl text-base sm:text-lg text-[#F2EBD9]/90 leading-relaxed">
-            Your support directly funds digital literacy cohorts, creative arts mastery, addiction rehabilitation, and internship programs for underserved young leaders.
+          <p className="mt-7 max-w-2xl text-lg leading-relaxed text-[#f7f2e7]/85">
+            Your support helps Caywood Brown Foundation deliver education, creative learning, and community programmes across the Niger Delta.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-            <Button
-              size="lg"
-              variant="faFlame"
-              className="text-sm font-bold uppercase tracking-wider px-9 py-6 h-auto"
-              asChild
-            >
-              <Link href="#donate-now">Donate Today</Link>
-            </Button>
-            <Button
-              size="lg"
-              variant="faWhiteOutline"
-              className="text-sm font-bold uppercase tracking-wider px-8 py-6 h-auto"
-              asChild
-            >
-              <Link href="#monthly-giving">Become a Monthly Sponsor</Link>
-            </Button>
-          </div>
+          <a href="#donate-now" className="mt-9 inline-flex items-center gap-3 rounded-full bg-[#f47e28] px-7 py-4 text-sm font-semibold text-white hover:bg-[#df6817] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+            How to give <ArrowRight className="h-4 w-4" />
+          </a>
         </div>
       </section>
 
-      <OrganicDivider fillColor="#FAF7F0" />
+      <section className="mx-auto max-w-7xl px-6 py-20 sm:px-8 lg:py-28">
+        <h2 className="max-w-2xl font-serif text-[clamp(2.5rem,4vw,4rem)] leading-tight text-[#00521a]">What your support makes possible</h2>
+        <div className="mt-12 grid gap-7 md:grid-cols-3">
+          {programmes.map((programme) => (
+            <article key={programme.title} className="overflow-hidden rounded-[1.75rem] bg-white shadow-sm">
+              <div className="relative aspect-[4/3]">
+                <Image src={programme.image} alt="" fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+              </div>
+              <div className="p-7">
+                <h3 className="font-serif text-2xl text-[#00521a]">{programme.title}</h3>
+                <p className="mt-3 leading-relaxed text-[#142118]/75">{programme.description}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
 
-      {/* 2. Impact Section (Farm Africa Warm Stone Cards) */}
-      <section className="w-full py-16 md:py-24 bg-[#FAF7F0]">
-        <div className="container px-4 md:px-6">
-          <div className="text-center mb-14">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-[#00521A]/10 text-[#00521A] text-xs font-bold uppercase tracking-widest mb-3">
-              Direct Impact
-            </span>
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#142118]">
-              Where Your Giving Goes
+      <section id="donate-now" className="bg-[#c7ed9f] px-6 py-20 sm:px-8 lg:py-28">
+        <span id="single" className="sr-only">Single giving</span>
+        <div className="mx-auto max-w-6xl space-y-12">
+          <div>
+            <span className="home-label text-[#00521a]">Official Donation Pathways</span>
+            <h2 className="font-serif text-[clamp(2.5rem,4.5vw,4.2rem)] leading-tight text-[#00521a] mt-2">
+              Make a Direct Contribution
             </h2>
-            <p className="mx-auto max-w-[750px] text-[#142118]/80 text-base sm:text-lg mt-3">
-              Every contribution directly equips a young individual with tools, dignity, and career readiness.
+            <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[#173421]/85">
+              Contributions directly fund youth computer labs, music masterclasses, addiction counseling, and free health outreaches across Rivers State. Every naira is deployed transparently.
             </p>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {impactAreas.map((area, index) => (
-              <Card key={index} className="border border-[#00521A]/15 bg-white shadow-sm hover:shadow-lg rounded-3xl overflow-hidden transition-all duration-300">
-                <div className="relative h-48 w-full overflow-hidden bg-[#00521A]/5">
-                  <Image
-                    src={area.image || "/placeholder.svg"}
-                    alt={area.title}
-                    fill
-                    className="object-cover transition-transform duration-500 hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                  <div className="absolute top-4 left-4 z-10">
-                    <span className="inline-block px-3 py-1 rounded-full bg-[#00521A] text-[#C7ED9F] text-xs font-bold">
-                      ${area.amount}
-                    </span>
+          <div className="grid gap-8 lg:grid-cols-2">
+            {/* Direct Bank Transfer Card */}
+            <div className="rounded-3xl border border-[#00521a]/20 bg-white p-8 sm:p-10 shadow-sm flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-3 text-[#00521a] mb-5">
+                  <div className="w-12 h-12 rounded-2xl bg-[#00521a]/10 flex items-center justify-center">
+                    <Building2 className="w-6 h-6 text-[#00521a]" />
+                  </div>
+                  <div>
+                    <h3 className="font-serif text-2xl text-[#173421] font-bold">Direct Bank Transfer</h3>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-[#00521a]">Verified Corporate Account</p>
                   </div>
                 </div>
-                <CardContent className="p-6 space-y-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-[#E8F8D6] text-[#00521A] flex items-center justify-center shrink-0">
-                      {area.icon}
-                    </div>
-                    <h3 className="font-serif font-bold text-xl text-[#142118]">{area.title}</h3>
-                  </div>
-                  <p className="text-[#142118]/75 text-sm leading-relaxed">{area.description}</p>
-                  <div className="pt-3 border-t border-[#00521A]/10 flex items-center justify-between text-xs">
-                    <span className="text-[#00521A] font-bold uppercase tracking-wider">Provides</span>
-                    <span className="text-[#142118]/80 font-medium">{area.provides}</span>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* 3. Donation Options (Farm Africa Split Cards) */}
-      <section className="w-full py-16 md:py-24 bg-[#F2EBD9] border-y border-[#00521A]/10" id="donate-now">
-        <div className="container px-4 md:px-6">
-          <div className="text-center mb-14">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-[#00521A] text-[#C7ED9F] text-xs font-bold uppercase tracking-widest mb-3">
-              Give Today
-            </span>
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#142118]">
-              Choose Your Support
-            </h2>
-            <div className="flex items-center justify-center mt-3 gap-2">
-              <ShieldCheck className="h-5 w-5 text-[#00521A]" />
-              <span className="text-[#00521A] text-xs uppercase tracking-wider font-bold">
-                100% Secure & Encrypted
-              </span>
+                <div className="space-y-4 rounded-2xl bg-[#faf7f0] p-6 border border-[#00521a]/10 text-[#173421]">
+                  <div>
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#173421]/60 block">Bank Name</span>
+                    <span className="text-lg font-bold text-[#00521a]">Union Bank</span>
+                  </div>
+                  <div>
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#173421]/60 block">Account Name</span>
+                    <span className="text-base font-bold text-[#173421] tracking-wide">CAYWOOD BROWN FOUNDATION</span>
+                  </div>
+                  <div>
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#173421]/60 block">Account Number (NUBAN)</span>
+                    <div className="flex flex-wrap items-center justify-between gap-3 mt-1">
+                      <span className="font-mono text-2xl font-bold tracking-widest text-[#00521a]">0056692414</span>
+                      <CopyAccountButton accountNumber="0056692414" />
+                    </div>
+                  </div>
+                </div>
+
+                <p className="mt-4 text-xs text-[#173421]/70 leading-relaxed">
+                  After initiating a transfer, kindly email your payment confirmation or teller reference to <a href="mailto:caywoodbrowndocs@gmail.com" className="font-semibold text-[#00521a] underline">caywoodbrowndocs@gmail.com</a> for an official tax receipt.
+                </p>
+              </div>
+
+              <div className="mt-8 pt-6 border-t border-[#00521a]/10 flex flex-wrap gap-4">
+                <a
+                  href="mailto:caywoodbrowndocs@gmail.com?subject=Donation%20Receipt%20Notification%20-%200056692414"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#00521a] px-6 py-3 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#173421] transition-colors"
+                >
+                  <Mail className="h-4 w-4" />
+                  <span>Notify Transfer</span>
+                </a>
+                <a
+                  href="tel:+2348038817059"
+                  className="inline-flex items-center gap-2 rounded-full border border-[#00521a]/30 px-6 py-3 text-xs font-bold uppercase tracking-wider text-[#00521a] hover:bg-[#00521a] hover:text-white transition-colors"
+                >
+                  <span>Helpline: (+234) 803 881 7059</span>
+                </a>
+              </div>
             </div>
-          </div>
 
-          <div className="grid gap-8 md:grid-cols-2 max-w-5xl mx-auto">
-            {/* One-Time Giving Card */}
-            <Card className="border border-[#00521A]/15 bg-white shadow-md rounded-3xl overflow-hidden">
-              <CardContent className="p-8 space-y-6">
-                <span className="inline-block px-3 py-1 rounded-full bg-[#00521A]/10 text-[#00521A] text-xs font-bold uppercase tracking-wider">
-                  Single Gift
-                </span>
-                <h3 className="font-serif text-2xl font-bold text-[#142118]">One-Time Donation</h3>
-                <p className="text-sm text-[#142118]/75 leading-relaxed">
-                  Make an immediate one-off contribution to supply lab computers, instruments, or educational aid.
-                </p>
-                <div className="grid grid-cols-3 gap-3">
-                  {[25, 50, 100, 250, 500, 1000].map((amount) => (
-                    <button
-                      key={amount}
-                      type="button"
-                      className={`py-3 px-4 rounded-full font-bold text-sm border transition-all ${
-                        donationAmount === amount.toString()
-                          ? "bg-[#00521A] text-white border-[#00521A]"
-                          : "bg-[#FAF7F0] border-[#00521A]/20 text-[#00521A] hover:border-[#00521A]"
-                      }`}
-                      onClick={() => handleAmountSelect(amount)}
-                    >
-                      ${amount}
-                    </button>
-                  ))}
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="custom-amount" className="block text-xs font-bold uppercase tracking-wider text-[#142118]">
-                    Custom Amount
-                  </label>
-                  <div className="relative">
-                    <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-500 font-bold">$</span>
-                    <input
-                      type="text"
-                      id="custom-amount"
-                      className="w-full pl-8 pr-4 py-3 rounded-full border border-[#00521A]/20 bg-[#FAF7F0] text-sm focus:outline-none focus:ring-2 focus:ring-[#00521A]"
-                      placeholder="Other amount"
-                      value={donationAmount}
-                      onChange={(e) => setDonationAmount(e.target.value)}
-                    />
+            {/* Monthly Supporter & Cheque Donations */}
+            <div id="monthly-giving" className="rounded-3xl border border-[#00521a]/20 bg-[#faf7f0] p-8 sm:p-10 shadow-sm flex flex-col justify-between">
+              <div>
+                <span id="monthly" className="sr-only">Monthly giving</span>
+                <div className="flex items-center gap-3 text-[#00521a] mb-5">
+                  <div className="w-12 h-12 rounded-2xl bg-[#00521a]/10 flex items-center justify-center">
+                    <ShieldCheck className="w-6 h-6 text-[#00521a]" />
+                  </div>
+                  <div>
+                    <h3 className="font-serif text-2xl text-[#173421] font-bold">Monthly & Institutional Gifts</h3>
+                    <p className="text-xs font-bold uppercase tracking-wider text-[#00521a]">Sustained Impact</p>
                   </div>
                 </div>
-                <Button
-                  className="w-full text-xs font-bold uppercase tracking-wider py-6"
-                  variant="faForest"
-                  size="lg"
-                  onClick={handleDonationSubmit}
-                  disabled={isProcessing}
-                >
-                  {isProcessing ? "Processing..." : "Donate Now"}
-                </Button>
-              </CardContent>
-            </Card>
 
-            {/* Monthly Giving Card (Farm Africa Recommended Accent) */}
-            <Card className="border-2 border-[#00521A] bg-[#FAF7F0] shadow-xl rounded-3xl overflow-hidden" id="monthly-giving">
-              <CardContent className="p-8 space-y-6">
-                <span className="inline-block px-3.5 py-1 rounded-full bg-[#00521A] text-[#C7ED9F] text-xs font-bold uppercase tracking-widest">
-                  ★ Recommended • Sustained Transformation
-                </span>
-                <h3 className="font-serif text-2xl font-bold text-[#142118]">Monthly Sponsorship</h3>
-                <p className="text-sm text-[#142118]/75 leading-relaxed">
-                  Join our community of committed champions. Monthly gifts enable uninterrupted rehabilitation cohorts and internship stipends.
+                <p className="text-[#173421]/80 text-sm leading-relaxed mb-6">
+                  Recurring giving provides the stable foundation needed to schedule 6-month graduate internship cohorts and keep computer labs open for youth across Rivers State.
                 </p>
-                <div className="grid grid-cols-3 gap-3">
-                  {[10, 25, 50, 100, 200, 500].map((amount) => (
-                    <button
-                      key={amount}
-                      type="button"
-                      className="py-3 px-4 rounded-full font-bold text-sm bg-white border border-[#00521A]/30 text-[#00521A] hover:bg-[#C7ED9F]/40 hover:border-[#00521A] transition-all"
-                      onClick={() => handleAmountSelect(amount)}
-                    >
-                      ${amount}/mo
-                    </button>
-                  ))}
+
+                <div className="rounded-2xl bg-white p-6 border border-[#00521a]/10 text-xs text-[#173421]/80 space-y-3">
+                  <p className="font-bold text-sm text-[#00521a]">Donations by Cheque</p>
+                  <p className="leading-relaxed">
+                    Make cheques payable to: <strong className="text-[#173421]">Caywood Brown Foundation</strong><br />
+                    Mail or deliver to: <strong>888 Olu Awotesu Street, Jabi, Abuja, FCT, Nigeria</strong> or <strong>Close B, 1 IPIC Estate, off Akpajo Elelenwo, Port Harcourt</strong>.
+                  </p>
+                  <p className="text-[#173421]/60">
+                    Kindly state your name, phone number, and intended program on the back of the cheque.
+                  </p>
                 </div>
-                <div className="space-y-2">
-                  <label htmlFor="custom-monthly" className="block text-xs font-bold uppercase tracking-wider text-[#142118]">
-                    Custom Monthly Amount
-                  </label>
-                  <div className="relative">
-                    <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-500 font-bold">$</span>
-                    <input
-                      type="text"
-                      id="custom-monthly"
-                      className="w-full pl-8 pr-12 py-3 rounded-full border border-[#00521A]/30 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#00521A]"
-                      placeholder="0.00"
-                    />
-                    <span className="absolute inset-y-0 right-0 pr-4 flex items-center text-xs font-bold text-[#00521A]">/mo</span>
-                  </div>
-                </div>
-                <Button
-                  className="w-full text-xs font-bold uppercase tracking-wider py-6"
-                  variant="faFlame"
-                  size="lg"
-                  onClick={handleDonationSubmit}
-                  disabled={isProcessing}
+              </div>
+
+              <div className="mt-8 pt-6 border-t border-[#00521a]/10 flex flex-wrap gap-4">
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#00521a] px-6 py-3 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#173421] transition-colors"
                 >
-                  {isProcessing ? "Processing..." : "Become a Monthly Sponsor"}
-                </Button>
-                <div className="flex items-start gap-2 pt-2 text-xs text-[#00521A]">
-                  <CheckCircle className="h-4 w-4 shrink-0 mt-0.5" />
-                  <span>Reliable monthly giving keeps recovery cohorts funded all year round.</span>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Secure Payment Methods Tabs */}
-          <div className="mt-14 max-w-3xl mx-auto">
-            <h3 className="font-serif text-xl font-bold mb-6 text-center text-[#142118]">
-              Select Payment Method
-            </h3>
-
-            <Tabs defaultValue="credit-card" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 mb-6 bg-white/70 p-1 rounded-full border border-[#00521A]/15">
-                <TabsTrigger value="credit-card" className="rounded-full data-[state=active]:bg-[#00521A] data-[state=active]:text-white font-bold text-xs uppercase tracking-wider">
-                  <CreditCard className="h-3.5 w-3.5 mr-1.5" />
-                  Card
-                </TabsTrigger>
-                <TabsTrigger value="paypal" className="rounded-full data-[state=active]:bg-[#00521A] data-[state=active]:text-white font-bold text-xs uppercase tracking-wider">
-                  <Wallet className="h-3.5 w-3.5 mr-1.5" />
-                  PayPal
-                </TabsTrigger>
-                <TabsTrigger value="bank" className="rounded-full data-[state=active]:bg-[#00521A] data-[state=active]:text-white font-bold text-xs uppercase tracking-wider">
-                  <DollarSign className="h-3.5 w-3.5 mr-1.5" />
-                  Bank Wire
-                </TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="credit-card">
-                <Card className="border border-[#00521A]/15 bg-white shadow-sm rounded-3xl">
-                  <CardContent className="p-8">
-                    <form onSubmit={handleDonationSubmit} className="space-y-4">
-                      <div className="grid gap-1.5">
-                        <label htmlFor="card-name" className="text-xs font-bold uppercase tracking-wider text-[#142118]">
-                          Name on Card
-                        </label>
-                        <input
-                          type="text"
-                          id="card-name"
-                          name="name"
-                          className="border border-[#00521A]/20 rounded-full px-4 py-2.5 text-sm bg-[#FAF7F0] focus:outline-none focus:ring-2 focus:ring-[#00521A]"
-                          placeholder="Dr. Jane Doe"
-                          value={donorInfo.name}
-                          onChange={handleInputChange}
-                          required
-                        />
-                      </div>
-
-                      <div className="grid gap-1.5">
-                        <label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-[#142118]">
-                          Email Address
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          name="email"
-                          className="border border-[#00521A]/20 rounded-full px-4 py-2.5 text-sm bg-[#FAF7F0] focus:outline-none focus:ring-2 focus:ring-[#00521A]"
-                          placeholder="jane@example.com"
-                          value={donorInfo.email}
-                          onChange={handleInputChange}
-                          required
-                        />
-                      </div>
-
-                      <div className="grid gap-1.5">
-                        <label htmlFor="card-number" className="text-xs font-bold uppercase tracking-wider text-[#142118]">
-                          Card Number
-                        </label>
-                        <input
-                          type="text"
-                          id="card-number"
-                          className="border border-[#00521A]/20 rounded-full px-4 py-2.5 text-sm bg-[#FAF7F0] focus:outline-none focus:ring-2 focus:ring-[#00521A]"
-                          placeholder="1234 5678 9012 3456"
-                          required
-                        />
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="grid gap-1.5">
-                          <label htmlFor="expiry-date" className="text-xs font-bold uppercase tracking-wider text-[#142118]">
-                            Expiry
-                          </label>
-                          <input
-                            type="text"
-                            id="expiry-date"
-                            className="border border-[#00521A]/20 rounded-full px-4 py-2.5 text-sm bg-[#FAF7F0] focus:outline-none focus:ring-2 focus:ring-[#00521A]"
-                            placeholder="MM/YY"
-                            required
-                          />
-                        </div>
-                        <div className="grid gap-1.5">
-                          <label htmlFor="cvv" className="text-xs font-bold uppercase tracking-wider text-[#142118]">
-                            CVV
-                          </label>
-                          <input
-                            type="text"
-                            id="cvv"
-                            className="border border-[#00521A]/20 rounded-full px-4 py-2.5 text-sm bg-[#FAF7F0] focus:outline-none focus:ring-2 focus:ring-[#00521A]"
-                            placeholder="123"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <Button 
-                        type="submit" 
-                        variant="faFlame"
-                        size="lg"
-                        className="w-full text-xs font-bold uppercase tracking-wider py-6 mt-4"
-                        disabled={isProcessing}
-                      >
-                        {isProcessing ? "Processing Securely..." : "Complete Donation"}
-                      </Button>
-                    </form>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="paypal">
-                <Card className="border border-[#00521A]/15 bg-white shadow-sm rounded-3xl">
-                  <CardContent className="p-8 text-center space-y-4">
-                    <p className="text-[#142118]/80 text-sm">
-                      You will be securely redirected to PayPal to authorize your gift.
-                    </p>
-                    <Button variant="faFlame" size="lg" className="px-8 text-xs font-bold uppercase tracking-wider">
-                      Continue with PayPal
-                    </Button>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="bank">
-                <Card className="border border-[#00521A]/15 bg-white shadow-sm rounded-3xl">
-                  <CardContent className="p-8 space-y-3">
-                    <h4 className="font-serif font-bold text-base text-[#142118]">Bank Wire Information</h4>
-                    <div className="grid gap-2 text-sm">
-                      <div className="flex justify-between border-b border-[#00521A]/10 pb-2">
-                        <span className="text-[#142118]/70">Account Name:</span>
-                        <span className="font-bold text-[#00521A]">Caywood Brown Foundation</span>
-                      </div>
-                      <div className="flex justify-between border-b border-[#00521A]/10 pb-2">
-                        <span className="text-[#142118]/70">Bank Name:</span>
-                        <span className="font-bold">First City Monument Bank</span>
-                      </div>
-                      <div className="flex justify-between border-b border-[#00521A]/10 pb-2">
-                        <span className="text-[#142118]/70">Account Number:</span>
-                        <span className="font-mono font-bold">0123456789</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            </Tabs>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. Final CTA Banner (Farm Africa Forest Green #00521A) */}
-      <section className="w-full py-20 bg-[#00521A] text-white text-center relative overflow-hidden">
-        <BotanicalGraphic
-          variant="leaves"
-          color="#C7ED9F"
-          opacity={0.07}
-          className="bottom-0 right-0 w-96 h-96"
-        />
-        <div className="container px-4 md:px-6 max-w-3xl mx-auto space-y-5 relative z-10">
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#F2EBD9]">
-            Together, We Empower Tomorrow's Leaders
-          </h2>
-          <p className="text-[#F2EBD9]/85 text-base sm:text-lg leading-relaxed">
-            Your generous contribution allows us to reach more youth across Nigeria and beyond with vocational training, creative empowerment, and drug recovery mentorship.
-          </p>
-          <div className="pt-2">
-            <Button
-              size="lg"
-              variant="faFlame"
-              className="text-xs font-bold uppercase tracking-wider px-9 py-6 h-auto"
-              asChild
-            >
-              <Link href="#donate-now">Make Your Gift Today</Link>
-            </Button>
+                  <span>Speak with Our Team</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link
+                  href="/partner"
+                  className="inline-flex items-center gap-2 rounded-full border border-[#00521a]/30 px-6 py-3 text-xs font-bold uppercase tracking-wider text-[#00521a] hover:bg-[#00521a] hover:text-white transition-colors"
+                >
+                  <span>Corporate Partnership</span>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
     </div>
   )
 }
-
-const impactAreas = [
-  {
-    title: "Computer Appreciation & Skills",
-    description: "Free beginner-friendly IT training, Microsoft Office literacy, and coding fundamentals for marginalized youth.",
-    amount: 50,
-    provides: "Hands-on lab access & certification for 1 student",
-    icon: <GraduationCap className="h-5 w-5 text-[#00521A]" />,
-    image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    title: "Youth Rehabilitation & Healing",
-    description: "Holistic recovery, clinical counseling, and structured reintegration for youths overcoming substance addiction.",
-    amount: 250,
-    provides: "3 months of counseling & life skills mentorship",
-    icon: <ShieldCheck className="h-5 w-5 text-[#00521A]" />,
-    image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    title: "Creative Arts & Music Lab",
-    description: "Hands-on instrumental training in drums and keyboards, transforming passion into viable creative careers.",
-    amount: 100,
-    provides: "Studio equipment access & masterclass instruction",
-    icon: <Users className="h-5 w-5 text-[#00521A]" />,
-    image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=800&q=80",
-  },
-]

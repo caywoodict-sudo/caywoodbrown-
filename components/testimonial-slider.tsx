@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react"
 
@@ -12,7 +11,6 @@ const testimonials = [
     author: "Mrs. A",
     role: "Office Assistant & Promotion Beneficiary",
     pillar: "Computer Appreciation",
-    image: "/placeholder.svg?height=100&width=100&text=MA",
   },
   {
     quote:
@@ -20,7 +18,6 @@ const testimonials = [
     author: "Blessing E., 22",
     role: "Computer Appreciation Graduate",
     pillar: "Digital Literacy",
-    image: "/placeholder.svg?height=100&width=100&text=BE",
   },
   {
     quote:
@@ -28,7 +25,6 @@ const testimonials = [
     author: "Peterson Tochukwu",
     role: "Session Drummer & Music Graduate",
     pillar: "Creative Arts",
-    image: "/placeholder.svg?height=100&width=100&text=PT",
   },
   {
     quote:
@@ -36,7 +32,6 @@ const testimonials = [
     author: "Rio P.",
     role: "Youth Rehabilitation Alumnus",
     pillar: "Youth Rehabilitation",
-    image: "/placeholder.svg?height=100&width=100&text=RP",
   },
   {
     quote:
@@ -44,7 +39,6 @@ const testimonials = [
     author: "Hope S.",
     role: "Volunteerism Academy Alumna",
     pillar: "Career Mentorship",
-    image: "/placeholder.svg?height=100&width=100&text=HS",
   },
   {
     quote:
@@ -52,7 +46,6 @@ const testimonials = [
     author: "Mercy P.",
     role: "Her Voice, Her Power Participant",
     pillar: "Girl Child Advocacy",
-    image: "/placeholder.svg?height=100&width=100&text=MP",
   },
 ]
 
@@ -107,14 +100,6 @@ export default function TestimonialSlider() {
                     </blockquote>
 
                     <div className="flex flex-col items-center">
-                      <div className="relative h-16 w-16 overflow-hidden rounded-full mb-3 border-2 border-[#00521A]/20 bg-[#C7ED9F]/30">
-                        <Image
-                          src={testimonial.image || "/placeholder.svg"}
-                          alt={testimonial.author}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
                       <div className="text-center">
                         <div className="font-serif font-bold text-base sm:text-lg text-[#142118]">
                           {testimonial.author}

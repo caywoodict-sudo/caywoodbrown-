@@ -1,12 +1,15 @@
 import type React from "react"
 import "@/app/globals.css"
-import { Inter, Fraunces } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
-const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-serif" })
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#12291b",
+}
 
 export const metadata = {
   title: "Caywood Brown Foundation — Transforming Lives Across the Niger Delta",
@@ -23,8 +26,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} ${fraunces.variable} font-sans antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className="font-sans antialiased">
         <ThemeProvider attribute="class" defaultTheme="light">
           <Header />
           <main>{children}</main>

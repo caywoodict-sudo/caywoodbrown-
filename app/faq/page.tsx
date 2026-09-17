@@ -1,266 +1,288 @@
 "use client"
 
-import { useState } from "react"
-import Image from "next/image"
+import React, { useState } from "react"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { ChevronDown } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
+import { ChevronDown, ChevronUp, Search, MessageSquare, Heart, ArrowRight, HelpCircle, Mail, Phone } from "lucide-react"
+import HeroFoliage from "@/components/hero-foliage"
+
+const faqCategories = [
+  {
+    id: "general",
+    name: "About the Foundation",
+    questions: [
+      {
+        id: "what-is",
+        question: "What is the Caywood Brown Foundation?",
+        answer: "The Caywood Brown Foundation is an accredited non-profit organization (CAC RC: 0022482) established in 2006 by Senator Dr. Ipalibo Harry Banigo in memory of her late father, Caywood Brown. We are dedicated to youth empowerment, technology education, creative arts training, and community rehabilitation across the Niger Delta."
+      },
+      {
+        id: "where-located",
+        question: "Where is the foundation located and which areas do you serve?",
+        answer: "Our main headquarters, computer appreciation labs, and creative sound studios are located at Close B, 1 IPIC Estate, off Akpajo Elelenwo, Port Harcourt, Rivers State. Our outreach programs and cohort beneficiaries span communities throughout Rivers State and the broader Niger Delta region."
+      },
+      {
+        id: "legal-status",
+        question: "What is the foundation's official legal and registration status?",
+        answer: "The Caywood Brown Foundation is officially registered and incorporated under the Companies and Allied Matters Act by the Corporate Affairs Commission (CAC) of the Federal Republic of Nigeria with Registration No. RC: 0022482."
+      },
+      {
+        id: "transparency",
+        question: "How do you ensure transparency and governance accountability?",
+        answer: "Our operations are overseen by a multidisciplinary Leadership Council comprising medical clinicians, legal professionals, and software engineers. We publish documented cohort outcomes and annual program reviews, ensuring that 100% of designated philanthropic funds directly benefit students, labs, and recovery outreach."
+      }
+    ]
+  },
+  {
+    id: "programs",
+    name: "Programs & Youth Training",
+    questions: [
+      {
+        id: "tech-training",
+        question: "What digital skills and technology programs do you provide?",
+        answer: "Through our strategic collaboration with Google Digital Skills for Africa, we deliver certified courses in digital marketing, web fundamentals, cloud tools, and workplace productivity. We also operate year-round hands-on computer appreciation laboratories for beginners."
+      },
+      {
+        id: "creative-labs",
+        question: "What creative arts and sound production facilities are available?",
+        answer: "Our Port Harcourt creative sound labs teach instrumental music, digital audio workstations (DAWs), audio engineering, and live studio production, providing youth with vocational pathways into Nigeria's flourishing creative industry."
+      },
+      {
+        id: "rehabilitation",
+        question: "How does the foundation support youth struggling with substance recovery?",
+        answer: "Our rehabilitation initiative is led by licensed clinical psychologists offering confidential trauma counseling, group peer support, and family reunification for young individuals recovering from substance addiction and emotional distress."
+      },
+      {
+        id: "internship-rate",
+        question: "How does the Volunteerism Academy achieve an 80% internship placement rate?",
+        answer: "Students participate in civic service, professional workplace readiness, and resume masterclasses before being matched with corporate and creative partner organizations across Port Harcourt for structured 3- to 6-month internships."
+      }
+    ]
+  },
+  {
+    id: "giving",
+    name: "Donations & Financial Support",
+    questions: [
+      {
+        id: "how-to-give",
+        question: "How can individuals or corporate donors contribute?",
+        answer: "Donations can be made by direct bank transfer to our verified non-profit account: Union Bank, Account Name: CAYWOOD BROWN FOUNDATION, Account Number: 0056692414. For receipt confirmation or wire inquiries, please email caywoodbrowndocs@gmail.com or call (+234) 803 881 7059."
+      },
+      {
+        id: "where-money-goes",
+        question: "How are donated funds utilized?",
+        answer: "Donations directly purchase student computing workstations, lab software licenses, recording studio equipment, student transport stipends, and medical hygiene supplies for community town hall outreaches."
+      },
+      {
+        id: "equipment-donations",
+        question: "Do you accept in-kind donations of computers or studio gear?",
+        answer: "Yes! We welcome desktop computers, laptops, monitors, musical instruments, sound monitors, and audio interfaces in working condition for our community laboratories."
+      }
+    ]
+  },
+  {
+    id: "volunteering",
+    name: "Mentorship & Volunteerism",
+    questions: [
+      {
+        id: "how-volunteer",
+        question: "How can I volunteer or mentor students at the foundation?",
+        answer: "We welcome software engineers, musicians, producers, healthcare workers, and career coaches. You can apply via our Volunteerism page or directly email our team at caywoodbrowndocs@gmail.com with your CV and area of interest."
+      },
+      {
+        id: "remote-mentoring",
+        question: "Can I mentor students remotely if I live outside Port Harcourt?",
+        answer: "Yes, our Google Digital Skills cohorts include virtual guest masterclasses and remote code review sessions where diaspora and international professionals mentor Nigerian youth."
+      },
+      {
+        id: "volunteer-locations",
+        question: "Where do volunteer programs take place?",
+        answer: "Most on-site mentoring happens at our community labs and training centers located at Close B, 1 IPIC Estate, off Akpajo Elelenwo, Port Harcourt. We also organize field outreaches across Rivers State."
+      }
+    ]
+  },
+  {
+    id: "governance",
+    name: "Accountability & Structure",
+    questions: [
+      {
+        id: "tax-status",
+        question: "Is the Caywood Brown Foundation an officially registered non-profit?",
+        answer: "Yes. The Caywood Brown Foundation is a fully incorporated non-governmental organization with the Corporate Affairs Commission of Nigeria (CAC Registration: 0022482), established in 2006."
+      },
+      {
+        id: "governance-reports",
+        question: "Can donors inspect annual cohort impact reports?",
+        answer: "Absolutely. We maintain strict financial governance and produce documented cohort impact audits for our institutional allies, corporate sponsors, and philanthropic partners."
+      }
+    ]
+  }
+]
 
 export default function FAQPage() {
-  // FAQ Categories and Questions
-  const faqCategories = [
-    {
-      id: "general",
-      name: "General Information",
-      questions: [
-        {
-          id: "what-is",
-          question: "What is the Caywood Brown Foundation?",
-          answer: "The Caywood Brown Foundation is a non-profit organization dedicated to creating lasting positive change through education, youth empowerment, health awareness, and sustainability initiatives. Founded by Senator Banigo, our foundation works to address the root causes of inequality and build pathways to prosperity for all."
-        },
-        {
-          id: "mission",
-          question: "What is your mission and vision?",
-          answer: "Our mission is to empower underserved communities through educational opportunities, health services, and sustainable development programs. Our vision is a world where every individual has the resources and support needed to reach their full potential, regardless of their background or circumstances."
-        },
-        {
-          id: "areas",
-          question: "What geographic areas do you serve?",
-          answer: "While we have a global vision, our current programs are primarily focused in [specific regions/countries]. We prioritize communities with the greatest need and where our resources can make the most significant impact."
-        },
-        {
-          id: "transparency",
-          question: "How do you ensure transparency and accountability?",
-          answer: "We are committed to full transparency in our operations. We publish annual reports detailing our financial activities, program outcomes, and impact metrics. Our finances are audited by independent third parties, and we maintain strict governance policies to ensure all resources are used efficiently and ethically."
-        }
-      ]
-    },
-    {
-      id: "donations",
-      name: "Donations & Funding",
-      questions: [
-        {
-          id: "how-donate",
-          question: "How can I make a donation?",
-          answer: "You can make a donation through our website using our secure payment system, which accepts credit cards and digital payment methods. You can also donate via bank transfer, check, or through donor-advised funds. For larger gifts or specific program support, please contact our development team directly."
-        },
-        {
-          id: "tax-deductible",
-          question: "Are donations tax-deductible?",
-          answer: "Yes, the Caywood Brown Foundation is a registered 501(c)(3) non-profit organization in the United States. All donations from U.S. taxpayers are tax-deductible to the extent allowed by law. We provide tax receipts for all donations."
-        },
-        {
-          id: "fund-allocation",
-          question: "How are donations allocated?",
-          answer: "We allocate donations based on our strategic priorities and where funds are most needed. Typically, at least 80% of all donations go directly to our programs and services, with the remainder covering essential administrative and fundraising costs. Donors can also designate their gifts to specific programs or initiatives."
-        },
-        {
-          id: "corporate-matching",
-          question: "Does the foundation accept corporate matching gifts?",
-          answer: "Yes, we gladly accept corporate matching gifts, which can double or even triple your donation's impact. Many employers offer matching gift programs - check with your HR department to see if your company participates, and we'll help facilitate the process."
-        }
-      ]
-    },
-    {
-      id: "volunteer",
-      name: "Volunteering & Participation",
-      questions: [
-        {
-          id: "how-volunteer",
-          question: "How can I volunteer with the foundation?",
-          answer: "You can volunteer by completing our volunteer application form on our website. We offer various opportunities ranging from event support to skilled volunteering in areas like teaching, healthcare, marketing, and technology. We match volunteers with roles based on their skills, interests, and our current needs."
-        },
-        {
-          id: "time-commitment",
-          question: "What is the time commitment for volunteers?",
-          answer: "Volunteer commitments vary widely depending on the role. We offer one-time event opportunities, regular weekly or monthly positions, and project-based roles. We work with each volunteer to find a commitment level that fits their schedule while still making a meaningful contribution."
-        },
-        {
-          id: "virtual-volunteer",
-          question: "Do you offer virtual volunteering opportunities?",
-          answer: "Yes, we offer various virtual volunteering opportunities including content creation, social media support, research, mentoring, and specialized professional services. These remote options allow people to contribute their skills regardless of their location."
-        },
-        {
-          id: "group-volunteer",
-          question: "Can organizations or companies volunteer as a group?",
-          answer: "Absolutely! We welcome corporate and community group volunteering. We can arrange special project days or ongoing partnerships that align with your organization's interests and our needs. These experiences provide excellent team-building opportunities while supporting our mission."
-        }
-      ]
-    },
-    {
-      id: "programs",
-      name: "Programs & Impact",
-      questions: [
-        {
-          id: "evaluate-impact",
-          question: "How do you evaluate the impact of your programs?",
-          answer: "We use a comprehensive monitoring and evaluation framework that includes both quantitative metrics and qualitative assessments. For each program, we establish specific, measurable outcomes and regularly track progress. We conduct pre- and post-program assessments, collect participant feedback, and perform longer-term follow-up studies to measure sustained impact."
-        },
-        {
-          id: "success-stories",
-          question: "Where can I read success stories from your programs?",
-          answer: "You can find success stories in the 'Impact Stories' section of our website, in our annual reports, and on our social media channels. These stories highlight individual beneficiaries, communities, and programs that demonstrate the tangible results of our work."
-        },
-        {
-          id: "partner",
-          question: "How can my organization partner with the foundation?",
-          answer: "We welcome partnerships with other NGOs, companies, government agencies, and academic institutions. To explore partnership opportunities, please contact our partnerships team through our website. We look for partners who share our values and can contribute complementary resources, expertise, or networks to amplify our impact."
-        },
-        {
-          id: "apply-program",
-          question: "How can individuals apply for your programs?",
-          answer: "Application processes vary by program. Information about eligibility criteria and application procedures for each program can be found on the specific program pages of our website. For most programs, we have open application periods announced on our website and social media channels."
-        }
-      ]
-    }
-  ]
+  const [searchQuery, setSearchQuery] = useState("")
+  const [openItems, setOpenItems] = useState<Record<string, boolean>>({
+    "mission-cbf": true,
+    "how-to-give": true,
+  })
 
-  // State for tracking open questions
-  const [openQuestions, setOpenQuestions] = useState<Record<string, boolean>>({})
-
-  // Toggle question open/closed
-  const toggleQuestion = (questionId: string) => {
-    setOpenQuestions(prev => ({
-      ...prev,
-      [questionId]: !prev[questionId]
-    }))
+  const toggleItem = (id: string) => {
+    setOpenItems(prev => ({ ...prev, [id]: !prev[id] }))
   }
 
+  // Filter questions based on search query
+  const filteredCategories = faqCategories.map(cat => {
+    const filteredQuestions = cat.questions.filter(q => 
+      q.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      q.answer.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    return { ...cat, questions: filteredQuestions }
+  }).filter(cat => cat.questions.length > 0)
+
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <section className="relative w-full h-[40vh] min-h-[300px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/placeholder.svg?height=600&width=1600"
-            alt="Frequently Asked Questions - Caywood Brown Foundation"
-            fill
-            priority
-            className="object-cover brightness-[0.7]"
-            sizes="100vw"
-          />
-        </div>
-        <div className="container relative z-10 px-4 md:px-6 text-center text-white">
-          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl mb-6">
+    <div className="home-page min-h-screen">
+      {/* ─── 1. HERO SECTION ─── */}
+      <section className="relative overflow-hidden bg-[#12291b] px-6 pb-24 pt-36 text-[#f7f2e7] sm:px-8 sm:pb-32">
+        <HeroFoliage />
+        <div className="relative z-10 mx-auto max-w-5xl">
+          <p className="home-label text-[#c7ed9f] mb-4">Answers & Clarity</p>
+          <h1 className="home-heading text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight max-w-3xl leading-[1.1]">
             Frequently Asked Questions
           </h1>
-          <p className="mx-auto max-w-[700px] text-lg md:text-xl text-gray-100">
-            Find answers to common questions about our foundation, programs, and how you can get involved.
+          <p className="home-copy text-[#f7f2e7]/80 text-lg sm:text-xl mt-6 max-w-2xl leading-relaxed">
+            Everything you need to know about our youth digital training, music labs, addiction rehabilitation, volunteer opportunities, and governance.
           </p>
+
+          {/* Search Box */}
+          <div className="mt-8 max-w-xl relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#173421]/50" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search questions (e.g. computer lab, donation, volunteer)..."
+              className="w-full bg-white text-[#173421] placeholder:text-[#173421]/50 pl-12 pr-4 py-3.5 rounded-2xl border border-white/20 shadow-md focus:outline-none focus:ring-2 focus:ring-[#f6ce40] text-sm sm:text-base"
+            />
+          </div>
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="w-full py-16 md:py-24 bg-white">
-        <div className="container px-4 md:px-6">
-          <div className="mx-auto max-w-3xl space-y-16">
-            {faqCategories.map((category) => (
-              <div key={category.id} className="space-y-6">
-                <h2 className="text-2xl font-bold tracking-tight border-b border-gray-200 pb-4">
-                  {category.name}
-                </h2>
-                <div className="space-y-4">
-                  {category.questions.map((item) => (
-                    <Card 
-                      key={item.id} 
-                      className="border-gray-100 shadow-sm"
-                    >
-                      <CardContent className="p-0">
-                        <button
-                          onClick={() => toggleQuestion(item.id)}
-                          className="flex items-center justify-between w-full p-6 text-left"
+      {/* ─── 2. FAQ ACCORDION SECTIONS ─── */}
+      <section className="py-20 lg:py-28 bg-[#faf7f0]">
+        <div className="home-shell max-w-4xl mx-auto">
+          {filteredCategories.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-lg text-[#173421]/70">No questions found matching &ldquo;{searchQuery}&rdquo;</p>
+              <button 
+                onClick={() => setSearchQuery("")}
+                className="mt-4 text-sm font-semibold text-[#00521a] underline"
+              >
+                Clear search filter
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-14">
+              {filteredCategories.map((category) => (
+                <div key={category.id} className="space-y-6">
+                  <div className="border-b border-[#00521a]/15 pb-3">
+                    <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#173421]">
+                      {category.name}
+                    </h2>
+                  </div>
+
+                  <div className="space-y-4">
+                    {category.questions.map((faq) => {
+                      const isOpen = !!openItems[faq.id]
+                      return (
+                        <div
+                          key={faq.id}
+                          className="rounded-2xl border border-[#00521a]/10 bg-white transition-shadow hover:shadow-sm overflow-hidden"
                         >
-                          <h3 className="text-lg font-medium">{item.question}</h3>
-                          <ChevronDown 
-                            className={`h-5 w-5 text-gray-500 transition-transform ${
-                              openQuestions[item.id] ? "rotate-180" : ""
-                            }`} 
-                          />
-                        </button>
-                        <AnimatePresence>
-                          {openQuestions[item.id] && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.3 }}
-                              className="overflow-hidden"
-                            >
-                              <div className="p-6 pt-0 text-gray-600 border-t border-gray-100">
-                                {item.answer}
-                              </div>
-                            </motion.div>
+                          <button
+                            onClick={() => toggleItem(faq.id)}
+                            className="w-full px-6 py-5 text-left flex items-center justify-between gap-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00521a]"
+                            aria-expanded={isOpen}
+                          >
+                            <span className="font-serif font-bold text-base sm:text-lg text-[#173421]">
+                              {faq.question}
+                            </span>
+                            <div className="w-8 h-8 rounded-full bg-[#faf7f0] flex items-center justify-center shrink-0 text-[#00521a]">
+                              {isOpen ? (
+                                <ChevronUp className="w-4 h-4" />
+                              ) : (
+                                <ChevronDown className="w-4 h-4" />
+                              )}
+                            </div>
+                          </button>
+
+                          {isOpen && (
+                            <div className="px-6 pb-6 pt-1 text-sm sm:text-base text-[#173421]/80 leading-relaxed border-t border-[#00521a]/5">
+                              <p>{faq.answer}</p>
+                            </div>
                           )}
-                        </AnimatePresence>
-                      </CardContent>
-                    </Card>
-                  ))}
+                        </div>
+                      )
+                    })}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ─── 3. STILL HAVE QUESTIONS BANNER ─── */}
+      <section className="py-16 bg-white border-y border-[#00521a]/10">
+        <div className="home-shell max-w-4xl text-center space-y-4">
+          <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#173421]">
+            Can&rsquo;t find what you&rsquo;re looking for?
+          </h3>
+          <p className="text-base text-[#173421]/75 max-w-xl mx-auto">
+            Our team is always available to assist with questions about cohort enrollment, institutional partnerships, or donations.
+          </p>
+          <div className="pt-2 flex flex-wrap justify-center gap-4">
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#00521a] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#173421] transition-colors"
+            >
+              <MessageSquare className="w-4 h-4" />
+              <span>Contact Support</span>
+            </Link>
+            <a
+              href="mailto:caywoodbrowndocs@gmail.com"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[#00521a]/30 text-[#00521a] text-xs font-bold uppercase tracking-wider hover:bg-[#00521a] hover:text-white transition-colors"
+            >
+              <span>Email Our Directors</span>
+            </a>
           </div>
         </div>
       </section>
 
-      {/* Still Have Questions Section */}
-      <section className="w-full py-16 md:py-24 bg-gray-50">
-        <div className="container px-4 md:px-6">
-          <div className="mx-auto max-w-3xl text-center space-y-8">
-            <h2 className="text-3xl font-bold tracking-tight">Still Have Questions?</h2>
-            <p className="text-lg text-gray-600">
-              If you couldn't find the information you're looking for, please reach out to us directly. 
-              Our team is happy to help.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button className="bg-amber-500 hover:bg-amber-600" size="lg" asChild>
-                <Link href="/contact">Contact Us</Link>
-              </Button>
-              <Button variant="outline" size="lg" asChild>
-                <Link href="mailto:info@caywoodbrownfoundation.org">Email Us</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ─── 4. CLOSING PATHWAYS (Fixed Contrast & Generous Padding) ─── */}
+      <section className="home-section closing-section py-24 sm:py-32">
+        <div className="home-shell text-center">
+          <p className="home-label text-[#00521a]">Take the Next Step</p>
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#173421] tracking-tight mt-3">
+            Support Our Mission in Rivers State
+          </h2>
+          <p className="home-copy text-[#173421]/90 max-w-xl mx-auto mt-4 text-base sm:text-lg">
+            Whether through a tax-efficient contribution or volunteering as a mentor, your support transforms youth potential into leadership.
+          </p>
 
-      {/* Quick Links Section */}
-      <section className="w-full py-16 md:py-24 bg-white border-t border-gray-100">
-        <div className="container px-4 md:px-6">
-          <div className="mx-auto max-w-4xl">
-            <h2 className="text-2xl font-bold tracking-tight text-center mb-8">Quick Links</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card className="border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                <CardContent className="p-6 text-center">
-                  <h3 className="text-lg font-semibold mb-2">Donation Information</h3>
-                  <p className="text-gray-600 mb-6">Learn about how your contribution makes a difference.</p>
-                  <Button variant="outline" className="w-full" asChild>
-                    <Link href="/donate">Donate Now</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-              
-              <Card className="border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                <CardContent className="p-6 text-center">
-                  <h3 className="text-lg font-semibold mb-2">Volunteer Opportunities</h3>
-                  <p className="text-gray-600 mb-6">Discover how you can contribute your time and skills.</p>
-                  <Button variant="outline" className="w-full" asChild>
-                    <Link href="/volunteer">Volunteer</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-              
-              <Card className="border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                <CardContent className="p-6 text-center">
-                  <h3 className="text-lg font-semibold mb-2">Our Programs</h3>
-                  <p className="text-gray-600 mb-6">Explore the initiatives that drive our mission forward.</p>
-                  <Button variant="outline" className="w-full" asChild>
-                    <Link href="/programs">Learn More</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
+          <div className="mt-8 flex flex-wrap justify-center gap-4">
+            <Link
+              href="/donate"
+              className="home-button inline-flex items-center gap-2"
+            >
+              <span>Make a Donation</span>
+              <Heart className="h-4 w-4 text-[#f6ce40]" />
+            </Link>
+            <Link
+              href="/about"
+              className="home-button-outline inline-flex items-center gap-2 border-[#00521a] text-[#00521a] hover:bg-[#00521a] hover:text-white"
+            >
+              <span>About the Founder</span>
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </section>

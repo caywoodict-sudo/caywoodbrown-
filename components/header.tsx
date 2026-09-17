@@ -1,35 +1,43 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Button } from "@/components/ui/button"
+import { X, ArrowRight, ArrowUpRight } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
-import {
-  Heart,
-  Search,
-  X,
-  ChevronRight,
-  ArrowRight,
-  Globe,
-  Users,
-  Briefcase,
-  BookOpen,
-  Sparkles,
-  Phone,
-  Mail,
-  Instagram,
-  Facebook,
-  Linkedin,
-  Youtube
-} from "lucide-react"
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [activeCategory, setActiveCategory] = useState<string | null>("about")
-  const [searchQuery, setSearchQuery] = useState("")
+  const [hasScrolled, setHasScrolled] = useState(false)
+  const dialogRef = useRef<HTMLDivElement>(null)
 
-  // Prevent background scroll when full-screen menu is open
+  useEffect(() => {
+    const update = () => setHasScrolled(window.scrollY > 40)
+    update()
+    window.addEventListener("scroll", update, { passive: true })
+    return () => window.removeEventListener("scroll", update)
+  }, [])
+
+  useEffect(() => {
+    if (!isMenuOpen) return
+    const previousFocus = document.activeElement as HTMLElement | null
+    const dialog = dialogRef.current
+    const focusable = () => Array.from(dialog?.querySelectorAll<HTMLElement>('a[href],button:not([disabled])') ?? [])
+    focusable()[0]?.focus()
+    const trapFocus = (event: KeyboardEvent) => {
+      if (event.key !== "Tab") return
+      const items = focusable()
+      const first = items[0], last = items[items.length - 1]
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus() }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus() }
+    }
+    dialog?.addEventListener("keydown", trapFocus)
+    return () => {
+      dialog?.removeEventListener("keydown", trapFocus)
+      previousFocus?.focus()
+    }
+  }, [isMenuOpen])
+  // Prevent background scroll when menu is open
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = "hidden"
@@ -41,117 +49,142 @@ export default function Header() {
     }
   }, [isMenuOpen])
 
-  const menuSections = [
+  // Close on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isMenuOpen) {
+        setIsMenuOpen(false)
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [isMenuOpen])
+
+  const navSections = [
     {
-      id: "about",
       title: "About us",
+      href: "/about",
       links: [
-        { title: "Our Purpose & Vision", href: "/about#mission", desc: "Equipping young people to lead, innovate, and thrive" },
-        { title: "Our Story & Founder (Senator Banigo)", href: "/about#history", desc: "Driving transformation since 2006 (RC: 0022482)" },
-        { title: "Leadership & Team", href: "/team", desc: "Senator Ipalibo Banigo, Dr. Bokumo Orukari, Lucy Evelyn" },
-        { title: "Official Accreditation", href: "/about#accreditation", desc: "Government NGO Accreditation Certificate DHPRS-2026_54" },
+        { label: "Our purpose & vision", href: "/about" },
+        { label: "Founder's letter", href: "/about/founders-message" },
+        { label: "Leadership & council", href: "/team" },
+        { label: "Frequently asked questions", href: "/faq" },
       ],
     },
     {
-      id: "what-we-do",
-      title: "What we do",
+      title: "Our work",
+      href: "/programs",
       links: [
-        { title: "Computer Appreciation Program", href: "/programs/computer-appreciation", desc: "Free foundational computing and office suite literacy" },
-        { title: "Music Equipment Training Program", href: "/programs/music-training", desc: "Drums and keyboard mastery, ear training & performance" },
-        { title: "Youth Rehabilitation & Recovery", href: "/programs/youth-rehabilitation", desc: "Substance abuse counseling, therapy & social reintegration" },
-        { title: "Graduate Internship & Volunteerism Academy", href: "/programs/volunteerism-academy", desc: "6-month corporate placements with NLNG, Rivers Govt, PHCCIMA" },
-        { title: "Youth Health Awareness Program", href: "/programs/youth-health-awareness", desc: "School campaigns on hygiene, wellness, mental health & abstinence" },
-        { title: "Her Voice, Her Power: Girl Child Advocacy", href: "/programs/girl-child-advocacy", desc: "Leadership workshops, rights advocacy & menstrual dignity kits" },
-        { title: "Google Digital Skills Partnership", href: "/programs/google-training", desc: "Industry-certified coding, web development & digital marketing" },
+        { label: "Build digital confidence", href: "/programs/computer-appreciation" },
+        { label: "Nurture creative talent", href: "/programs/music-training" },
+        { label: "Support a fresh start", href: "/programs/youth-rehabilitation" },
+        { label: "Volunteerism Academy", href: "/programs/volunteerism-academy" },
+        { label: "Youth health & wellbeing", href: "/programs/youth-health-awareness" },
+        { label: "Champion every girl", href: "/programs/girl-child-advocacy" },
+        { label: "Google digital skills", href: "/programs/google-training" },
       ],
     },
     {
-      id: "support",
       title: "Support us",
+      href: "/donate",
       links: [
-        { title: "Make a Donation", href: "/donate", desc: "Directly sponsor learning materials, computers, and medical kits" },
-        { title: "Volunteer with Us", href: "/volunteer", desc: "Lend your professional expertise as a mentor, tutor, or counselor" },
-        { title: "Partner With Us", href: "/partner", desc: "Corporate CSR alliances, in-kind support & graduate job placement" },
-        { title: "Sponsor a Student or Girl Child", href: "/donate#sponsor", desc: "Provide scholarships and educational learning kits" },
+        { label: "Make a donation", href: "/donate" },
+        { label: "Become a volunteer", href: "/volunteer" },
+        { label: "Partner with us", href: "/partner" },
+        { label: "Frequently asked questions", href: "/faq" },
       ],
     },
     {
-      id: "news",
-      title: "Outreaches & Events",
+      title: "Outreaches & Contact",
+      href: "/events",
       links: [
-        { title: "World Immunization Day 2025", href: "/events", desc: "IMPA Campaign rallying parents and health workers in Abuja" },
-        { title: "Christmas Outreach at Durumi IDP Camp", href: "/events", desc: "Delivering food staples, dignity kits & holiday joy to displaced families" },
-        { title: "Summer Holiday Skills Programme", href: "/events", desc: "Computer typing & drum training camp for school pupils" },
-        { title: "All Events & Field Stories", href: "/events", desc: "Explore our archive of community outreaches since 2006" },
-      ],
-    },
-    {
-      id: "contact",
-      title: "Contact us",
-      links: [
-        { title: "Head Office (Port Harcourt)", href: "/contact", desc: "Close B, 1 IPIC Estate, off Akpajo Elelenwo, Port Harcourt" },
-        { title: "Phone Support", href: "tel:+2348038817059", desc: "(+234) 803 881 7059 — Monday to Friday 8am - 5pm" },
-        { title: "Official Email", href: "mailto:caywoodbrowndocs@gmail.com", desc: "caywoodbrowndocs@gmail.com" },
+        { label: "Campaigns & field outreaches", href: "/events" },
+        { label: "World Immunization Day (IMPA)", href: "/events#world-immunization-day-impa" },
+        { label: "Contact our team", href: "/contact" },
       ],
     },
   ]
 
   return (
     <>
-      {/* 1. TOP FLOATING HEADER BAR */}
-      <header className="fixed top-0 left-0 right-0 w-full z-40 pointer-events-none px-4 sm:px-8 py-4 sm:py-6">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+      {/* ─── 1. SOLID / FROSTED HEADER BAR (No collision on scroll) ─── */}
+      <header
+        className={`site-header fixed top-0 left-0 right-0 z-40 w-full transition-all duration-300 px-4 sm:px-8 ${
+          hasScrolled
+            ? "bg-[#12291b] shadow-lg py-2.5 sm:py-3 border-b border-white/10 pointer-events-auto"
+            : "bg-transparent py-3 sm:py-4 pointer-events-none"
+        }`}
+      >
+        <div className="mx-auto flex max-w-7xl items-center justify-between">
           
-          {/* Top-Left: Authentic CBF Brand Logo & Wordmark */}
+          {/* Brand Logo: Clean presentation */}
           <Link
             href="/"
-            className="pointer-events-auto flex items-center gap-3 group transition-transform duration-300 hover:scale-105"
-            aria-label="Caywood Brown Foundation Home"
+            className="pointer-events-auto flex items-center gap-3 transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-4 rounded-xl"
+            aria-label="Caywood Brown Foundation home"
           >
-            <div className="bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-white/60 shadow-lg flex items-center justify-center group-hover:border-[#F6CE40] transition-colors">
+            <div className="header-logo bg-white/95 px-3 py-1.5 rounded-xl border border-white/60 flex items-center justify-center">
               <Image
                 src="/images/caywood-logo-nav.png"
-                alt="Caywood Brown Foundation Official Logo"
-                width={140}
-                height={100}
-                className="h-9 sm:h-10 w-auto object-contain"
+                alt="Caywood Brown Foundation"
+                width={130}
+                height={85}
+                className="h-8 sm:h-9 w-auto object-contain"
                 priority
               />
             </div>
+            <span className="header-wordmark">Caywood Brown<span>Foundation</span></span>
           </Link>
 
-          {/* Top-Center: Farm Africa Signature MENU Pill */}
-          <div className="fixed top-0 left-1/2 -translate-x-1/2 z-50 pointer-events-auto">
+          {/* Desktop Center Menu Pill (Compact & balanced Farm Africa style) */}
+          <div className="pointer-events-auto hidden sm:block">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="group flex items-center gap-3 bg-[#00521A] text-white px-7 py-3 rounded-b-2xl shadow-xl border-x border-b border-[#00521A]/30 hover:bg-[#003d13] hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300"
-              aria-label={isMenuOpen ? "Close main menu" : "Open main menu"}
+              className="group flex items-center gap-2.5 bg-[#00521a] hover:bg-[#006822] text-[#faf7f0] px-6 py-2 rounded-full shadow-md border border-white/20 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              aria-expanded={isMenuOpen}
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             >
-              <div className="flex flex-col gap-1.5 w-5 justify-center items-center">
-                <span className={`block h-0.5 w-full bg-white transition-all duration-300 ${isMenuOpen ? "rotate-45 translate-y-2" : ""}`} />
-                <span className={`block h-0.5 w-full bg-white transition-all duration-300 ${isMenuOpen ? "opacity-0" : ""}`} />
-                <span className={`block h-0.5 w-full bg-white transition-all duration-300 ${isMenuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+              <div className="flex flex-col gap-1 w-4 justify-center items-center" aria-hidden="true">
+                <span className={`block h-0.5 w-full bg-[#faf7f0] transition-transform duration-200 ${isMenuOpen ? "rotate-45 translate-y-1.5" : ""}`} />
+                <span className={`block h-0.5 w-full bg-[#faf7f0] transition-opacity duration-200 ${isMenuOpen ? "opacity-0" : ""}`} />
+                <span className={`block h-0.5 w-full bg-[#faf7f0] transition-transform duration-200 ${isMenuOpen ? "-rotate-45 -translate-y-1.5" : ""}`} />
               </div>
-              <span className="text-sm font-bold uppercase tracking-wider text-[#F2EBD9] group-hover:text-[#F6CE40] transition-colors">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#faf7f0]">
                 {isMenuOpen ? "Close" : "Menu"}
               </span>
             </button>
           </div>
 
-          {/* Top-Right: Farm Africa Signature Floating Sunshine DONATE Pill */}
-          <div className="fixed top-4 sm:top-6 right-4 sm:right-8 z-40 pointer-events-auto">
+          {/* Mobile Actions: Menu + Donate */}
+          <div className="sm:hidden pointer-events-auto flex items-center gap-2">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="flex items-center gap-2 bg-[#00521a] text-[#faf7f0] px-3.5 py-2 rounded-full shadow-sm text-xs font-bold uppercase tracking-wider focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+              aria-expanded={isMenuOpen}
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            >
+              <div className="flex flex-col gap-1 w-3.5" aria-hidden="true">
+                <span className={`block h-0.5 w-full bg-white transition-transform ${isMenuOpen ? "rotate-45 translate-y-1.5" : ""}`} />
+                <span className={`block h-0.5 w-full bg-white transition-opacity ${isMenuOpen ? "opacity-0" : ""}`} />
+                <span className={`block h-0.5 w-full bg-white transition-transform ${isMenuOpen ? "-rotate-45 -translate-y-1.5" : ""}`} />
+              </div>
+              <span>{isMenuOpen ? "Close" : "Menu"}</span>
+            </button>
+
             <Link
               href="/donate"
-              className="group relative inline-flex items-center gap-2.5 bg-[#F6CE40] text-[#142118] px-5 sm:px-7 py-3 sm:py-3.5 rounded-full font-bold text-xs sm:text-sm uppercase tracking-wider shadow-xl hover:bg-[#E8BB1D] hover:scale-105 active:scale-95 hover:shadow-2xl transition-all duration-300 overflow-hidden"
+              className="flex items-center justify-center bg-[#f6ce40] hover:bg-[#e5bf32] text-[#142118] px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm transition-transform active:scale-95"
             >
-              {/* Beating Heart Icon */}
-              <motion.span
-                animate={{ scale: [1, 1.25, 1, 1.2, 1] }}
-                transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-                className="text-[#DB1C55]"
-              >
-                <Heart className="w-4 h-4 sm:w-4.5 sm:h-4.5 fill-[#DB1C55]" />
-              </motion.span>
+              <span>Donate</span>
+            </Link>
+          </div>
+
+          {/* Desktop Donate Pill */}
+          <div className="hidden sm:block pointer-events-auto">
+            <Link
+              href="/donate"
+              className="inline-flex items-center justify-center gap-2 bg-[#f6ce40] hover:bg-[#e5bf32] text-[#142118] px-6 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider shadow-lg transition-transform active:scale-95"
+            >
               <span>Donate</span>
             </Link>
           </div>
@@ -159,181 +192,118 @@ export default function Header() {
         </div>
       </header>
 
-      {/* 2. FULL-SCREEN FOREST GREEN MENU DRAWER (Farm Africa Authentic Identity) */}
+      {/* ─── 2. COMPACT & SIMPLE FARM AFRICA MENU DRAWER ─── */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{ y: "-100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "-100%" }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-[100] bg-[#00521A] text-white flex flex-col justify-between overflow-y-auto"
+            ref={dialogRef}
+            initial={{ opacity: 0, y: -16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-50 overflow-y-auto bg-[#00521a] text-[#faf7f0] flex flex-col justify-between"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site navigation"
           >
-            {/* Drawer Header */}
-            <div className="w-full px-6 sm:px-12 py-6 border-b border-white/10 flex items-center justify-between">
-              {/* Logo in Drawer */}
+            {/* Top Bar inside Drawer */}
+            <div className="border-b border-white/10 px-6 sm:px-12 py-4 flex items-center justify-between">
               <Link
                 href="/"
                 onClick={() => setIsMenuOpen(false)}
-                className="flex items-center gap-3 group"
+                className="flex items-center gap-3"
               >
-                <div className="bg-white px-3 py-1.5 rounded-2xl shadow-md flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                <div className="bg-white px-3 py-1 rounded-xl shadow-sm">
                   <Image
                     src="/images/caywood-logo-nav.png"
-                    alt="Caywood Brown Foundation Logo"
-                    width={130}
-                    height={95}
-                    className="h-8 sm:h-9 w-auto object-contain"
+                    alt="Caywood Brown Foundation"
+                    width={110}
+                    height={70}
+                    className="h-7 w-auto object-contain"
                   />
                 </div>
-                <div className="flex flex-col">
-                  <span className="font-serif font-bold text-lg text-[#C7ED9F] group-hover:text-white transition-colors">
-                    Caywood Brown Foundation
-                  </span>
-                  <span className="text-[10px] uppercase tracking-widest text-[#F6CE40]">
-                    Established 2006 · RC: 0022482
-                  </span>
+                <div className="hidden sm:flex flex-col text-left">
+                  <span className="font-serif text-sm font-bold text-[#faf7f0]">Caywood Brown Foundation</span>
+                  <span className="text-[10px] uppercase tracking-widest text-[#c7ed9f]">Est. 2006 · RC: 0022482</span>
                 </div>
               </Link>
 
-              {/* Close Button Pill */}
               <button
                 onClick={() => setIsMenuOpen(false)}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-[#F2EBD9] text-xs font-bold uppercase tracking-wider transition-colors"
+                className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-[#faf7f0] text-xs font-bold uppercase tracking-wider transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+                aria-label="Close navigation menu"
               >
-                <X className="w-4 h-4" />
+                <X className="h-4 w-4" />
                 <span>Close</span>
               </button>
             </div>
 
-            {/* Main Menu Grid Content */}
-            <div className="container max-w-7xl mx-auto px-6 sm:px-12 py-10 flex-1 grid lg:grid-cols-12 gap-12 items-start">
-              
-              {/* Left & Middle: Navigation Pillars & Sub-links */}
-              <div className="lg:col-span-8 space-y-8">
-                {/* Search Bar (Farm Africa Style #004416) */}
-                <div className="relative max-w-xl">
-                  <input
-                    type="search"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search programmes, stories, or reports..."
-                    className="w-full bg-[#004416] text-[#C7ED9F] placeholder:text-[#C7ED9F]/60 border border-white/10 text-sm sm:text-base py-3.5 pl-12 pr-6 rounded-full focus:outline-none focus:ring-2 focus:ring-[#C7ED9F]"
-                  />
-                  <Search className="w-5 h-5 text-[#C7ED9F] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-                </div>
-
-                {/* Categories Tabs & Submenu Links */}
-                <div className="grid md:grid-cols-12 gap-8 pt-4">
-                  {/* Category Headings */}
-                  <div className="md:col-span-4 space-y-2 border-r border-white/10 pr-4">
-                    {menuSections.map((sec) => (
-                      <button
-                        key={sec.id}
-                        onClick={() => setActiveCategory(sec.id)}
-                        className={`w-full text-left px-4 py-3 rounded-2xl text-xl font-serif font-bold transition-all flex items-center justify-between ${
-                          activeCategory === sec.id
-                            ? "bg-[#C7ED9F] text-[#00521A] shadow-md"
-                            : "text-[#F2EBD9] hover:bg-white/10 hover:text-white"
-                        }`}
+            {/* Main Menu Grid: Clean, Compact, High-Contrast */}
+            <div className="container max-w-6xl mx-auto px-6 sm:px-12 py-10 sm:py-14 flex-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+                {navSections.map((section) => (
+                  <div key={section.title} className="space-y-4">
+                    {section.href ? (
+                      <Link
+                        href={section.href}
+                        onClick={() => setIsMenuOpen(false)}
+                        className="group inline-flex items-center gap-2 font-serif text-2xl sm:text-3xl font-medium text-[#c7ed9f] hover:text-[#f6ce40] transition-colors"
                       >
-                        <span>{sec.title}</span>
-                        <ChevronRight className={`w-4 h-4 transition-transform ${activeCategory === sec.id ? "rotate-90 text-[#00521A]" : "text-white/40"}`} />
-                      </button>
-                    ))}
-                  </div>
+                        <span>{section.title}</span>
+                        <ArrowRight className="h-5 w-5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                      </Link>
+                    ) : (
+                      <h2 className="font-serif text-2xl sm:text-3xl font-medium text-[#c7ed9f]">
+                        {section.title}
+                      </h2>
+                    )}
 
-                  {/* Submenu Details */}
-                  <div className="md:col-span-8 space-y-3">
-                    {menuSections
-                      .find((sec) => sec.id === activeCategory)
-                      ?.links.map((link, idx) => (
-                        <motion.div
-                          key={idx}
-                          initial={{ opacity: 0, x: 10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.2, delay: idx * 0.05 }}
-                        >
+                    <ul className="space-y-2.5 pt-1 border-t border-white/10">
+                      {section.links.map((link) => (
+                        <li key={link.href}>
                           <Link
                             href={link.href}
                             onClick={() => setIsMenuOpen(false)}
-                            className="group block p-4 rounded-2xl bg-white/5 hover:bg-white/15 border border-white/10 transition-all duration-200"
+                            className="text-sm sm:text-base text-[#faf7f0]/85 hover:text-white hover:underline underline-offset-4 transition-colors block py-0.5"
                           >
-                            <div className="flex items-center justify-between">
-                              <h4 className="font-serif text-lg font-bold text-[#F2EBD9] group-hover:text-[#F6CE40] transition-colors">
-                                {link.title}
-                              </h4>
-                              <ArrowRight className="w-4 h-4 text-white/40 group-hover:text-[#F6CE40] group-hover:translate-x-1 transition-all" />
-                            </div>
-                            <p className="text-xs text-[#C7ED9F]/80 mt-1">
-                              {link.desc}
-                            </p>
+                            {link.label}
                           </Link>
-                        </motion.div>
+                        </li>
                       ))}
+                    </ul>
                   </div>
-                </div>
+                ))}
               </div>
 
-              {/* Right: Farm Africa Pale Stone Support Box */}
-              <div className="lg:col-span-4 bg-[#FAF7F0] text-[#142118] p-8 rounded-3xl border-2 border-[#00521A] shadow-2xl relative overflow-hidden">
-                <div className="relative z-10 space-y-5 text-center">
-                  <div className="w-12 h-12 rounded-full bg-[#00521A] text-[#F6CE40] mx-auto flex items-center justify-center font-serif font-bold text-lg">
-                    20y
-                  </div>
-                  <h3 className="font-serif text-2xl font-bold text-[#00521A] leading-tight">
-                    Support the Caywood Brown Mission
-                  </h3>
-                  <p className="text-xs sm:text-sm text-[#142118]/80 leading-relaxed">
-                    Help us transform young lives through free computer appreciation, creative music training, drug rehabilitation, and graduate internships.
-                  </p>
-
-                  <div className="pt-2">
-                    <Button
-                      variant="faSunshine"
-                      size="lg"
-                      className="w-full text-xs font-bold uppercase tracking-wider py-4 shadow-md hover:scale-105 transition-transform"
-                      asChild
-                    >
-                      <Link
-                        href="/donate"
-                        onClick={() => setIsMenuOpen(false)}
-                        className="flex items-center justify-center gap-2"
-                      >
-                        <Heart className="w-4 h-4 fill-[#142118]" />
-                        <span>Donate Today</span>
-                      </Link>
-                    </Button>
-                  </div>
+              {/* Direct Contact & Action Bar in Drawer */}
+              <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 text-sm text-[#faf7f0]/80">
+                <div className="flex flex-wrap items-center gap-6">
+                  <span>Port Harcourt (HQ) &amp; Abuja</span>
+                  <span>•</span>
+                  <a href="tel:+2348038817059" className="hover:text-white underline-offset-4 hover:underline">
+                    (+234) 803 881 7059
+                  </a>
+                  <span>•</span>
+                  <a href="mailto:caywoodbrowndocs@gmail.com" className="inline-flex items-center gap-1.5 hover:text-white underline-offset-4 hover:underline">
+                    <span>caywoodbrowndocs@gmail.com</span>
+                    <ArrowUpRight className="h-3.5 w-3.5" />
+                  </a>
                 </div>
-              </div>
 
+                <Link
+                  href="/donate#donate-now"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="inline-flex items-center gap-2 rounded-full bg-[#f6ce40] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-[#142118] hover:bg-[#e5bf32] transition-colors"
+                >
+                  <span>Support our mission</span>
+                </Link>
+              </div>
             </div>
 
-            {/* Drawer Footer Bar */}
-            <div className="w-full px-6 sm:px-12 py-5 bg-[#004416] border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#C7ED9F]/80">
-              <div className="flex items-center gap-6">
-                <span>© {new Date().getFullYear()} Caywood Brown Foundation.</span>
-                <span className="hidden sm:inline">•</span>
-                <span>Registered Non-Profit (RC: 0022482 · Established 2006)</span>
-              </div>
-
-              {/* Social Channels */}
-              <div className="flex items-center gap-3">
-                <span className="text-white/60 uppercase tracking-widest text-[10px]">Follow Us:</span>
-                <Link href="#" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#C7ED9F] hover:text-[#00521A] flex items-center justify-center transition-colors">
-                  <Facebook className="w-4 h-4" />
-                </Link>
-                <Link href="#" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#C7ED9F] hover:text-[#00521A] flex items-center justify-center transition-colors">
-                  <Instagram className="w-4 h-4" />
-                </Link>
-                <Link href="#" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#C7ED9F] hover:text-[#00521A] flex items-center justify-center transition-colors">
-                  <Linkedin className="w-4 h-4" />
-                </Link>
-                <Link href="#" className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#C7ED9F] hover:text-[#00521A] flex items-center justify-center transition-colors">
-                  <Youtube className="w-4 h-4" />
-                </Link>
-              </div>
+            {/* Bottom Bar */}
+            <div className="border-t border-white/10 px-6 sm:px-12 py-4 text-xs text-[#faf7f0]/60 flex flex-col sm:flex-row items-center justify-between gap-2">
+              <p>© {new Date().getFullYear()} Caywood Brown Foundation. All rights reserved.</p>
+              <p>Registered Non-Profit · RC: 0022482</p>
             </div>
           </motion.div>
         )}
