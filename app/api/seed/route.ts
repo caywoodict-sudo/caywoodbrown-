@@ -1,6 +1,6 @@
-﻿import { NextResponse } from 'next/server'
-import { getPayload } from 'payload'
-import config from '@/payload.config'
+import { NextResponse } from 'next/server'
+
+export const dynamic = 'force-dynamic'
 
 export async function GET() {
   return handleSeed()
@@ -12,6 +12,8 @@ export async function POST() {
 
 async function handleSeed() {
   try {
+    const { getPayload } = await import('payload')
+    const config = (await import('@/payload.config')).default
     const payload = await getPayload({ config })
     const results: Record<string, any> = {
       adminUser: null,
