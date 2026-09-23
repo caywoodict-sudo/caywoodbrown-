@@ -17,7 +17,7 @@ export default function HeroNarrative() {
             <span className="text-[#f5a246]">Building Futures.</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-[#f7f2e7]/90 sm:text-lg">
-            At Caywood Brown Foundation (CBF), we have been driving transformation since 2006 — empowering youths and strengthening communities across Rivers State through structured mentorship, vocational training, Google digital skills, creative music education, and youth rehabilitation.
+            At Caywood Brown Foundation (CBF), we improve lives and promote sustainable community development through impactful interventions in healthcare, education, agriculture, entrepreneurship, and social empowerment — building healthy, empowered, educated, and economically productive communities across Nigeria.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
@@ -67,13 +67,13 @@ export default function HeroNarrative() {
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-[#00521a] block mb-1">Our Vision</span>
                 <p className="text-sm font-medium text-[#173421] leading-relaxed">
-                  To help all youths within our reach become self-secure, encouraged to pursue their dreams as leaders, and inspired to become innovators and employers of labor.
+                  To Build Healthy, Empowered, Educated And Economically Productive Communities Where Individuals Can Achieve Their Full Potential.
                 </p>
               </div>
               <div className="pt-3 border-t border-[#00521a]/10">
                 <span className="text-xs font-bold uppercase tracking-wider text-[#df6827] block mb-1">Our Mission</span>
                 <p className="text-sm text-[#173421]/85 leading-relaxed">
-                  To equip youths to pursue their dreams and explore their talents and passions, in order to develop their community, one business innovation at a time, through education, advocacy, and sustainable developmental programs.
+                  To improve lives &amp; promote sustainable community development through impactful interventions in healthcare, education, agriculture, entrepreneurship &amp; social empowerment.
                 </p>
               </div>
             </div>

@@ -76,13 +76,13 @@ export default function ProgramsIndexPage() {
       <section className="relative overflow-hidden bg-[#12291b] px-6 pb-24 pt-36 text-[#f7f2e7] sm:px-8 sm:pb-32">
         <HeroFoliage />
         <div className="relative z-10 mx-auto max-w-5xl">
-          <p className="home-label text-[#c7ed9f] mb-4">Thematic Pillars &amp; Work</p>
+          <p className="home-label text-[#c7ed9f] mb-4">Core Areas of Intervention</p>
           <h1 className="max-w-4xl font-serif text-[clamp(2.6rem,5vw,4.8rem)] font-medium leading-[1.1] tracking-tight">
             Practical skills. <br />
             <span className="text-[#f6ce40]">Lasting human transformation.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#f7f2e7]/85 font-normal">
-            For nearly two decades across Rivers State, the Caywood Brown Foundation has delivered community-rooted programs bridging digital literacy, creative arts, health, and dignified employment.
+            Grounded in our mission to improve lives and promote sustainable community development through impactful interventions across our three core pillars: <strong>Healthcare Development</strong>, <strong>Education and Human Development</strong>, and <strong>SMEs and Economic Empowerment</strong>.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">

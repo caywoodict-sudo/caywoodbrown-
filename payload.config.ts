@@ -11,6 +11,7 @@ import { Posts } from './collections/Posts'
 import { Comments } from './collections/Comments'
 import { Testimonials } from './collections/Testimonials'
 import { Submissions } from './collections/Submissions'
+import { Volunteers } from './collections/Volunteers'
 import { Media } from './collections/Media'
 
 const filename = fileURLToPath(import.meta.url)
@@ -31,6 +32,7 @@ export default buildConfig({
     Comments,
     Testimonials,
     Submissions,
+    Volunteers,
     Media,
   ],
   editor: lexicalEditor(),

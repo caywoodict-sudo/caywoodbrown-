@@ -33,8 +33,8 @@ export default function Footer() {
               Close B, 1 IPIC Estate, off Akpajo Elelenwo, Port Harcourt, Rivers State
             </div>
             <div>
-              <span className="block font-semibold text-[#c7ed9f] text-xs uppercase tracking-wider">Abuja (Liaison)</span>
-              888 Olu Awotesu St, Jabi, Abuja, FCT
+              <span className="block font-semibold text-[#c7ed9f] text-xs uppercase tracking-wider">Abuja (National Office)</span>
+              883 Olu Awotesu Street, Jabi, Abuja, Nigeria
             </div>
           </div>
           <div className="space-y-1.5">

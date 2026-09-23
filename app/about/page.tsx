@@ -11,6 +11,16 @@ import {
   Award,
   Download,
   CheckCircle2,
+  ShieldCheck,
+  Sparkles,
+  HeartHandshake,
+  Lightbulb,
+  Leaf,
+  Users,
+  Activity,
+  GraduationCap,
+  Briefcase,
+  Sprout
 } from "lucide-react"
 import HeroFoliage from "@/components/hero-foliage"
 import BotanicalGraphic from "@/components/botanical-graphic"
@@ -125,58 +135,146 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
             {/* Card 1: Mission */}
-            <div className="rounded-3xl bg-white p-8 sm:p-10 shadow-sm border border-[#00521a]/10 flex flex-col justify-between space-y-6 hover:shadow-lg transition-all duration-300">
+            <div className="rounded-3xl bg-white p-8 sm:p-10 shadow-sm border border-[#00521a]/15 flex flex-col justify-between space-y-6 hover:shadow-lg transition-all duration-300">
               <div className="space-y-4">
-                <div className="w-14 h-14 rounded-2xl bg-[#f47e28]/15 flex items-center justify-center text-[#f47e28]">
+                <div className="w-14 h-14 rounded-2xl bg-[#00521a]/15 flex items-center justify-center text-[#00521a]">
                   <Target className="w-7 h-7" />
                 </div>
-                <h3 className="font-serif text-2xl font-bold text-[#173421]">
+                <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#173421]">
                   Our Mission
                 </h3>
-                <p className="text-[#173421]/80 text-sm sm:text-base leading-relaxed">
-                  To equip young people to pursue their dreams, explore their innate talents and passions, and develop their communities — one innovation at a time — through education, mentorship, and sustainable developmental programs.
+                <p className="text-[#173421]/90 text-base sm:text-lg leading-relaxed font-normal">
+                  To improve lives &amp; promote sustainable community development through impactful interventions in healthcare, education, agriculture, entrepreneurship &amp; social empowerment.
                 </p>
               </div>
-              <div className="pt-4 border-t border-[#00521a]/10 text-xs font-bold uppercase tracking-wider text-[#f47e28]">
-                Action-Oriented Impact
+              <div className="pt-4 border-t border-[#00521a]/10 text-xs font-bold uppercase tracking-wider text-[#00521a] flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-[#df6827]" />
+                <span>Impactful Interventions &amp; Sustainability</span>
               </div>
             </div>
 
             {/* Card 2: Vision */}
-            <div className="rounded-3xl bg-white p-8 sm:p-10 shadow-sm border border-[#00521a]/10 flex flex-col justify-between space-y-6 hover:shadow-lg transition-all duration-300">
-              <div className="space-y-4">
-                <div className="w-14 h-14 rounded-2xl bg-[#00521a]/15 flex items-center justify-center text-[#00521a]">
-                  <Eye className="w-7 h-7" />
-                </div>
-                <h3 className="font-serif text-2xl font-bold text-[#173421]">
-                  Our Vision
-                </h3>
-                <p className="text-[#173421]/80 text-sm sm:text-base leading-relaxed">
-                  To ensure all youth within our reach become self-reliant, inspired to lead with integrity, equipped as technological innovators, and transformed into employers of labor across Nigeria and beyond.
-                </p>
-              </div>
-              <div className="pt-4 border-t border-[#00521a]/10 text-xs font-bold uppercase tracking-wider text-[#00521a]">
-                Long-Term Independence
-              </div>
-            </div>
-
-            {/* Card 3: Values */}
-            <div className="rounded-3xl bg-white p-8 sm:p-10 shadow-sm border border-[#00521a]/10 flex flex-col justify-between space-y-6 hover:shadow-lg transition-all duration-300">
+            <div className="rounded-3xl bg-white p-8 sm:p-10 shadow-sm border border-[#00521a]/15 flex flex-col justify-between space-y-6 hover:shadow-lg transition-all duration-300">
               <div className="space-y-4">
                 <div className="w-14 h-14 rounded-2xl bg-[#f6ce40]/30 flex items-center justify-center text-[#996c00]">
-                  <Award className="w-7 h-7" />
+                  <Eye className="w-7 h-7" />
                 </div>
-                <h3 className="font-serif text-2xl font-bold text-[#173421]">
-                  Our Values
+                <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#173421]">
+                  Our Vision
                 </h3>
-                <p className="text-[#173421]/80 text-sm sm:text-base leading-relaxed">
-                  Rooted in compassion, integrity, inclusivity, excellence, and community accountability. We measure our success not by headlines, but by the tangible stability and self-respect restored to young people.
+                <p className="text-[#173421]/90 text-base sm:text-lg leading-relaxed font-normal">
+                  To Build Healthy, Empowered, Educated And Economically Productive Communities Where Individuals Can Achieve Their Full Potential.
                 </p>
               </div>
-              <div className="pt-4 border-t border-[#00521a]/10 text-xs font-bold uppercase tracking-wider text-[#996c00]">
-                Integrity & Accountability
+              <div className="pt-4 border-t border-[#00521a]/10 text-xs font-bold uppercase tracking-wider text-[#996c00] flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-[#00521a]" />
+                <span>Healthy, Educated &amp; Productive Society</span>
+              </div>
+            </div>
+          </div>
+
+          {/* 8 Core Values Grid */}
+          <div className="bg-white rounded-3xl p-8 sm:p-12 border border-[#00521a]/15 shadow-sm space-y-8 mb-12">
+            <div className="text-center max-w-2xl mx-auto space-y-2">
+              <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#00521a]">
+                Institutional Ethos
+              </span>
+              <h3 className="font-serif text-3xl font-bold text-[#173421]">
+                Our 8 Core Values
+              </h3>
+              <p className="text-sm text-[#173421]/75">
+                These eight enduring pillars guide our leadership, programs, community engagements, and partnerships across Nigeria.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {[
+                { title: "Integrity", icon: ShieldCheck, desc: "Steadfast honesty, transparency, and ethical conduct in all operations." },
+                { title: "Accountability", icon: Award, desc: "Responsible stewardship of donor resources and commitments to communities." },
+                { title: "Compassion", icon: Heart, desc: "Deep empathy and human-centred care for vulnerable individuals and families." },
+                { title: "Excellence", icon: Sparkles, desc: "Highest standards of quality and rigor in program execution and impact." },
+                { title: "Inclusivity", icon: Users, desc: "Leaving no one behind, embracing diverse voices, gender equity, and youth." },
+                { title: "Innovation", icon: Lightbulb, desc: "Pioneering creative digital solutions, modern tools, and adaptive strategies." },
+                { title: "Sustainability", icon: Leaf, desc: "Building durable community capacity that thrives for generations." },
+                { title: "Service to Humanity", icon: HeartHandshake, desc: "Unwavering dedication to uplifting the common good across all divides." },
+              ].map((val, idx) => {
+                const IconComponent = val.icon
+                return (
+                  <div
+                    key={val.title}
+                    className="p-5 rounded-2xl bg-[#faf7f0] border border-[#00521a]/10 hover:border-[#00521a]/30 transition-all space-y-2 flex flex-col justify-between"
+                  >
+                    <div className="space-y-2">
+                      <div className="w-10 h-10 rounded-xl bg-[#00521a]/10 text-[#00521a] flex items-center justify-center">
+                        <IconComponent className="w-5 h-5" />
+                      </div>
+                      <h4 className="font-serif text-lg font-bold text-[#173421]">
+                        {val.title}
+                      </h4>
+                      <p className="text-xs text-[#173421]/75 leading-relaxed">
+                        {val.desc}
+                      </p>
+                    </div>
+                    <span className="text-[10px] font-mono font-bold text-[#00521a]/60">
+                      0{idx + 1}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Core Areas of Intervention */}
+          <div className="bg-[#12291b] rounded-3xl p-8 sm:p-12 text-white border border-white/10 space-y-8">
+            <div className="text-center max-w-2xl mx-auto space-y-2">
+              <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#f6ce40]">
+                Strategic Focus
+              </span>
+              <h3 className="font-serif text-3xl font-bold text-[#faf7f0]">
+                Core Areas of Intervention
+              </h3>
+              <p className="text-sm text-white/80">
+                Targeting systematic transformation through three synchronized developmental focal areas:
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="p-6 rounded-2xl bg-white/5 border border-white/10 space-y-3">
+                <div className="w-12 h-12 rounded-xl bg-[#c7ed9f]/20 text-[#c7ed9f] flex items-center justify-center">
+                  <Activity className="w-6 h-6" />
+                </div>
+                <h4 className="font-serif text-xl font-bold text-[#c7ed9f]">
+                  Healthcare Development
+                </h4>
+                <p className="text-xs sm:text-sm text-white/80 leading-relaxed">
+                  Strengthening primary healthcare facilities, maternal and infant health survival, adolescent mental wellness, routine immunization drives (IMPA), and national health financing policy advocacy (BHCPF &amp; SSB Tax).
+                </p>
+              </div>
+
+              <div className="p-6 rounded-2xl bg-white/5 border border-white/10 space-y-3">
+                <div className="w-12 h-12 rounded-xl bg-[#f6ce40]/20 text-[#f6ce40] flex items-center justify-center">
+                  <GraduationCap className="w-6 h-6" />
+                </div>
+                <h4 className="font-serif text-xl font-bold text-[#f6ce40]">
+                  Education &amp; Human Development
+                </h4>
+                <p className="text-xs sm:text-sm text-white/80 leading-relaxed">
+                  Free digital inclusion bootcamps (Google Digital Skills &amp; Computer Appreciation), creative arts and music instruction, girl child retention scholarships, and leadership mentorship.
+                </p>
+              </div>
+
+              <div className="p-6 rounded-2xl bg-white/5 border border-white/10 space-y-3">
+                <div className="w-12 h-12 rounded-xl bg-[#df6827]/20 text-[#ffb076] flex items-center justify-center">
+                  <Briefcase className="w-6 h-6" />
+                </div>
+                <h4 className="font-serif text-xl font-bold text-[#ffb076]">
+                  SMEs &amp; Economic Empowerment
+                </h4>
+                <p className="text-xs sm:text-sm text-white/80 leading-relaxed">
+                  Incubating grassroots micro-enterprises, agricultural value-chain training, graduate volunteerism academy, and corporate internship transitions that place 80% of trainees into sustainable livelihood roles.
+                </p>
               </div>
             </div>
           </div>

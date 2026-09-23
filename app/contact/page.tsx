@@ -88,10 +88,10 @@ export default function ContactPage() {
                     <MapPin className="w-6 h-6" />
                   </div>
                   <div>
-                    <h4 className="font-serif font-bold text-lg text-[#173421]">Abuja Liaison Office</h4>
+                    <h4 className="font-serif font-bold text-lg text-[#173421]">Abuja National Office</h4>
                     <p className="text-sm text-[#173421]/75 mt-1 leading-relaxed">
-                      888 Olu Awotesu Street, Jabi,<br />
-                      Abuja, FCT, Nigeria
+                      883 Olu Awotesu Street, Jabi,<br />
+                      Abuja, Nigeria
                     </p>
                   </div>
                 </div>
