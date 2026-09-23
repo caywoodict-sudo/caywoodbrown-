@@ -136,6 +136,22 @@ export default function Header() {
             <span className="header-wordmark">Caywood Brown<span>Foundation</span></span>
           </Link>
 
+          {/* Desktop Primary Nav Links */}
+          <nav className="pointer-events-auto hidden lg:flex items-center gap-7">
+            <Link href="/about" className="text-sm font-semibold text-[#faf7f0] hover:text-[#f6ce40] transition-colors">
+              About
+            </Link>
+            <Link href="/programs" className="text-sm font-semibold text-[#faf7f0] hover:text-[#f6ce40] transition-colors">
+              Programmes
+            </Link>
+            <Link href="/events" className="text-sm font-semibold text-[#faf7f0] hover:text-[#f6ce40] transition-colors">
+              Campaigns
+            </Link>
+            <Link href="/contact" className="text-sm font-semibold text-[#faf7f0] hover:text-[#f6ce40] transition-colors">
+              Contact
+            </Link>
+          </nav>
+
           {/* Desktop Center Menu Pill (Compact & balanced Farm Africa style) */}
           <div className="pointer-events-auto hidden sm:block">
             <button
@@ -207,7 +223,7 @@ export default function Header() {
             aria-label="Site navigation"
           >
             {/* Top Bar inside Drawer */}
-            <div className="border-b border-white/10 px-6 sm:px-12 py-4 flex items-center justify-between">
+            <div className="sticky top-0 z-10 bg-[#00521a]/95 backdrop-blur-md border-b border-white/10 px-6 sm:px-12 py-4 flex items-center justify-between">
               <Link
                 href="/"
                 onClick={() => setIsMenuOpen(false)}

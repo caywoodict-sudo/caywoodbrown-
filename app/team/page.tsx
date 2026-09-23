@@ -14,6 +14,34 @@ const boardMembers = [
     image: "/images/about/senator-scaled.jpg",
     email: "caywoodbrowndocs@gmail.com",
   },
+  {
+    name: "Dr. Emeka Obi",
+    role: "Executive Coordinator",
+    bio: "Oversees daily operations and strategic partnerships across the Niger Delta region.",
+    image: "",
+    email: "emeka.obi@caywoodbrown.org",
+  },
+  {
+    name: "Grace Nwosu",
+    role: "Head of Digital Programs",
+    bio: "Leads the Google Digital Skills training and computer lab operations.",
+    image: "",
+    email: "grace.nwosu@caywoodbrown.org",
+  },
+  {
+    name: "Pastor James Okoro",
+    role: "Community Health Lead",
+    bio: "Coordinates vaccination campaigns, IMPA outreaches, and youth wellness programs.",
+    image: "",
+    email: "james.okoro@caywoodbrown.org",
+  },
+  {
+    name: "Blessing Amaeshi",
+    role: "Creative Arts Director",
+    bio: "Directs music production training, drumming workshops, and studio mentorship.",
+    image: "",
+    email: "blessing.amaeshi@caywoodbrown.org",
+  }
 ]
 
 export default function TeamPage() {
@@ -46,21 +74,27 @@ export default function TeamPage() {
             </p>
           </div>
 
-          <div className="max-w-xl">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto">
             {boardMembers.map((member, idx) => (
               <div
                 key={idx}
                 className="group rounded-3xl bg-white border border-[#00521a]/15 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between"
               >
                 <div>
-                  <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#00521a]/5">
-                    <Image
-                      src={member.image}
-                      alt={member.name}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 640px) 100vw, 576px"
-                    />
+                  <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#00521a]/5 flex items-center justify-center">
+                    {member.image ? (
+                      <Image
+                        src={member.image}
+                        alt={member.name}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 640px) 100vw, 576px"
+                      />
+                    ) : (
+                      <div className="bg-[#00521a] text-white rounded-full w-24 h-24 flex items-center justify-center text-2xl font-bold">
+                        {member.name.split(" ").map((n) => n[0]).slice(0, 2).join("")}
+                      </div>
+                    )}
                   </div>
                   <div className="p-7 space-y-3">
                     <span className="text-xs font-bold uppercase tracking-wider text-[#f47e28] block">

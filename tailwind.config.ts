@@ -22,7 +22,6 @@ const config = {
       fontFamily: {
         sans: ['"sofia-pro"', "ui-sans-serif", "system-ui", "sans-serif"],
         serif: ['"new-spirit"', "Georgia", "serif"],
-        condensed: ['"new-spirit-condensed"', '"new-spirit"', "serif"],
       },
       colors: {
         border: "hsl(var(--border))",

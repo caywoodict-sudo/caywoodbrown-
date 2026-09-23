@@ -6,7 +6,7 @@ import HeroFoliage from "@/components/hero-foliage"
 export default function HeroNarrative() {
   return (
     <div className="overflow-hidden">
-      <section className="opening-hero relative flex min-h-[100svh] items-center justify-center bg-[#12291b] px-6 pb-28 pt-28 text-center text-[#f7f2e7]">
+      <section className="opening-hero relative flex min-h-[100svh] items-center justify-center bg-[#12291b] px-6 pb-16 sm:pb-28 pt-28 text-center text-[#f7f2e7]">
         <HeroFoliage />
         <div className="relative z-10 mx-auto max-w-4xl">
           <p className="mb-4 text-xs font-bold uppercase tracking-[0.25em] text-[#c7ed9f] sm:text-sm">
@@ -22,8 +22,14 @@ export default function HeroNarrative() {
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <Link
-              href="/volunteer"
+              href="/donate"
               className="rounded-full bg-[#f5a246] px-7 py-3.5 text-xs font-bold uppercase tracking-wider text-[#12291b] transition hover:bg-[#e08f36]"
+            >
+              Donate Now
+            </Link>
+            <Link
+              href="/volunteer"
+              className="rounded-full border border-[#f7f2e7]/40 px-7 py-3.5 text-xs font-bold uppercase tracking-wider text-[#f7f2e7] transition hover:bg-white/10"
             >
               Volunteer With Us
             </Link>
@@ -32,12 +38,6 @@ export default function HeroNarrative() {
               className="rounded-full border border-[#f7f2e7]/40 px-7 py-3.5 text-xs font-bold uppercase tracking-wider text-[#f7f2e7] transition hover:bg-white/10"
             >
               Partner With Us
-            </Link>
-            <Link
-              href="/donate"
-              className="rounded-full border border-[#c7ed9f] bg-[#c7ed9f]/15 px-7 py-3.5 text-xs font-bold uppercase tracking-wider text-[#c7ed9f] transition hover:bg-[#c7ed9f] hover:text-[#12291b]"
-            >
-              Donate Now
             </Link>
           </div>
         </div>
@@ -49,9 +49,7 @@ export default function HeroNarrative() {
         </a>
       </section>
 
-      <section id="our-origins" className="founder-section relative isolate overflow-hidden bg-[#c9e8f6] text-[#173421]">
-        <div className="absolute inset-0 -z-20 bg-[url('/images/hero/sky-clouds.webp')] bg-cover bg-center" aria-hidden="true" />
-        <div className="absolute inset-0 -z-10 bg-white/40" aria-hidden="true" />
+      <section id="our-origins" className="founder-section relative isolate overflow-hidden bg-[#fbf8f2] text-[#173421]">
         <svg aria-hidden="true" viewBox="0 0 1440 120" preserveAspectRatio="none" className="absolute inset-x-0 top-0 h-14 w-full fill-[#12291b] sm:h-20">
           <path d="M0 0H1440V24C1120 4 956 84 704 58 404 27 214 105 0 59V0Z" />
         </svg>

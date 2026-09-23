@@ -7,6 +7,8 @@ const partners = [
   { name: "NDlink", logo: "/images/partners/partner-2.png" },
   { name: "Port Harcourt Chamber of Commerce, Industry, Mines & Agriculture", logo: "/images/partners/partner-3.png" },
   { name: "Nigeria LNG Limited", logo: "/images/partners/partner-4.png" },
+  { name: "Sydani Group", logo: "/images/partners/partner-5.png" },
+  { name: "VNDC", logo: "/images/partners/partner-6.png" },
 ]
 
 export default function PartnersMarquee() {
@@ -27,7 +29,14 @@ export default function PartnersMarquee() {
           </div>
           <div className="partner-track-set partner-track-copy" aria-hidden="true">
             {partners.map((partner) => (
-              <div className="partner-logo" key={partner.name}>
+              <div className="partner-logo" key={`${partner.name}-copy1`}>
+                <Image src={partner.logo} alt="" width={220} height={122} sizes="180px" />
+              </div>
+            ))}
+          </div>
+          <div className="partner-track-set partner-track-copy" aria-hidden="true">
+            {partners.map((partner) => (
+              <div className="partner-logo" key={`${partner.name}-copy2`}>
                 <Image src={partner.logo} alt="" width={220} height={122} sizes="180px" />
               </div>
             ))}

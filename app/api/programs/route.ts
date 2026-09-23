@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getPayloadClient } from '@/lib/payload'
+import { getCloudinaryUrl } from '@/lib/cloudinary'
 
 export const dynamic = 'force-dynamic'
 
@@ -126,7 +127,7 @@ export async function GET() {
         partner: doc.partner || matching.partner,
         description: doc.summary || matching.description,
         summary: doc.summary || matching.summary,
-        image: typeof doc.heroImage === 'object' && doc.heroImage?.url ? doc.heroImage.url : matching.image || '/images/programs/computer-lab.jpg',
+        image: typeof doc.heroImage === 'object' && doc.heroImage?.url ? doc.heroImage.url : getCloudinaryUrl(matching.image || '/images/programs/computer-lab.jpg'),
         href: `/programs/${doc.slug}`,
         highlights: matching.highlights || ['Practical Hands-On Learning', 'Certified Mentorship', 'Community-Centered'],
       }

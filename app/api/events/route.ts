@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getPayloadClient } from '@/lib/payload'
+import { getCloudinaryUrl } from '@/lib/cloudinary'
 
 export const dynamic = 'force-dynamic'
 
@@ -175,8 +176,8 @@ export async function GET() {
         location: doc.location,
         lead: doc.summary,
         summary: doc.summary,
-        image: typeof doc.coverImage === 'object' && doc.coverImage?.url ? doc.coverImage.url : matchingFallback.image || '/images/events/impa-banner.jpg',
-        secondaryImage: matchingFallback.secondaryImage || '/images/events/impa-volunteers.jpg',
+        image: typeof doc.coverImage === 'object' && doc.coverImage?.url ? doc.coverImage.url : getCloudinaryUrl(matchingFallback.image || '/images/events/impa-banner.jpg'),
+        secondaryImage: getCloudinaryUrl(matchingFallback.secondaryImage || '/images/events/impa-volunteers.jpg'),
         badgeText: matchingFallback.badgeText || 'Official Foundation Event',
         collaborators: matchingFallback.collaborators || ['Caywood Brown Foundation Leadership', 'Community Partners'],
         keyActivities: matchingFallback.keyActivities || ['Community engagement and youth mobilization', 'Direct beneficiary support and resources'],

@@ -9,6 +9,8 @@ const defaultOutreaches = [
   {
     title: "Annual Christmas with Her Excellency",
     category: "Community Welfare & Praise Gathering",
+    date: "Dec 2023",
+    location: "Rivers State",
     image: "/images/events/senator-outreach.png",
     alt: "Senator Dr. Ipalibo Harry Banigo engaging with community members during Christmas outreach",
     href: "/events#christmas-with-her-excellency"
@@ -16,6 +18,8 @@ const defaultOutreaches = [
   {
     title: "Buni Yadi Humanitarian Relief & IDP Mission",
     category: "Crisis Relief & Family Care",
+    date: "Oct 2023",
+    location: "Yobe State",
     image: "/images/events/muslim-women-outreach.png",
     alt: "Families and mothers receiving essential care and food relief",
     href: "/events#buni-yadi-idp-relief"
@@ -54,6 +58,8 @@ export default function FeaturedEvents() {
               .map((d: any) => ({
                 title: d.title,
                 category: d.category || "Community Outreach",
+                date: d.date || "Upcoming",
+                location: d.location || "Rivers State",
                 image: d.image || "/images/events/senator-outreach.png",
                 alt: d.title,
                 href: `/events#${d.slug}`,
@@ -106,7 +112,18 @@ export default function FeaturedEvents() {
                 <Image src={story.image} alt={story.alt} fill className="object-cover" sizes="(max-width: 700px) 100vw, 50vw" />
               </Link>
               <div className="field-story-caption">
-                <div><p className="home-label">{story.category}</p><h3><Link href={story.href}>{story.title}</Link></h3></div>
+                <div>
+                  <p className="home-label">{story.category}</p>
+                  <h3><Link href={story.href}>{story.title}</Link></h3>
+                  {story.date && story.location && (
+                    <p className="text-xs mt-1.5 opacity-80 font-medium">
+                      {`${story.date} · ${story.location}`}
+                    </p>
+                  )}
+                </div>
+                <div className="field-story-arrow">
+                  <ArrowRight size={18} />
+                </div>
               </div>
             </article>
           ))}

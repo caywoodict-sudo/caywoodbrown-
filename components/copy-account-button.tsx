@@ -1,18 +1,20 @@
-﻿"use client"
+"use client"
 
 import React, { useState } from "react"
 import { Copy, Check } from "lucide-react"
 
 interface CopyAccountButtonProps {
-  accountNumber: string
+  accountNumber?: string
+  account?: string
 }
 
-export default function CopyAccountButton({ accountNumber }: CopyAccountButtonProps) {
+export default function CopyAccountButton({ accountNumber, account }: CopyAccountButtonProps) {
   const [copied, setCopied] = useState(false)
+  const targetAccount = accountNumber || account || "0056692414"
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(accountNumber)
+      await navigator.clipboard.writeText(targetAccount)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch (err) {

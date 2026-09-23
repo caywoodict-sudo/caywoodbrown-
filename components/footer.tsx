@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowUpRight } from "lucide-react"
+import { ArrowUpRight, Facebook, Instagram, Linkedin, Twitter } from "lucide-react"
 
 export default function Footer() {
   return (
@@ -27,7 +27,7 @@ export default function Footer() {
         </nav>
         <div className="footer-contact">
           <h2>Let’s stay connected</h2>
-          <div className="space-y-3 mb-4 text-sm text-[#faf7f0bb] leading-relaxed">
+          <div className="space-y-3 mb-4 text-sm text-[#faf7f0e6] leading-relaxed">
             <div>
               <span className="block font-semibold text-[#c7ed9f] text-xs uppercase tracking-wider">Port Harcourt (HQ)</span>
               Close B, 1 IPIC Estate, off Akpajo Elelenwo, Port Harcourt, Rivers State
@@ -47,8 +47,21 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <div className="home-shell footer-bottom pb-24 sm:pb-6">
-        <p>© {new Date().getFullYear()} Caywood Brown Foundation</p>
+      <div className="home-shell footer-bottom sm:pb-6">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-6 w-full mb-8 text-[#faf7f0e6]">
+          <div className="flex items-center gap-5">
+            <a href="#" aria-label="Facebook" className="hover:text-[#c7ed9f] transition-colors"><Facebook size={20} /></a>
+            <a href="#" aria-label="Instagram" className="hover:text-[#c7ed9f] transition-colors"><Instagram size={20} /></a>
+            <a href="#" aria-label="LinkedIn" className="hover:text-[#c7ed9f] transition-colors"><Linkedin size={20} /></a>
+            <a href="#" aria-label="Twitter" className="hover:text-[#c7ed9f] transition-colors"><Twitter size={20} /></a>
+          </div>
+          <div className="flex flex-wrap justify-center gap-6 text-sm">
+            <Link href="#" className="hover:text-[#c7ed9f] transition-colors">Privacy Policy</Link>
+            <Link href="#" className="hover:text-[#c7ed9f] transition-colors">Terms of Service</Link>
+            <Link href="#" className="hover:text-[#c7ed9f] transition-colors">Annual Reports</Link>
+          </div>
+        </div>
+        <p suppressHydrationWarning>{`© ${new Date().getFullYear()} Caywood Brown Foundation`}</p>
         <p>Established 2006 · RC: 0022482</p>
       </div>
     </footer>

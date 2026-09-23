@@ -5,6 +5,7 @@ import HeroNarrative from "@/components/hero-narrative"
 import ThematicPillars from "@/components/thematic-pillars"
 import FeaturedEvents from "@/components/featured-events"
 import PartnersMarquee from "@/components/partners-marquee"
+import CopyAccountButton from "@/components/copy-account-button"
 
 export default function Home() {
   return (
@@ -102,7 +103,7 @@ export default function Home() {
               &ldquo;For years, I was a full-time young housewife. When I eventually stepped into the workforce as an office assistant, I quickly realized that my lack of computer skills was holding me back. The cost of commercial classes was out of reach on my modest salary. Just when I was about to give up, a concerned friend told me about the free computer appreciation training at Caywood Brown Foundation. With hesitation and hope, I walked through their doors in Port Harcourt. What I found was not just a training program, but a lifeline. Today, my work output has dramatically improved, my confidence soared, my boss took notice — and I was recently promoted!&rdquo;
             </blockquote>
             <p className="text-sm font-semibold text-[#00521a] pt-2 border-t border-[#00521a]/10">
-              — Mrs. A., Office Assistant &amp; Small Business Administrator, Port Harcourt
+              <cite className="not-italic">— Mrs. A., Office Assistant &amp; Small Business Administrator, Port Harcourt</cite>
             </p>
           </div>
 
@@ -110,34 +111,49 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-6">
             <div className="p-6 rounded-2xl bg-[#faf7f0] border border-[#00521a]/10 space-y-3">
               <span className="text-xs font-bold uppercase tracking-wider text-[#00521a]">Digital Literacy</span>
-              <p className="text-sm text-[#173421]/85 italic leading-relaxed">
+              <blockquote className="text-sm text-[#173421]/85 italic leading-relaxed">
                 &ldquo;Learning the basics changed my entire career path. From having zero confidence on a keyboard to mastering Microsoft Office and data entry, I am now gainfully employed.&rdquo;
-              </p>
-              <div className="pt-2 border-t border-[#00521a]/10 text-xs">
-                <strong className="text-[#173421] block">Blessing E., 22</strong>
-                <span className="text-[#173421]/60">Office Assistant, Rivers State</span>
+              </blockquote>
+              <div className="pt-2 border-t border-[#00521a]/10 text-xs flex items-center gap-3 mt-4">
+                <div className="relative w-8 h-8 rounded-full overflow-hidden shrink-0 bg-[#00521a]/10">
+                  <Image src="/images/testimonials/madam-1.png" alt="Blessing E." fill className="object-cover" />
+                </div>
+                <div>
+                  <cite className="text-[#173421] block font-bold not-italic">Blessing E., 22</cite>
+                  <span className="text-[#173421]/60">Office Assistant, Rivers State</span>
+                </div>
               </div>
             </div>
 
             <div className="p-6 rounded-2xl bg-[#faf7f0] border border-[#00521a]/10 space-y-3">
               <span className="text-xs font-bold uppercase tracking-wider text-[#df6827]">Music Academy</span>
-              <p className="text-sm text-[#173421]/85 italic leading-relaxed">
+              <blockquote className="text-sm text-[#173421]/85 italic leading-relaxed">
                 &ldquo;A skill that now pays my bills. The practical drum kit and live performance sessions took my raw interest and turned it into a viable career as a session instrumentalist.&rdquo;
-              </p>
-              <div className="pt-2 border-t border-[#00521a]/10 text-xs">
-                <strong className="text-[#173421] block">Peterson Tochukwu</strong>
-                <span className="text-[#173421]/60">Session Drummer, Port Harcourt</span>
+              </blockquote>
+              <div className="pt-2 border-t border-[#00521a]/10 text-xs flex items-center gap-3 mt-4">
+                <div className="relative w-8 h-8 rounded-full overflow-hidden shrink-0 bg-[#df6827]/10">
+                  <Image src="/images/testimonials/madam-2.png" alt="Peterson Tochukwu" fill className="object-cover" />
+                </div>
+                <div>
+                  <cite className="text-[#173421] block font-bold not-italic">Peterson Tochukwu</cite>
+                  <span className="text-[#173421]/60">Session Drummer, Port Harcourt</span>
+                </div>
               </div>
             </div>
 
             <div className="p-6 rounded-2xl bg-[#faf7f0] border border-[#00521a]/10 space-y-3">
               <span className="text-xs font-bold uppercase tracking-wider text-[#00521a]">Youth Rehabilitation</span>
-              <p className="text-sm text-[#173421]/85 italic leading-relaxed">
+              <blockquote className="text-sm text-[#173421]/85 italic leading-relaxed">
                 &ldquo;When substance addiction almost destroyed my future, the foundation gave me a structured path to recovery, psychosocial counseling, and a true second chance at life.&rdquo;
-              </p>
-              <div className="pt-2 border-t border-[#00521a]/10 text-xs">
-                <strong className="text-[#173421] block">Rio P.</strong>
-                <span className="text-[#173421]/60">Rehabilitation Graduate &amp; Peer Mentor</span>
+              </blockquote>
+              <div className="pt-2 border-t border-[#00521a]/10 text-xs flex items-center gap-3 mt-4">
+                <div className="relative w-8 h-8 rounded-full overflow-hidden shrink-0 bg-[#00521a]/10">
+                  <Image src="/images/testimonials/madam-4.png" alt="Rio P." fill className="object-cover" />
+                </div>
+                <div>
+                  <cite className="text-[#173421] block font-bold not-italic">Rio P.</cite>
+                  <span className="text-[#173421]/60">Rehabilitation Graduate &amp; Peer Mentor</span>
+                </div>
               </div>
             </div>
           </div>
@@ -175,9 +191,17 @@ export default function Home() {
                 <p>{item}</p>
               </div>
             ))}
-            <div className="pt-4 border-t border-[#00521a]/15 text-xs text-[#173421]">
-              <span className="font-bold block text-[#00521a]">Direct Bank Transfer:</span>
-              Union Bank · <strong className="font-mono">0056692414</strong> · CAYWOOD BROWN FOUNDATION
+            <div className="pt-4 mt-6">
+              <div className="p-4 rounded-xl bg-white border border-[#00521a]/15 shadow-sm flex items-center justify-between">
+                <div className="text-sm">
+                  <span className="font-bold block text-[#00521a] mb-1">Direct Bank Transfer</span>
+                  <div className="text-[#173421]">
+                    <span className="block text-sm">Union Bank · <strong className="font-mono text-base">0056692414</strong></span>
+                    <span className="text-xs text-[#173421]/70">CAYWOOD BROWN FOUNDATION</span>
+                  </div>
+                </div>
+                <CopyAccountButton accountNumber="0056692414" />
+              </div>
             </div>
           </div>
         </div>
@@ -224,7 +248,10 @@ export default function Home() {
             ].map((item) => (
               <Link href={item.href} key={item.href}>
                 <span className="home-label">{item.detail}</span>
-                <span className="closing-link-title">{item.title}</span>
+                <span className="closing-link-title flex items-center justify-between">
+                  <span>{item.title}</span>
+                  <ArrowRight size={16} className="shrink-0 ml-2" />
+                </span>
               </Link>
             ))}
           </div>

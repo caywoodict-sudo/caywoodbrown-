@@ -43,7 +43,7 @@ export default function ThematicPillars() {
         <p className="home-label section-kicker">Our Core Initiatives</p>
         <h2 id="programmes-title" className="home-heading">How We Make<br />An Impact.</h2>
         <p className="programme-intro-copy">Six structured programmes meeting youth where they are — grounded in compassion and driven by lasting results.</p>
-        <figure className="programme-portrait">
+        <figure className="programme-portrait lg:sticky lg:top-24">
           <Image src="/images/programs/computer-lab.jpg" alt="A young woman learning at a Caywood Brown computer workstation" fill className="object-cover" sizes="(max-width: 700px) 100vw, 35vw" />
           <figcaption>Learning in action, Port Harcourt</figcaption>
         </figure>
