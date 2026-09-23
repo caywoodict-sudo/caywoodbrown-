@@ -16,10 +16,17 @@ html, body {
 .home-copy { font-size:18px; line-height:1.65; max-width:540px; margin-top:24px; }
 .home-label { font-size:11px; line-height:1.5; font-weight:700; text-transform:uppercase; letter-spacing:1.6px; }
 .home-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:30px; }
-.home-button { min-height:50px; display:inline-flex; align-items:center; justify-content:center; gap:12px; border:1px solid #00521a; padding:13px 25px; border-radius:999px; background:#00521a; color:#fff; font-size:14px; font-weight:600; transition:background .2s,color .2s; }
-.home-button:hover { background:var(--ink); }
-.home-button-outline { background:transparent; color:#00521a; }
+.home-button { min-height:50px; display:inline-flex; align-items:center; justify-content:center; gap:10px; border:1.5px solid #00521a; padding:13px 28px; border-radius:999px; background:#00521a; color:#fff; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; transition:all .2s ease; box-shadow:0 2px 8px rgba(0,82,26,0.15); }
+.home-button:hover { background:var(--ink); border-color:var(--ink); transform:translateY(-1px); }
+.home-button:active { transform:scale(0.98); }
+.home-button-gold { background:#f6ce40; color:#12291b; border-color:#f6ce40; box-shadow:0 4px 14px rgba(246,206,64,0.3); }
+.home-button-gold:hover { background:#e5bf32; border-color:#e5bf32; color:#12291b; }
+.home-button-flame { background:#f47e28; color:#fff; border-color:#f47e28; box-shadow:0 4px 14px rgba(244,126,40,0.3); }
+.home-button-flame:hover { background:#df6827; border-color:#df6827; color:#fff; }
+.home-button-outline { background:transparent; color:#00521a; border-color:#00521a; box-shadow:none; }
 .home-button-outline:hover { background:#00521a; color:#fff; }
+.home-button-light-outline { background:transparent; color:#faf7f0; border-color:rgba(255,255,255,0.45); box-shadow:none; }
+.home-button-light-outline:hover { background:rgba(255,255,255,0.12); border-color:#fff; color:#fff; }
 .home-link { display:inline-flex; align-items:center; gap:12px; font-size:15px; line-height:1.5; font-weight:600; text-underline-offset:5px; }
 .home-link:hover { text-decoration:underline; }
 .home-link svg { flex-shrink:0; transition:transform .2s; }

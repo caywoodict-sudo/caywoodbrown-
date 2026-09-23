@@ -6,6 +6,71 @@ export const dynamic = 'force-dynamic'
 
 const fallbackEvents = [
   {
+    id: "national-convergence-health-financing-reform",
+    slug: "national-convergence-health-financing-reform",
+    title: "National Convergence on Nigeria’s Health Financing Reform Bills: BHCPF (SB.886) & SSB (SB.713)",
+    subtitle: "Strengthening Sustainable Domestic Health Financing for Universal Health Coverage: Leveraging the SSB Tax and the BHCPF",
+    category: "Public Health Policy & Advocacy",
+    date: "17th September 2026",
+    eventDate: "2026-09-17T09:00:00.000Z",
+    location: "Banquet Hall, Onomo Allure Abuja",
+    lead: "Organised by the Caywood Brown Foundation through the Office of the Chairman, Senate Committee on Health (Secondary and Tertiary), bringing together the Coordinating Minister of Health, Special Adviser to the President on Health, NCDC, National Assembly leaders, and health finance ecosystem stakeholders.",
+    summary: "Stakeholders across Nigeria’s health and public finance ecosystem converged in Abuja on Thursday, 17 September 2026, for the National Convergence on Nigeria’s Health Financing Reform Bills (SB.886 and SB.713) to advance sustainable domestic health financing and universal health coverage.",
+    image: "https://res.cloudinary.com/oudx4ztm/image/upload/v1790171050/caywood-brown/events/national-convergence/NAT_2910.jpg",
+    secondaryImage: "https://res.cloudinary.com/oudx4ztm/image/upload/v1790170847/caywood-brown/events/national-convergence/NAT_2847.jpg",
+    videoUrl: "https://res.cloudinary.com/oudx4ztm/video/upload/v1790171087/caywood-brown/videos/national-convergence-health-financing.mp4",
+    badgeText: "National Landmark Convergence · NTA Broadcast",
+    collaborators: [
+      "Office of the Chairman, Senate Committee on Health (Secondary & Tertiary)",
+      "Federal Ministry of Health and Social Welfare (Prof. Muhammad Ali Pate)",
+      "Special Adviser to the President on Health (Dr. Salma Ibrahim Anas)",
+      "Nigeria Centre for Disease Control (NCDC, Dr. Jide Idris)",
+      "House Committee on Healthcare Services (Hon. Amos Magaji)",
+      "Vaccine Network for Disease Control (Chika Offor)",
+      "Global Health Advocacy Incubator (GHAI, Prof. Emmanuel Alhassan)",
+      "World Health Organization (WHO)",
+      "SCIDaR & Clinton Health Access Initiative (CHAI)",
+    ],
+    keyActivities: [
+      "Keynote addresses by Minister of Health Prof. Muhammad Ali Pate and Special Adviser Dr. Salma Ibrahim Anas",
+      "Parliamentary address by Senate Committee on Health Chairman Senator Dr. Ipalibo Harry Banigo",
+      "Strategic roadmap formulation for House concurrence on SB.886 (BHCPF from 1% to 2%) and SB.713 (SSB Tax)",
+      "Full NTA News 24 special broadcast coverage of convergence proceedings",
+      "Adoption of the 7-Point Communiqué Commitments for Action",
+    ],
+    isHeroSpotlight: true,
+    featuredOnHome: true,
+  },
+  {
+    id: "ssb-tax-breakfast-technical-session",
+    slug: "ssb-tax-breakfast-technical-session",
+    title: "EVENT RECAP | SSB TAX BREAKFAST TECHNICAL SESSION 🇳🇬",
+    subtitle: "Advancing Public-Health Approaches to SSB Taxation & Sustainable Domestic Health Financing",
+    category: "Public Health Policy & Advocacy",
+    date: "September 2026",
+    eventDate: "2026-09-23T08:30:00.000Z",
+    location: "AATC Onomo Allure Hotels, Abuja",
+    lead: "The Caywood Brown Foundation (CBF) and Corporate Accountability and Public Participation Africa (CAPPA) co-hosted a Breakfast Technical Session on the finalisation of the Sugar-Sweetened Beverages (SSB) Legislation (SB.713).",
+    summary: "The Caywood Brown Foundation (CBF) and Corporate Accountability and Public Participation Africa (CAPPA) co-hosted a Breakfast Technical Session on the finalisation of the Sugar-Sweetened Beverages (SSB) Legislation to deliberate on legislative pathways, strengthen consensus, and advance a public-health approach to SSB taxation for non-communicable disease prevention and sustainable health financing.",
+    image: "/images/events/ssb-tax-breakfast/ssb-vip-dignitaries-seated.jpg",
+    secondaryImage: "/images/events/ssb-tax-breakfast/ssb-banigo-keynote-podium.jpg",
+    badgeText: "High-Level Policy Recap",
+    collaborators: [
+      "Corporate Accountability and Public Participation Africa (CAPPA)",
+      "Senate Committee on Health (10th National Assembly)",
+      "Sponsor of SB.713 (Customs & Excise Tariff Amendment Bill)",
+      "Civil Society Health Advocates & Technical Experts",
+    ],
+    keyActivities: [
+      "Keynote legislative address delivered by Founder Senator Dr. Ipalibo Harry Banigo",
+      "Multi-stakeholder technical deliberations on SB.713 legislative pathways",
+      "Consensus-building on domestic revenue earmarks for non-communicable disease prevention",
+      "Issuance of joint CBF & CAPPA policy communiqué to the 10th National Assembly",
+    ],
+    isHeroSpotlight: false,
+    featuredOnHome: true,
+  },
+  {
     id: "world-immunization-day-impa",
     slug: "world-immunization-day-impa",
     title: "World Immunization Day 2025: Integrated Vaccination Campaign & Road Show",
@@ -134,16 +199,17 @@ export async function GET() {
       limit: 50,
     })
 
-    if (!docs || docs.length === 0) {
-      // Auto-seed into DB if empty
-      for (const evt of fallbackEvents) {
+    // Auto-seed any missing fallback events into Payload DB
+    const existingSlugs = new Set((docs || []).map((d: any) => d.slug))
+    for (const evt of fallbackEvents) {
+      if (!existingSlugs.has(evt.slug)) {
         try {
           await payload.create({
             collection: 'events',
             data: {
               title: evt.title,
               slug: evt.slug,
-              category: evt.category.includes('Health') ? 'health' : evt.category.includes('Relief') ? 'relief' : evt.category.includes('Skills') ? 'skills' : 'outreach',
+              category: evt.category.includes('Policy') || evt.category.includes('Advocacy') ? 'advocacy' : evt.category.includes('Health') ? 'health' : evt.category.includes('Relief') ? 'relief' : evt.category.includes('Skills') ? 'skills' : 'outreach',
               eventDate: evt.eventDate,
               location: evt.location,
               summary: evt.summary,
@@ -154,23 +220,25 @@ export async function GET() {
           // ignore duplicate insert errors
         }
       }
-
-      return NextResponse.json({
-        success: true,
-        source: 'database_seeded',
-        docs: fallbackEvents,
-      })
     }
 
+    // Refresh docs after ensuring all exist
+    const { docs: allDocs } = await payload.find({
+      collection: 'events',
+      limit: 50,
+    })
+
+    const finalDocsList = allDocs && allDocs.length > 0 ? allDocs : docs
+
     // Map payload docs into format expected by UI
-    const formattedDocs = docs.map((doc: any) => {
+    const formattedDocs = (finalDocsList || []).map((doc: any) => {
       const matchingFallback = fallbackEvents.find((f) => f.slug === doc.slug) || {}
       return {
         id: doc.slug || String(doc.id),
         slug: doc.slug || String(doc.id),
         title: doc.title,
         subtitle: matchingFallback.subtitle || `Official Campaign • ${doc.location}`,
-        category: doc.category === 'health' ? 'Health & Immunization' : doc.category === 'relief' ? 'Humanitarian Relief' : doc.category === 'skills' ? 'Skills Camp & Bootcamps' : 'Community Outreaches',
+        category: doc.category === 'advocacy' ? 'Public Health Policy & Advocacy' : doc.category === 'health' ? 'Health & Immunization' : doc.category === 'relief' ? 'Humanitarian Relief' : doc.category === 'skills' ? 'Skills Camp & Bootcamps' : 'Community Outreaches',
         date: doc.eventDate ? new Date(doc.eventDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : matchingFallback.date || 'Upcoming',
         eventDate: doc.eventDate,
         location: doc.location,

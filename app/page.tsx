@@ -107,15 +107,17 @@ export default function Home() {
             </p>
           </div>
 
-          {/* 3 Authentic Beneficiary Cards from Database */}
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-2xl bg-[#faf7f0] border border-[#00521a]/10 space-y-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#00521a]">Digital Literacy</span>
-              <blockquote className="text-sm text-[#173421]/85 italic leading-relaxed">
-                &ldquo;Learning the basics changed my entire career path. From having zero confidence on a keyboard to mastering Microsoft Office and data entry, I am now gainfully employed.&rdquo;
-              </blockquote>
-              <div className="pt-2 border-t border-[#00521a]/10 text-xs flex items-center gap-3 mt-4">
-                <div className="relative w-8 h-8 rounded-full overflow-hidden shrink-0 bg-[#00521a]/10">
+          {/* 6 Authentic Beneficiary Cards from Database & Archives */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="p-6 rounded-2xl bg-[#faf7f0] border border-[#00521a]/10 space-y-3 flex flex-col justify-between">
+              <div className="space-y-2.5">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#00521a]">Digital Literacy</span>
+                <blockquote className="text-sm text-[#173421]/85 italic leading-relaxed">
+                  &ldquo;Learning the basics changed my entire career path. From having zero confidence on a keyboard to mastering Microsoft Office and data entry, I am now gainfully employed.&rdquo;
+                </blockquote>
+              </div>
+              <div className="pt-3 border-t border-[#00521a]/10 text-xs flex items-center gap-3">
+                <div className="relative w-9 h-9 rounded-full overflow-hidden shrink-0 bg-[#00521a]/10">
                   <Image src="/images/testimonials/madam-1.png" alt="Blessing E." fill className="object-cover" />
                 </div>
                 <div>
@@ -125,13 +127,15 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="p-6 rounded-2xl bg-[#faf7f0] border border-[#00521a]/10 space-y-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#df6827]">Music Academy</span>
-              <blockquote className="text-sm text-[#173421]/85 italic leading-relaxed">
-                &ldquo;A skill that now pays my bills. The practical drum kit and live performance sessions took my raw interest and turned it into a viable career as a session instrumentalist.&rdquo;
-              </blockquote>
-              <div className="pt-2 border-t border-[#00521a]/10 text-xs flex items-center gap-3 mt-4">
-                <div className="relative w-8 h-8 rounded-full overflow-hidden shrink-0 bg-[#df6827]/10">
+            <div className="p-6 rounded-2xl bg-[#faf7f0] border border-[#00521a]/10 space-y-3 flex flex-col justify-between">
+              <div className="space-y-2.5">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#df6827]">Music Academy</span>
+                <blockquote className="text-sm text-[#173421]/85 italic leading-relaxed">
+                  &ldquo;A skill that now pays my bills. The practical drum kit and live performance sessions took my raw interest and turned it into a viable career as a session instrumentalist.&rdquo;
+                </blockquote>
+              </div>
+              <div className="pt-3 border-t border-[#00521a]/10 text-xs flex items-center gap-3">
+                <div className="relative w-9 h-9 rounded-full overflow-hidden shrink-0 bg-[#df6827]/10">
                   <Image src="/images/testimonials/madam-2.png" alt="Peterson Tochukwu" fill className="object-cover" />
                 </div>
                 <div>
@@ -141,18 +145,74 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="p-6 rounded-2xl bg-[#faf7f0] border border-[#00521a]/10 space-y-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#00521a]">Youth Rehabilitation</span>
-              <blockquote className="text-sm text-[#173421]/85 italic leading-relaxed">
-                &ldquo;When substance addiction almost destroyed my future, the foundation gave me a structured path to recovery, psychosocial counseling, and a true second chance at life.&rdquo;
-              </blockquote>
-              <div className="pt-2 border-t border-[#00521a]/10 text-xs flex items-center gap-3 mt-4">
-                <div className="relative w-8 h-8 rounded-full overflow-hidden shrink-0 bg-[#00521a]/10">
+            <div className="p-6 rounded-2xl bg-[#faf7f0] border border-[#00521a]/10 space-y-3 flex flex-col justify-between">
+              <div className="space-y-2.5">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#00521a]">Youth Rehabilitation</span>
+                <blockquote className="text-sm text-[#173421]/85 italic leading-relaxed">
+                  &ldquo;When substance addiction almost destroyed my future, the foundation gave me a structured path to recovery, psychosocial counseling, and a true second chance at life.&rdquo;
+                </blockquote>
+              </div>
+              <div className="pt-3 border-t border-[#00521a]/10 text-xs flex items-center gap-3">
+                <div className="relative w-9 h-9 rounded-full overflow-hidden shrink-0 bg-[#00521a]/10">
                   <Image src="/images/testimonials/madam-4.png" alt="Rio P." fill className="object-cover" />
                 </div>
                 <div>
                   <cite className="text-[#173421] block font-bold not-italic">Rio P.</cite>
                   <span className="text-[#173421]/60">Rehabilitation Graduate &amp; Peer Mentor</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-[#faf7f0] border border-[#00521a]/10 space-y-3 flex flex-col justify-between">
+              <div className="space-y-2.5">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#00521a]">Volunteerism Academy</span>
+                <blockquote className="text-sm text-[#173421]/85 italic leading-relaxed">
+                  &ldquo;As an unemployed graduate, six months of volunteer internship in a partner firm gave me workplace ethics, leadership habits, and the professional network that led to full-time employment.&rdquo;
+                </blockquote>
+              </div>
+              <div className="pt-3 border-t border-[#00521a]/10 text-xs flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-[#00521a] text-white flex items-center justify-center font-bold text-xs shrink-0">
+                  HS
+                </div>
+                <div>
+                  <cite className="text-[#173421] block font-bold not-italic">Hope S.</cite>
+                  <span className="text-[#173421]/60">Multinational Professional, Academy Alumna</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-[#faf7f0] border border-[#00521a]/10 space-y-3 flex flex-col justify-between">
+              <div className="space-y-2.5">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#df6827]">Youth Health &amp; Wellness</span>
+                <blockquote className="text-sm text-[#173421]/85 italic leading-relaxed">
+                  &ldquo;The school-based health session taught us about hygiene, nutrition, and emotional wellness. I finally understand how to take charge of my health and help my younger siblings.&rdquo;
+                </blockquote>
+              </div>
+              <div className="pt-3 border-t border-[#00521a]/10 text-xs flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-[#df6827] text-white flex items-center justify-center font-bold text-xs shrink-0">
+                  EV
+                </div>
+                <div>
+                  <cite className="text-[#173421] block font-bold not-italic">Evelyn</cite>
+                  <span className="text-[#173421]/60">SS2 Student, Rivers Secondary School</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-[#faf7f0] border border-[#00521a]/10 space-y-3 flex flex-col justify-between">
+              <div className="space-y-2.5">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#00521a]">Girl Child Advocacy</span>
+                <blockquote className="text-sm text-[#173421]/85 italic leading-relaxed">
+                  &ldquo;The leadership workshops and safe-space dialogues broke the fear holding me back. For the first time, I felt confident speaking up and advocating for my education.&rdquo;
+                </blockquote>
+              </div>
+              <div className="pt-3 border-t border-[#00521a]/10 text-xs flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-[#00521a] text-white flex items-center justify-center font-bold text-xs shrink-0">
+                  MP
+                </div>
+                <div>
+                  <cite className="text-[#173421] block font-bold not-italic">Mercy P.</cite>
+                  <span className="text-[#173421]/60">Youth Advocate &amp; Scholarship Recipient</span>
                 </div>
               </div>
             </div>
@@ -172,7 +232,7 @@ export default function Home() {
               Help a young person learn a skill, find their confidence, and take the next step. Every donation directly funds tuition-free computing labs, music equipment, clinical recovery therapy, and childhood immunization drives.
             </p>
             <div className="home-actions mt-6">
-              <Link className="home-button" href="/donate#donate-now">Make a donation</Link>
+              <Link className="home-button home-button-flame" href="/donate#donate-now">Make a donation</Link>
               <Link className="home-button home-button-outline" href="/donate#monthly-giving">
                 Monthly giving <ArrowRight size={17} />
               </Link>

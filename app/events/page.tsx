@@ -3,14 +3,14 @@
 import React, { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Calendar, MapPin, ArrowRight, Heart, Users, ShieldCheck, Filter, Sparkles, CheckCircle2, Phone } from "lucide-react"
+import { Calendar, MapPin, ArrowRight, Heart, Users, ShieldCheck, Filter, Sparkles, CheckCircle2, Phone, Video } from "lucide-react"
 import HeroFoliage from "@/components/hero-foliage"
 
 interface FoundationEvent {
   id: string
   title: string
   subtitle?: string
-  category: "Health & Immunization" | "Humanitarian Relief" | "Community Outreaches"
+  category: "Health & Immunization" | "Humanitarian Relief" | "Community Outreaches" | "Public Health Policy & Advocacy"
   date: string
   location: string
   lead: string
@@ -23,6 +23,59 @@ interface FoundationEvent {
 }
 
 const verifiedEvents: FoundationEvent[] = [
+  {
+    id: "national-convergence-health-financing-reform",
+    title: "National Convergence on Nigeria’s Health Financing Reform Bills: BHCPF (SB.886) & SSB (SB.713) 🇳🇬",
+    subtitle: "Strengthening Sustainable Domestic Health Financing for Universal Health Coverage: Leveraging the SSB Tax and the BHCPF",
+    category: "Public Health Policy & Advocacy",
+    date: "17th September 2026",
+    location: "Banquet Hall, Onomo Allure Abuja",
+    lead: "Convened by the Caywood Brown Foundation through the Office of the Chairman, Senate Committee on Health (Secondary and Tertiary), bringing together the Coordinating Minister of Health, Special Adviser to the President on Health, NCDC, National Assembly, and leading global health partners to champion sustainable domestic health financing.",
+    image: "https://res.cloudinary.com/oudx4ztm/image/upload/v1790171050/caywood-brown/events/national-convergence/NAT_2910.jpg",
+    secondaryImage: "https://res.cloudinary.com/oudx4ztm/image/upload/v1790170847/caywood-brown/events/national-convergence/NAT_2847.jpg",
+    badgeText: "National Landmark Convergence · NTA Broadcast",
+    collaborators: [
+      "Senate Committee on Health (10th National Assembly)",
+      "Federal Ministry of Health & Social Welfare (Prof. Muhammad Ali Pate)",
+      "Special Adviser to the President on Health (Dr. Salma Ibrahim Anas)",
+      "Nigeria Centre for Disease Control (NCDC, Dr. Jide Idris)",
+      "House Committee on Healthcare Services (Hon. Amos Magaji)",
+      "Global Health Advocacy Incubator (GHAI, Prof. Emmanuel Alhassan)",
+      "Vaccine Network for Disease Control (VNDC, Chika Offor)",
+      "World Health Organization (WHO) & Clinton Health Access Initiative (CHAI)",
+    ],
+    keyActivities: [
+      "Keynote addresses on sustainable domestic health financing and the Sector-Wide Approach (SWAp)",
+      "Strategic roadmap formulation for House concurrence on SB.886 (BHCPF 1% to 2%) and SB.713 (SSB Tax)",
+      "Full NTA News 24 special television broadcast and press conference",
+      "Unanimous adoption of the 7-Point Communiqué: Commitments for Action",
+    ],
+    isHeroSpotlight: true,
+  },
+  {
+    id: "ssb-tax-breakfast-technical-session",
+    title: "EVENT RECAP | SSB TAX BREAKFAST TECHNICAL SESSION 🇳🇬",
+    subtitle: "Sugar-Sweetened Beverages Legislation, Domestic Health Financing & NCD Prevention",
+    category: "Public Health Policy & Advocacy",
+    date: "September 2026",
+    location: "AATC Onomo Allure Hotels, Abuja",
+    lead: "The Caywood Brown Foundation (CBF) and Corporate Accountability and Public Participation Africa (CAPPA) co-hosted a Breakfast Technical Session on the finalisation of the Sugar-Sweetened Beverages (SSB) Legislation.",
+    image: "https://res.cloudinary.com/oudx4ztm/image/upload/v1790167110/caywood-brown/events/ssb-tax-breakfast/ssb-vip-dignitaries-seated.jpg",
+    secondaryImage: "https://res.cloudinary.com/oudx4ztm/image/upload/v1790167109/caywood-brown/events/ssb-tax-breakfast/ssb-banigo-keynote-podium.jpg",
+    badgeText: "High-Level Policy Recap",
+    collaborators: [
+      "Corporate Accountability and Public Participation Africa (CAPPA)",
+      "Senate Committee on Health (10th National Assembly)",
+      "Sponsor of SB.713 (Customs & Excise Tariff Amendment Bill)",
+      "Civil Society Health Advocates & Technical Experts",
+    ],
+    keyActivities: [
+      "Keynote legislative address by Founder Senator Dr. Ipalibo Harry Banigo (Chairman, Senate Committee on Health)",
+      "Multi-stakeholder technical deliberations on SB.713 legislative pathways",
+      "Consensus-building on domestic revenue earmarks for non-communicable disease prevention",
+      "Issuance of joint CBF & CAPPA policy communiqué to the 10th National Assembly",
+    ],
+  },
   {
     id: "world-immunization-day-impa",
     title: "World Immunization Day 2025: Integrated Vaccination Campaign & Road Show",
@@ -120,7 +173,7 @@ const verifiedEvents: FoundationEvent[] = [
   },
 ]
 
-const categories = ["All Events", "Health & Immunization", "Humanitarian Relief", "Community Outreaches"]
+const categories = ["All Events", "Public Health Policy & Advocacy", "Health & Immunization", "Humanitarian Relief", "Community Outreaches"]
 
 export default function EventsPage() {
   const [selectedCategory, setSelectedCategory] = useState("All Events")
@@ -287,20 +340,58 @@ export default function EventsPage() {
 
                 {/* Actions */}
                 <div className="flex flex-wrap gap-3 pt-3">
-                  <Link
-                    href="/volunteer"
-                    className="home-button inline-flex items-center gap-2 bg-[#f6ce40] text-[#142118] hover:bg-[#e5bf32] border-[#f6ce40]"
-                  >
-                    <Users className="w-4 h-4" />
-                    <span>Volunteer for IMPA</span>
-                  </Link>
-                  <Link
-                    href="/donate"
-                    className="home-button-outline inline-flex items-center gap-2 text-[#faf7f0] border-white/30 hover:bg-white/10"
-                  >
-                    <Heart className="w-4 h-4 text-[#f6ce40]" />
-                    <span>Sponsor Vaccines</span>
-                  </Link>
+                  {spotlight.id === "national-convergence-health-financing-reform" ? (
+                    <>
+                      <Link
+                        href="/events/national-convergence-health-financing-reform"
+                        className="home-button inline-flex items-center gap-2 bg-[#f6ce40] text-[#142118] hover:bg-[#e5bf32] border-[#f6ce40]"
+                      >
+                        <Video className="w-4 h-4" />
+                        <span>Watch NTA Broadcast &amp; 50 Photos</span>
+                      </Link>
+                      <Link
+                        href="/partner"
+                        className="home-button-outline inline-flex items-center gap-2 text-[#faf7f0] border-white/30 hover:bg-white/10"
+                      >
+                        <ShieldCheck className="w-4 h-4 text-[#c7ed9f]" />
+                        <span>Partner with Policy Desk</span>
+                      </Link>
+                    </>
+                  ) : spotlight.id === "ssb-tax-breakfast-technical-session" ? (
+                    <>
+                      <Link
+                        href="/events/ssb-tax-breakfast-technical-session"
+                        className="home-button inline-flex items-center gap-2 bg-[#f6ce40] text-[#142118] hover:bg-[#e5bf32] border-[#f6ce40]"
+                      >
+                        <ArrowRight className="w-4 h-4" />
+                        <span>Read Event Recap &amp; 43 Photos</span>
+                      </Link>
+                      <Link
+                        href="/partner"
+                        className="home-button-outline inline-flex items-center gap-2 text-[#faf7f0] border-white/30 hover:bg-white/10"
+                      >
+                        <ShieldCheck className="w-4 h-4 text-[#c7ed9f]" />
+                        <span>Partner with Us</span>
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        href="/volunteer"
+                        className="home-button inline-flex items-center gap-2 bg-[#f6ce40] text-[#142118] hover:bg-[#e5bf32] border-[#f6ce40]"
+                      >
+                        <Users className="w-4 h-4" />
+                        <span>Volunteer for IMPA</span>
+                      </Link>
+                      <Link
+                        href="/donate"
+                        className="home-button-outline inline-flex items-center gap-2 text-[#faf7f0] border-white/30 hover:bg-white/10"
+                      >
+                        <Heart className="w-4 h-4 text-[#f6ce40]" />
+                        <span>Sponsor Vaccines</span>
+                      </Link>
+                    </>
+                  )}
                 </div>
 
               </div>
@@ -411,21 +502,41 @@ export default function EventsPage() {
                 </div>
 
                 {/* Footer Actions */}
-                <div className="p-6 sm:p-8 pt-0 border-t border-transparent flex items-center justify-between gap-4">
+                <div className="p-6 sm:p-8 pt-0 border-t border-transparent flex flex-wrap items-center justify-between gap-4">
                   <Link
-                    href="/volunteer"
+                    href={
+                      evt.id === "national-convergence-health-financing-reform"
+                        ? "/events/national-convergence-health-financing-reform"
+                        : evt.id === "ssb-tax-breakfast-technical-session"
+                        ? "/events/ssb-tax-breakfast-technical-session"
+                        : `/events/${evt.id}`
+                    }
                     className="text-xs font-bold uppercase tracking-wider text-[#00521a] hover:text-[#173421] inline-flex items-center gap-1.5 transition-colors"
                   >
-                    <span>Volunteer for this outreach</span>
+                    <span>
+                      {evt.id === "national-convergence-health-financing-reform"
+                        ? "Watch NTA Broadcast & 50 Photos"
+                        : evt.id === "ssb-tax-breakfast-technical-session"
+                        ? "Read Event Recap & 43 Photos"
+                        : "View Full Campaign Details"}
+                    </span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
-                  <Link
-                    href="/donate"
-                    className="p-2.5 rounded-full bg-[#faf7f0] hover:bg-[#c7ed9f] text-[#00521a] transition-colors"
-                    aria-label={`Support ${evt.title}`}
-                  >
-                    <Heart className="w-4 h-4" />
-                  </Link>
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href="/volunteer"
+                      className="text-xs font-medium text-[#173421]/70 hover:text-[#00521a] transition-colors"
+                    >
+                      Volunteer
+                    </Link>
+                    <Link
+                      href="/donate"
+                      className="p-2 rounded-full bg-[#faf7f0] hover:bg-[#c7ed9f] text-[#00521a] transition-colors"
+                      aria-label={`Support ${evt.title}`}
+                    >
+                      <Heart className="w-4 h-4" />
+                    </Link>
+                  </div>
                 </div>
               </article>
             ))}

@@ -23,19 +23,19 @@ export default function HeroNarrative() {
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/donate"
-              className="rounded-full bg-[#f5a246] px-7 py-3.5 text-xs font-bold uppercase tracking-wider text-[#12291b] transition hover:bg-[#e08f36]"
+              className="home-button home-button-gold"
             >
               Donate Now
             </Link>
             <Link
               href="/volunteer"
-              className="rounded-full border border-[#f7f2e7]/40 px-7 py-3.5 text-xs font-bold uppercase tracking-wider text-[#f7f2e7] transition hover:bg-white/10"
+              className="home-button home-button-flame"
             >
               Volunteer With Us
             </Link>
             <Link
               href="/partner"
-              className="rounded-full border border-[#f7f2e7]/40 px-7 py-3.5 text-xs font-bold uppercase tracking-wider text-[#f7f2e7] transition hover:bg-white/10"
+              className="home-button home-button-light-outline"
             >
               Partner With Us
             </Link>
@@ -60,10 +60,10 @@ export default function HeroNarrative() {
               A living legacy of <span className="text-[#df6827]">service &amp; compassion.</span>
             </h2>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-[#173421]/90 sm:text-lg">
-              The Caywood Brown Foundation was established in 2006 by Dr. Ipalibo Harry Banigo in honor of her late father, Caywood Brown, whose life of compassion, discipline, and community service continues to guide every initiative we undertake.
+              The Caywood Brown Foundation was established in 2006 by Dr. Ipalibo Harry Banigo in honor of her late father, Caywood Brown, whose life of compassion, discipline, and community service continues to guide every initiative we undertake. What began as small volunteer-led community tutoring and medical outreaches in Port Harcourt has grown into an enduring institutional force, empowering over 15,000 individuals across 48 communities.
             </p>
             
-            <div className="mt-6 rounded-2xl bg-white/75 p-6 border border-[#00521a]/15 backdrop-blur-sm space-y-4">
+            <div className="mt-6 rounded-2xl bg-white/85 p-6 border border-[#00521a]/15 backdrop-blur-sm space-y-4 shadow-sm">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-[#00521a] block mb-1">Our Vision</span>
                 <p className="text-sm font-medium text-[#173421] leading-relaxed">
@@ -79,11 +79,11 @@ export default function HeroNarrative() {
             </div>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Link href="/about" className="inline-flex items-center gap-3 rounded-full bg-[#00521a] px-7 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#003b13] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00521a]">
+              <Link href="/about" className="home-button">
                 Read our full history <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link href="/about/founders-message" className="inline-flex items-center gap-2 text-sm font-semibold text-[#00521a] hover:underline">
-                Founder&apos;s Message <ArrowRight className="h-3.5 w-3.5" />
+              <Link href="/about/founders-message" className="home-button home-button-outline">
+                Founder&apos;s Message <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </div>

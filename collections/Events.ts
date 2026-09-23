@@ -27,6 +27,7 @@ export const Events: CollectionConfig = {
       required: true,
       options: [
         { label: 'Health Campaign & Immunization', value: 'health' },
+        { label: 'Public Health Policy & Advocacy', value: 'advocacy' },
         { label: 'Humanitarian Relief & IDP Outreach', value: 'relief' },
         { label: 'Skills Camp & Bootcamps', value: 'skills' },
         { label: 'Community Outreaches', value: 'outreach' },
