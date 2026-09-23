@@ -61,7 +61,7 @@ export default function Footer() {
             <Link href="#" className="hover:text-[#c7ed9f] transition-colors">Annual Reports</Link>
           </div>
         </div>
-        <p suppressHydrationWarning>{`© ${new Date().getFullYear()} Caywood Brown Foundation`}</p>
+        <p>© 2026 Caywood Brown Foundation</p>
         <p>Established 2006 · RC: 0022482</p>
       </div>
     </footer>

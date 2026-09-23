@@ -13,6 +13,7 @@ import { Testimonials } from './collections/Testimonials'
 import { Submissions } from './collections/Submissions'
 import { Volunteers } from './collections/Volunteers'
 import { Media } from './collections/Media'
+import { SiteSettings } from './globals/SiteSettings'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -34,6 +35,9 @@ export default buildConfig({
     Submissions,
     Volunteers,
     Media,
+  ],
+  globals: [
+    SiteSettings,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'caywood-brown-foundation-secret-key-2006-secure',

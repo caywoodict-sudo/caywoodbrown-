@@ -3,6 +3,19 @@ import { cloudinary } from '@/lib/cloudinary'
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  labels: {
+    singular: 'Media Asset',
+    plural: 'Media Library & Assets',
+  },
+  admin: {
+    group: 'Media & Assets',
+  },
+  access: {
+    read: () => true,
+    create: ({ req: { user } }) => Boolean(user),
+    update: ({ req: { user } }) => Boolean(user),
+    delete: ({ req: { user } }) => user?.role === 'admin',
+  },
   upload: {
     staticDir: 'media',
     imageSizes: [
@@ -65,10 +78,12 @@ export const Media: CollectionConfig = {
       name: 'alt',
       type: 'text',
       required: true,
+      label: 'Alt Text (for accessibility)',
     },
     {
       name: 'caption',
       type: 'text',
+      label: 'Photo Caption / Credit',
     },
     {
       name: 'cloudinaryUrl',
@@ -77,6 +92,7 @@ export const Media: CollectionConfig = {
         readOnly: true,
         position: 'sidebar',
       },
+      label: 'Cloudinary CDN URL',
     },
   ],
 }

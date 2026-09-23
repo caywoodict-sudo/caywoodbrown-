@@ -2,15 +2,27 @@ import type { CollectionConfig } from 'payload'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
+  labels: {
+    singular: 'Blog Post & Press Release',
+    plural: 'Blog Posts & News',
+  },
   admin: {
     useAsTitle: 'title',
+    group: 'Editorial & News',
     defaultColumns: ['title', 'category', 'status', 'publishedAt'],
+  },
+  access: {
+    read: () => true, // Publicly viewable
+    create: ({ req: { user } }) => Boolean(user),
+    update: ({ req: { user } }) => Boolean(user),
+    delete: ({ req: { user } }) => user?.role === 'admin',
   },
   fields: [
     {
       name: 'title',
       type: 'text',
       required: true,
+      label: 'Article Title',
     },
     {
       name: 'slug',
@@ -31,6 +43,7 @@ export const Posts: CollectionConfig = {
         { label: 'Cohort Graduations', value: 'graduations' },
         { label: 'Community Outreaches', value: 'outreaches' },
       ],
+      label: 'Category',
     },
     {
       name: 'status',
@@ -44,6 +57,7 @@ export const Posts: CollectionConfig = {
       admin: {
         position: 'sidebar',
       },
+      label: 'Publication Status',
     },
     {
       name: 'publishedAt',
@@ -51,6 +65,7 @@ export const Posts: CollectionConfig = {
       admin: {
         position: 'sidebar',
       },
+      label: 'Publish Date',
     },
     {
       name: 'author',
@@ -59,20 +74,24 @@ export const Posts: CollectionConfig = {
       admin: {
         position: 'sidebar',
       },
+      label: 'Author',
     },
     {
       name: 'excerpt',
       type: 'textarea',
       required: true,
+      label: 'Short Excerpt / Teaser',
     },
     {
       name: 'coverImage',
       type: 'upload',
       relationTo: 'media',
+      label: 'Header Photograph',
     },
     {
       name: 'content',
       type: 'richText',
+      label: 'Full Article Content',
     },
     {
       name: 'allowComments',

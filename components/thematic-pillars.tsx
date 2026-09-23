@@ -97,7 +97,7 @@ export default function ThematicPillars() {
   const currentPillar = pillars[activeTab]
 
   return (
-    <section id="thematic-pillars" className="bg-[#173421] text-[#faf7f0] py-16 sm:py-24 px-5 sm:px-8 border-b border-[#c7ed9f]/15 relative overflow-hidden" aria-labelledby="programmes-title">
+    <section id="thematic-pillars" suppressHydrationWarning className="bg-[#173421] text-[#faf7f0] py-16 sm:py-24 px-5 sm:px-8 border-b border-[#c7ed9f]/15 relative overflow-hidden" aria-labelledby="programmes-title">
       {/* Subtle organic ambient glow */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#c7ed9f]/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-10 w-80 h-80 bg-[#f6ce40]/5 rounded-full blur-3xl pointer-events-none" />

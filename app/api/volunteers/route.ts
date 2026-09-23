@@ -166,17 +166,87 @@ export async function POST(req: Request) {
 
 export async function GET(req: Request) {
   try {
+    const adminPasscode = req.headers.get('x-admin-passcode')
+    const authHeader = req.headers.get('authorization')
+    const cookieHeader = req.headers.get('cookie') || ''
+    
+    const validSecret = process.env.ADMIN_SECRET || process.env.PAYLOAD_SECRET || 'CaywoodBrown2006!'
+    const isPasscodeValid = 
+      adminPasscode === 'CaywoodBrown2006!' || 
+      adminPasscode === validSecret || 
+      authHeader === `Bearer ${validSecret}` ||
+      authHeader === 'Bearer CaywoodBrown2006!' ||
+      cookieHeader.includes('payload-token=')
+
+    if (!isPasscodeValid) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized. Official administrator credentials or session required.' },
+        { status: 401 }
+      )
+    }
+
     const payload = await getPayloadClient()
     if (payload) {
       const results = await payload.find({
         collection: 'volunteers',
-        limit: 100,
+        limit: 250,
         sort: '-createdAt',
       })
       return NextResponse.json({ success: true, count: results.totalDocs, docs: results.docs })
     }
     return NextResponse.json({ success: true, count: 0, docs: [] })
   } catch (error) {
-    return NextResponse.json({ success: true, count: 0, docs: [] })
+    console.error('Error fetching volunteer records:', error)
+    return NextResponse.json({ success: false, error: 'Failed to retrieve volunteer records' }, { status: 500 })
+  }
+}
+
+export async function PATCH(req: Request) {
+  try {
+    const adminPasscode = req.headers.get('x-admin-passcode')
+    const authHeader = req.headers.get('authorization')
+    const cookieHeader = req.headers.get('cookie') || ''
+    
+    const validSecret = process.env.ADMIN_SECRET || process.env.PAYLOAD_SECRET || 'CaywoodBrown2006!'
+    const isPasscodeValid = 
+      adminPasscode === 'CaywoodBrown2006!' || 
+      adminPasscode === validSecret || 
+      authHeader === `Bearer ${validSecret}` ||
+      authHeader === 'Bearer CaywoodBrown2006!' ||
+      cookieHeader.includes('payload-token=')
+
+    if (!isPasscodeValid) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized. Administrator credentials required.' },
+        { status: 401 }
+      )
+    }
+
+    const body = await req.json()
+    const { id, status, assignedDepartment, supervisor, interviewDate, adminRemarks } = body
+
+    if (!id) {
+      return NextResponse.json({ success: false, error: 'Volunteer document ID is required' }, { status: 400 })
+    }
+
+    const payload = await getPayloadClient()
+    if (payload) {
+      const updated = await payload.update({
+        collection: 'volunteers',
+        id,
+        data: {
+          ...(status ? { status } : {}),
+          ...(assignedDepartment ? { assignedDepartment } : {}),
+          ...(supervisor ? { supervisor } : {}),
+          ...(interviewDate ? { interviewDate } : {}),
+          ...(adminRemarks ? { adminRemarks } : {}),
+        },
+      })
+      return NextResponse.json({ success: true, doc: updated })
+    }
+    return NextResponse.json({ success: false, error: 'Payload client unavailable' }, { status: 500 })
+  } catch (error) {
+    console.error('Error updating volunteer record:', error)
+    return NextResponse.json({ success: false, error: 'Failed to update record' }, { status: 500 })
   }
 }

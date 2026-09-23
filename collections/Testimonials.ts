@@ -2,9 +2,20 @@ import type { CollectionConfig } from 'payload'
 
 export const Testimonials: CollectionConfig = {
   slug: 'testimonials',
+  labels: {
+    singular: 'Beneficiary Testimonial',
+    plural: 'Beneficiary Testimonials',
+  },
   admin: {
     useAsTitle: 'personName',
+    group: 'Editorial & News',
     defaultColumns: ['personName', 'roleOrProgram', 'cohortYear', 'featuredOnHome'],
+  },
+  access: {
+    read: () => true,
+    create: ({ req: { user } }) => Boolean(user),
+    update: ({ req: { user } }) => Boolean(user),
+    delete: ({ req: { user } }) => user?.role === 'admin',
   },
   fields: [
     {

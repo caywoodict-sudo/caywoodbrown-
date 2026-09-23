@@ -109,6 +109,7 @@ export default function Header() {
     <>
       {/* ─── 1. SOLID / FROSTED HEADER BAR (No collision on scroll) ─── */}
       <header
+        suppressHydrationWarning
         className={`site-header fixed top-0 left-0 right-0 z-40 w-full transition-all duration-300 px-4 sm:px-8 ${
           hasScrolled
             ? "bg-[#12291b] shadow-lg py-2.5 sm:py-3 border-b border-white/10 pointer-events-auto"

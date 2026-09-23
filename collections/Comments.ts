@@ -2,9 +2,20 @@ import type { CollectionConfig } from 'payload'
 
 export const Comments: CollectionConfig = {
   slug: 'comments',
+  labels: {
+    singular: 'User Comment',
+    plural: 'User Comments & Moderation',
+  },
   admin: {
     useAsTitle: 'authorName',
+    group: 'Editorial & News',
     defaultColumns: ['authorName', 'status', 'relatedTo', 'createdAt'],
+  },
+  access: {
+    read: () => true,
+    create: () => true, // Public comments submission allowed
+    update: ({ req: { user } }) => Boolean(user),
+    delete: ({ req: { user } }) => Boolean(user),
   },
   fields: [
     {
@@ -39,6 +50,7 @@ export const Comments: CollectionConfig = {
       admin: {
         position: 'sidebar',
       },
+      label: 'Moderation Status',
     },
     {
       name: 'relatedTo',
