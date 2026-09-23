@@ -167,19 +167,54 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  if (typeof Node !== 'undefined') {
+                    var origRemove = Node.prototype.removeChild;
+                    Node.prototype.removeChild = function(child) {
+                      if (child && child.parentNode !== this) {
+                        return child;
+                      }
+                      return origRemove.apply(this, arguments);
+                    };
+                    var origInsert = Node.prototype.insertBefore;
+                    Node.prototype.insertBefore = function(newNode, refNode) {
+                      if (refNode && refNode.parentNode !== this) {
+                        return newNode;
+                      }
+                      return origInsert.apply(this, arguments);
+                    };
+                  }
+                  if (typeof window !== 'undefined' && !Object.prototype.hasOwnProperty.call(window, 'solana')) {
+                    var _solana = undefined;
+                    Object.defineProperty(window, 'solana', {
+                      configurable: true,
+                      enumerable: true,
+                      get: function() { return _solana; },
+                      set: function(val) { _solana = val; }
+                    });
+                  }
+                } catch(e) {}
+              })();
+            `,
+          }}
+        />
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body className="font-sans antialiased bg-[#12291b] text-[#faf7f0]" suppressHydrationWarning>
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-black focus:px-4 focus:py-2 focus:rounded-md focus:shadow-lg"
-        >
-          Skip to main content
-        </a>
         {/* Dedicated root container insulating React tree from extension DOM injections */}
         <div id="__app_root" suppressHydrationWarning className="min-h-screen flex flex-col justify-between">
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-black focus:px-4 focus:py-2 focus:rounded-md focus:shadow-lg"
+          >
+            Skip to main content
+          </a>
           <Header />
           <main id="main-content" className="flex-1">{children}</main>
           <Footer />

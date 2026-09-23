@@ -319,7 +319,7 @@ export default function ThematicPillars() {
           <p className="text-xs sm:text-sm text-[#faf7f0]/70">
             Looking for detailed program schedules, curriculum, or cohort registration?{" "}
             <Link href="/programs" className="text-[#c7ed9f] font-semibold underline underline-offset-4 hover:text-white transition-colors">
-              Explore the full programs directory &rarr;
+              Explore the full programs directory →
             </Link>
           </p>
         </div>

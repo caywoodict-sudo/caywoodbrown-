@@ -247,7 +247,7 @@ export default function Home() {
               "Childhood immunization supplies & community health road shows",
             ].map((item, index) => (
               <div className="giving-item" key={item}>
-                <span>0{index + 1}</span>
+                <span>{`0${index + 1}`}</span>
                 <p>{item}</p>
               </div>
             ))}

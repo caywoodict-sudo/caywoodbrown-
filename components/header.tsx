@@ -319,7 +319,7 @@ export default function Header() {
 
             {/* Bottom Bar */}
             <div className="border-t border-white/10 px-6 sm:px-12 py-4 text-xs text-[#faf7f0]/60 flex flex-col sm:flex-row items-center justify-between gap-2">
-              <p>© {new Date().getFullYear()} Caywood Brown Foundation. All rights reserved.</p>
+              <p>© 2026 Caywood Brown Foundation. All rights reserved.</p>
               <p>Registered Non-Profit · RC: 0022482</p>
             </div>
           </motion.div>
